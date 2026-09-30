@@ -1,0 +1,11 @@
+{
+  "name": "silverstone-mission-control-working-v2",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "dev": "node bundle-js.cjs && node local-dev-server.cjs",
+    "build": "node build.js",
+    "preview": "node bundle-js.cjs && node local-dev-server.cjs",
+    "audit": "node audit-production.cjs"
+  }
+}
