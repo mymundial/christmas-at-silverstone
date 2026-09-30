@@ -1,0 +1,9 @@
+{
+  "name": "Silverstone Mission Control",
+  "short_name": "Mission Control",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#031522",
+  "theme_color": "#041727",
+  "icons": []
+}
