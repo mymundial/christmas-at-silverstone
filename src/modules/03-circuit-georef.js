@@ -151,3 +151,89 @@
     if(!projected) return null;
     return routePointAtDistance(projected.distance-Math.max(0,Number(metresBefore)||0));
   }
+
+  function localTestRouteStatus(){
+    const ids=LOCAL_TEST_PRESET.checkpointIds;
+    const configuredIds=ids.filter(id=>{
+      const point=LOCAL_TEST_PRESET.points?.[id];
+      return Number.isFinite(Number(point?.lat))&&Number.isFinite(Number(point?.lng));
+    });
+    return {
+      id:LOCAL_TEST_PRESET.id,
+      name:LOCAL_TEST_PRESET.name,
+      total:ids.length,
+      captured:configuredIds.length,
+      configured:configuredIds.length,
+      capturedIds:configuredIds,
+      missingIds:ids.filter(id=>!configuredIds.includes(id)),
+      ready:configuredIds.length===ids.length,
+      fixed:true
+    };
+  }
+
+  function localTestCheckpointSequence(){
+    return LOCAL_TEST_PRESET.checkpointIds
+      .map(id=>{
+        const cp=CHECKPOINTS.find(item=>item.id===id);
+        const point=LOCAL_TEST_PRESET.points?.[id];
+        return cp&&point?{cp,point}:null;
+      })
+      .filter(Boolean);
+  }
+
+  function localTestVirtualProjection(lat,lng){
+    if(!localTestEnabled||!Number.isFinite(Number(lat))||!Number.isFinite(Number(lng))) return null;
+    const status=localTestRouteStatus();
+    if(!status.ready) return null;
+    const checkpoints=localTestCheckpointSequence();
+    if(checkpoints.length<2) return null;
+
+    const originPoint=checkpoints[0].point;
+    const originLat=Number(originPoint.lat),originLng=Number(originPoint.lng);
+    const earthRadius=CIRCUIT_GEOREFERENCE.earthRadius;
+    const cosOrigin=Math.cos(toRad(originLat));
+    const toLocalMetres=(pointLat,pointLng)=>({
+      x:toRad(Number(pointLng)-originLng)*earthRadius*cosOrigin,
+      y:toRad(Number(pointLat)-originLat)*earthRadius
+    });
+
+    const points=checkpoints.map(({cp,point})=>{
+      const p=toLocalMetres(point.lat,point.lng);
+      return {cp,point,lat:Number(point.lat),lng:Number(point.lng),x:p.x,y:p.y};
+    });
+    const q=toLocalMetres(lat,lng);
+    let best=null;
+
+    // Culcheth is a linear rehearsal route from MC01 to MC12. Do not create a
+    // synthetic MC12→MC01 closing segment: that could make the start/end of the
+    // village walk map onto the wrong side of Silverstone.
+    for(let i=0;i<points.length-1;i++){
+      const a=points[i],b=points[i+1];
+      const vx=b.x-a.x,vy=b.y-a.y;
+      const len2=vx*vx+vy*vy;
+      const raw=len2?((q.x-a.x)*vx+(q.y-a.y)*vy)/len2:0;
+      const t=Math.max(0,Math.min(1,raw));
+      const x=a.x+vx*t,y=a.y+vy*t;
+      const off=Math.hypot(q.x-x,q.y-y);
+      if(!best||off<best.localOffRouteDistance) best={segmentIndex:i,t,localOffRouteDistance:off,a,b};
+    }
+    if(!best) return null;
+
+    const masterA=projectGeoToRoute(best.a.cp.lat,best.a.cp.lng);
+    const masterB=projectGeoToRoute(best.b.cp.lat,best.b.cp.lng);
+    if(!masterA||!masterB) return null;
+    const masterSpan=forwardRouteDistance(masterA.distance,masterB.distance);
+    const mapped=routePointAtDistance(masterA.distance+masterSpan*best.t);
+    return {
+      ...mapped,
+      virtual:true,
+      presetId:LOCAL_TEST_PRESET.id,
+      presetName:LOCAL_TEST_PRESET.name,
+      localSegmentIndex:best.segmentIndex,
+      localSegmentT:best.t,
+      localOffRouteDistance:best.localOffRouteDistance,
+      fromId:best.a.cp.id,
+      toId:best.b.cp.id
+    };
+  }
+

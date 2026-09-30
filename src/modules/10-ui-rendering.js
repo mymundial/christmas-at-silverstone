@@ -157,7 +157,8 @@
     const cp=current();
     const modeClass=state.mode==='demo'?' demo-radar-page':'';
     const finalCircuitOverview=state.completed.includes('northern');
-    const circuitMode=state.completed.includes('entry')||finalCircuitOverview;
+    const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
+    const circuitMode=state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
     const circuitLayer=finalCircuitOverview
       ? `<div class="track-radar-map final-overview" id="trackRadarMap" aria-hidden="true"><div class="track-radar-art" id="trackRadarArt"></div></div>`
       : circuitMode

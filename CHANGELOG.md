@@ -63,3 +63,12 @@
 - Aero shifted 9px left so the visible garage/fan artwork aligns with the centred CAPTURED label.
 - Power shifted 8px left so the complete speedometer/needle artwork aligns with the centred CAPTURED label.
 - Cache version bumped to 7.38.38.
+
+# GPS field-test pass — Culcheth Local Test profile
+
+- Added a fixed **Culcheth Local Test** coordinate profile for MC01–MC12, beginning at 428 Warrington Road and following the agreed village route up the east side of the Village Green, across Lodge Drive, down Jackson Avenue/Common Lane, and finishing at the Culcheth Library/cycle-shop area.
+- The Culcheth profile is completely separate from the canonical Silverstone checkpoint coordinates. Selecting it never writes to or replaces the Silverstone `CHECKPOINTS[*].lat/lng` values.
+- Culcheth Local Test is opt-in from `/admin` and applies only to Live GPS. Demo Mode remains separate.
+- Local geofences use dedicated local-test radii; Silverstone master detection/activation radii are unchanged.
+- In Culcheth mode, live village GPS progress is projected onto the equivalent MC01→MC12 sections of the existing Silverstone circuit route for the main Radar. The canonical Silverstone affine georeference is not changed.
+- Admin coordinate capture remains available only as a survey/candidate tool. Saved survey candidates cannot drive either the Silverstone Master or fixed Culcheth profile.

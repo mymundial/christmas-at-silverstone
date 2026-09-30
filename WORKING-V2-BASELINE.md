@@ -76,3 +76,9 @@ Working V2 is considered complete enough to move into GPS development. Remaining
 ## Freeze rule
 
 During GPS development, do not opportunistically redesign games, refactor the large stylesheet, convert audio formats, or restructure mission modules. Those changes can obscure GPS regressions and should be handled in later dedicated passes.
+
+## Local field-test profile added after freeze
+
+The GPS development layer now includes an opt-in **Culcheth Local Test** profile in `/admin`. It exists only to rehearse the live GPS experience away from Silverstone. Its coordinates and local trigger radii are separate from the frozen Silverstone master checkpoint data.
+
+When Culcheth Local Test is active, the physical village route drives geofence behaviour while the Radar maps progress virtually onto the equivalent Silverstone MC01→MC12 circuit sections. Switching back to **Silverstone Master** immediately returns to the unchanged canonical Silverstone coordinates and affine georeference. Demo Mode remains independent of both Live GPS profiles.

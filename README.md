@@ -29,3 +29,12 @@ See `WORKING-V2-BASELINE.md` for route order, GPS starting state, locked scope a
 The freeze removed only confirmed dead/retired material: old Power Pulse PNG artwork, obsolete MC02 and Lightspeed Lando audio duplicates, retired Vegas artwork, retired Spirit/Jingle audio, obsolete root preview images, and a duplicate root audio file. Runtime-used files were retained, including assets referenced dynamically such as the Aurora ring artwork.
 
 `dist/` is intentionally included so this package remains immediately deployable, while a fresh build can always regenerate it.
+
+## Field-test coordinate profiles
+
+`/admin` provides two deliberately separate Live GPS profiles:
+
+- **Silverstone Master** — uses the canonical checkpoint coordinates and the existing Silverstone affine circuit georeference.
+- **Culcheth Local Test** — uses a fixed, preconfigured MC01–MC12 village route for local rehearsal. Local GPS/geofence progress is virtually projected onto the equivalent Silverstone circuit sections for Radar presentation.
+
+The Culcheth profile does not overwrite `CHECKPOINTS[*].lat/lng`, does not modify the Silverstone affine calibration, and is not used by Demo Mode. Admin coordinate capture/save controls are survey-candidate tools only and never become active guest coordinates automatically.

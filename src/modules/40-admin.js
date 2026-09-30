@@ -23,6 +23,11 @@
     const wanted=CHECKPOINTS.find(cp=>cp.id===adminFieldState.testTargetId&&cp.geofence!==false);
     return wanted||current()||adminRouteCheckpoints()[0]||null;
   }
+  function adminSavedConfig(cp){
+    // Diagnostics always follow the currently selected coordinate profile.
+    // Survey candidates are stored separately and can never drive guest GPS.
+    return activeConfig(cp);
+  }
   function adminDistance(cp,fix=lastGps){
     if(!cp||!fix)return null;
     const cfg=activeConfig(cp);
@@ -39,7 +44,7 @@
     let best=null;
     adminRouteCheckpoints().forEach(cp=>{
       const distance=adminDistance(cp,fix);
-      if(Number.isFinite(distance)&&(!best||distance<best.distance))best={cp,distance,cfg:activeConfig(cp)};
+      if(Number.isFinite(distance)&&(!best||distance<best.distance))best={cp,distance,cfg:adminSavedConfig(cp)};
     });
     return best;
   }
@@ -74,8 +79,12 @@
   }
   function adminCurrentFixAge(){return lastGps?Math.max(0,Date.now()-(Number(lastGps.timestamp)||Date.now())):null;}
   function adminCircuitPosition(fix=lastGps){
-    if(!fix)return {point:null,projection:null};
-    return {point:geoToCircuitPoint(fix.lat,fix.lng),projection:projectGeoToRoute(fix.lat,fix.lng)};
+    if(!fix)return {point:null,projection:null,virtual:null};
+    const virtual=localTestEnabled?localTestVirtualProjection(fix.lat,fix.lng):null;
+    if(virtual){
+      return {point:geoToCircuitPoint(virtual.lat,virtual.lng),projection:virtual,virtual};
+    }
+    return {point:geoToCircuitPoint(fix.lat,fix.lng),projection:projectGeoToRoute(fix.lat,fix.lng),virtual:null};
   }
   function adminRulePill(label,ok,waiting=false){return `<span class="admin-rule ${waiting?'waiting':ok?'ok':'no'}">${label}: ${waiting?'—':ok?'YES':'NO'}</span>`;}
 
@@ -83,7 +92,8 @@
     if(adminRefreshTimer){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
     const target=adminTestTarget();
     if(target&&adminFieldState.testTargetId!==target.id){adminFieldState.testTargetId=target.id;saveAdminFieldState();}
-    const overrideCount=Object.keys(overrides).length;
+    const routeStatus=localTestRouteStatus();
+    const virtualActive=localTestEnabled&&routeStatus.ready;
     const guestTarget=current();
     app.innerHTML=`<main class="admin-shell admin-shell-simple">
       <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><a class="btn secondary" href="/">Open Mission Control</a></header>
@@ -98,12 +108,13 @@
       </section>
 
       <section class="admin-simple-section admin-installation-simple panel">
-        <div class="admin-section-head admin-simple-head"><div><div class="kicker">2 · Test Installation</div><h2>Select & Position</h2></div><span class="admin-source">SAFE TEST TARGET</span></div>
+        <div class="admin-section-head admin-simple-head"><div><div class="kicker">2 · Test Installation</div><h2>Select & Inspect</h2></div><span class="admin-source">SAFE TEST TARGET</span></div>
         <label class="admin-main-select">Installation<select id="adminTargetSelect">${adminRouteCheckpoints().map(cp=>`<option value="${cp.id}" ${cp.id===target?.id?'selected':''}>${cp.mc} · ${cp.name} · ${cp.location}</option>`).join('')}</select></label>
+        <div class="admin-local-route-progress is-ready"><span>Culcheth Local Test</span><strong>${routeStatus.total} FIXED TEST POSITIONS READY</strong><small>Preconfigured village route. No capture/setup walk required.</small></div>
         ${adminCheckpoint(target)}
-        <div class="admin-coordinate-mode ${overridesEnabled?'local-active':'master-active'}">
-          <div><span>Coordinate Mode</span><strong>${overridesEnabled?'LOCAL TEST COORDINATES':'MASTER SILVERSTONE COORDINATES'}</strong><small>${overridesEnabled?`${overrideCount} saved override${overrideCount===1?'':'s'} available on this device.`:`${overrideCount?`${overrideCount} local override${overrideCount===1?' is':'s are'} parked. `:''}Canonical Silverstone positions are active.`}</small></div>
-          <div class="admin-mode-actions"><button class="btn small ${overridesEnabled?'secondary':'success'}" id="adminUseMaster">Use Master</button><button class="btn small ${overridesEnabled?'success':'secondary'}" id="adminUseLocal" ${overrideCount?'':'disabled'}>Use Local</button></div>
+        <div class="admin-coordinate-mode ${virtualActive?'local-active':'master-active'}">
+          <div><span>Coordinate Mode</span><strong>${virtualActive?'CULCHETH LOCAL TEST':'SILVERSTONE MASTER'}</strong><small>${virtualActive?'Only the fixed Culcheth Live GPS profile is active. Guest Radar progress is virtually mapped onto Silverstone; master Silverstone coordinates remain untouched. Demo Mode remains separate.':'Canonical Silverstone coordinates and real circuit georeference are active. Culcheth coordinates are parked in their separate test profile.'}</small></div>
+          <div class="admin-mode-actions"><button class="btn small ${virtualActive?'secondary':'success'}" id="adminUseMaster">Silverstone Master</button><button class="btn small ${virtualActive?'success':'secondary'}" id="adminUseLocal">Culcheth Local Test</button></div>
         </div>
       </section>
 
@@ -122,16 +133,16 @@
         <summary><span><span class="kicker">Only if needed</span><strong>Advanced Diagnostics</strong></span><span class="admin-advanced-arrow">⌄</span></summary>
         <div class="admin-advanced-body">
           <div class="admin-metrics admin-advanced-metrics">
-            <div><span>Fix Age</span><strong id="adminFixAge">—</strong></div><div><span>Route Distance</span><strong id="adminRouteDistance">—</strong></div><div><span>Test Distance</span><strong id="adminTestDistance">—</strong></div><div><span>Off Centreline</span><strong id="adminOffTrack">—</strong></div><div><span>SVG Position</span><strong id="adminSvgPoint">—</strong></div><div><span>Route Index</span><strong>${state.routeIndex}</strong></div><div><span>Completed</span><strong>${state.completed.length}</strong></div><div><span>Available</span><strong>${state.available.length}</strong></div>
+            <div><span>Fix Age</span><strong id="adminFixAge">—</strong></div><div><span>Route Distance</span><strong id="adminRouteDistance">—</strong></div><div><span>Test Distance</span><strong id="adminTestDistance">—</strong></div><div><span>Virtual Circuit</span><strong id="adminVirtualCircuit">${virtualActive?'ACTIVE':'PARKED'}</strong></div><div><span>Circuit Progress</span><strong id="adminCircuitProgress">—</strong></div><div><span>Local Route Offset</span><strong id="adminOffTrack">—</strong></div><div><span>SVG Position</span><strong id="adminSvgPoint">—</strong></div><div><span>Route Index</span><strong>${state.routeIndex}</strong></div><div><span>Completed</span><strong>${state.completed.length}</strong></div><div><span>Available</span><strong>${state.available.length}</strong></div>
           </div>
           <div class="admin-test-state admin-advanced-state"><span>Expected GPS State</span><strong id="adminExpectedState">—</strong></div>
           <div class="admin-rules" id="adminRuleReadout"></div>
           <p class="admin-hint">Activation: ${ACTIVATION_HITS_REQUIRED} good fixes / ~${(ACTIVATION_DWELL_MS/1000).toFixed(1)} s. Pass evidence: ~${(PASS_DWELL_MS/1000).toFixed(1)} s. Next-checkpoint confirmation: ~${(NEXT_PASS_DWELL_MS/1000).toFixed(1)} s.</p>
           <div class="admin-tool-buttons"><button class="btn secondary" id="adminSnapshot">Save Diagnostic Snapshot</button><button class="btn secondary" id="adminCopySnapshot">Copy Live Diagnostics</button><button class="btn secondary" id="adminExportLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Copy Field Log (${adminFieldState.fieldLog?.length||0})</button><button class="btn secondary" id="adminClearLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Clear Field Log</button></div>
           <div class="admin-advanced-divider"></div>
-          <div><div class="kicker">Data Tools</div><h3>Overrides & Utilities</h3></div>
-          <div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Overrides JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Reset All Overrides</button></div>
-          <textarea id="adminImportText" class="admin-json" placeholder='Paste override JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button>
+          <div><div class="kicker">Data Tools</div><h3>Survey Candidates & Utilities</h3></div>
+          <div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Survey JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Clear Survey Candidates</button></div>
+          <textarea id="adminImportText" class="admin-json" placeholder='Paste survey candidate JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button>
           <div class="admin-danger-zone"><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div>
         </div>
       </details>
@@ -142,50 +153,86 @@
 
   function adminCheckpoint(cp){
     if(!cp)return '';
-    const o=overrides[cp.id];
-    const effective=activeConfig(cp);
-    const editCfg=o?{...cp,...o}:cp;
+    const survey=overrides[cp.id];
+    const localPoint=LOCAL_TEST_PRESET.points?.[cp.id];
+    const active=activeConfig(cp);
+    const editCfg=survey?{...cp,...survey}:{...cp};
     const diag=adminDiagnostic(cp);
     const capture=adminFieldState.lastCapture?.[cp.id];
-    const sourceLabel=o?(overridesEnabled?'LOCAL ACTIVE':'LOCAL SAVED'):'MASTER';
-    return `<div class="admin-selected-installation ${o?'has-override':''}">
-      <div class="admin-selected-head"><div><div class="kicker">${cp.mc} · ${cp.location}</div><h3>${cp.name}</h3></div><span class="admin-source ${o?'local':''}">${sourceLabel}</span></div>
+    return `<div class="admin-selected-installation ${survey?'has-override':''}">
+      <div class="admin-selected-head"><div><div class="kicker">${cp.mc} · ${cp.location}</div><h3>${cp.name}</h3></div><span class="admin-source ${localTestEnabled?'local':''}">${localTestEnabled?'CULCHETH LOCAL':'SILVERSTONE MASTER'}</span></div>
       <div class="admin-installation-readout">
-        <div><span>Master Position</span><strong>${cp.lat.toFixed(7)}<br>${cp.lng.toFixed(7)}</strong></div>
-        <div><span>${o?'Local/Test Position':'Local/Test Position'}</span><strong>${o?`${Number(o.lat).toFixed(7)}<br>${Number(o.lng).toFixed(7)}`:'NOT SET'}</strong></div>
+        <div><span>Silverstone Master</span><strong>${cp.lat.toFixed(7)}<br>${cp.lng.toFixed(7)}</strong></div>
+        <div><span>Culcheth Test</span><strong>${localPoint?`${Number(localPoint.lat).toFixed(7)}<br>${Number(localPoint.lng).toFixed(7)}`:'—'}</strong><small>${localPoint?.label||''}</small></div>
         <div><span>Distance From Me</span><strong data-admin-distance="${cp.id}">${adminFormatDistance(diag?.distance)}</strong></div>
-        <div><span>Trigger Radius</span><strong>${effective.activationRadius} m</strong></div>
+        <div><span>Active Trigger</span><strong>${active.activationRadius} m</strong></div>
       </div>
-      <div class="admin-coordinate-editor">
-        <label>Latitude<input data-field="lat" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lat}"></label>
-        <label>Longitude<input data-field="lng" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lng}"></label>
-      </div>
-      ${capture?`<div class="admin-capture-note">Last capture: ${Number(capture.lat).toFixed(7)}, ${Number(capture.lng).toFixed(7)} · accuracy ±${Math.round(capture.accuracy)} m · ${capture.samples} sample${capture.samples===1?'':'s'}</div>`:''}
-      <div class="admin-primary-actions"><button class="btn primary" data-admin-current="${cp.id}">Capture My Position</button><button class="btn secondary" data-admin-save="${cp.id}">Save Local Position</button><button class="btn secondary" data-admin-reset="${cp.id}" ${o?'':'disabled'}>Restore Master</button></div>
-      <details class="admin-installation-advanced"><summary>Installation settings</summary><div class="admin-installation-advanced-body"><div class="admin-fields"><label>Detection radius (m)<input data-field="detectionRadius" data-id="${cp.id}" type="number" min="10" max="500" step="1" value="${editCfg.detectionRadius}"></label><label>Activation radius (m)<input data-field="activationRadius" data-id="${cp.id}" type="number" min="5" max="200" step="1" value="${editCfg.activationRadius}"></label></div><button class="btn small secondary" data-admin-copycoords="${cp.id}">Copy Candidate Coordinates</button></div></details>
+      <details class="admin-installation-advanced"><summary>Survey / coordinate capture</summary><div class="admin-installation-advanced-body">
+        <p class="admin-hint">For on-site surveying only. Captured/saved values below are candidates and never alter either Silverstone Master or the fixed Culcheth Local Test profile.</p>
+        <div class="admin-coordinate-editor">
+          <label>Candidate latitude<input data-field="lat" data-id="${cp.id}" type="number" step="0.0000001" value="${survey?.lat??cp.lat}"></label>
+          <label>Candidate longitude<input data-field="lng" data-id="${cp.id}" type="number" step="0.0000001" value="${survey?.lng??cp.lng}"></label>
+        </div>
+        ${capture?`<div class="admin-capture-note">Last capture: ${Number(capture.lat).toFixed(7)}, ${Number(capture.lng).toFixed(7)} · accuracy ±${Math.round(capture.accuracy)} m · ${capture.samples} sample${capture.samples===1?'':'s'}</div>`:''}
+        <div class="admin-primary-actions"><button class="btn primary" data-admin-current="${cp.id}">Capture My Position</button><button class="btn secondary" data-admin-save="${cp.id}">Save Survey Candidate</button><button class="btn secondary" data-admin-reset="${cp.id}" ${survey?'':'disabled'}>Clear Candidate</button></div>
+        <div class="admin-fields"><label>Candidate detection radius (m)<input data-field="detectionRadius" data-id="${cp.id}" type="number" min="10" max="500" step="1" value="${survey?.detectionRadius??cp.detectionRadius}"></label><label>Candidate activation radius (m)<input data-field="activationRadius" data-id="${cp.id}" type="number" min="5" max="200" step="1" value="${survey?.activationRadius??cp.activationRadius}"></label></div>
+        <button class="btn small secondary" data-admin-copycoords="${cp.id}">Copy Candidate Coordinates</button>
+      </div></details>
     </div>`;
   }
 
   function bindAdmin(){
     document.getElementById('adminStartGps')?.addEventListener('click',startAdminGps);
-    document.getElementById('adminUseMaster')?.addEventListener('click',()=>{overridesEnabled=false;saveOverrideMode();renderAdmin();toast('Master Silverstone coordinates active.');});
-    document.getElementById('adminUseLocal')?.addEventListener('click',()=>{if(!Object.keys(overrides).length){toast('No local overrides saved.');return;}overridesEnabled=true;saveOverrideMode();renderAdmin();toast('Local coordinate overrides active.');});
+    document.getElementById('adminUseMaster')?.addEventListener('click',()=>{
+      localTestEnabled=false;
+      saveLocalTestMode();
+      resetGeofenceRuntime();
+      renderAdmin();
+      toast('Silverstone Master active. Culcheth test coordinates are parked.');
+    });
+    document.getElementById('adminUseLocal')?.addEventListener('click',()=>{
+      localTestEnabled=true;
+      saveLocalTestMode();
+      resetGeofenceRuntime();
+      renderAdmin();
+      toast('Culcheth Local Test active. Silverstone master coordinates are untouched.');
+    });
     document.getElementById('adminTargetSelect')?.addEventListener('change',e=>setAdminTestTarget(e.target.value));
     document.querySelectorAll('[data-admin-current]').forEach(b=>b.addEventListener('click',()=>captureAdminPosition(b.dataset.adminCurrent)));
     document.querySelectorAll('[data-admin-copycoords]').forEach(b=>b.addEventListener('click',()=>copyAdminCoords(b.dataset.adminCopycoords)));
     document.querySelectorAll('[data-admin-save]').forEach(b=>b.addEventListener('click',()=>saveAdminCheckpoint(b.dataset.adminSave)));
-    document.querySelectorAll('[data-admin-reset]').forEach(b=>b.addEventListener('click',()=>{delete overrides[b.dataset.adminReset];saveOverrides();if(!Object.keys(overrides).length){overridesEnabled=false;saveOverrideMode();}renderAdmin();toast('Master position restored for this installation.');}));
+    document.querySelectorAll('[data-admin-reset]').forEach(b=>b.addEventListener('click',()=>{
+      delete overrides[b.dataset.adminReset];
+      saveOverrides();
+      renderAdmin();
+      toast('Survey candidate cleared. Active coordinate profiles are unchanged.');
+    }));
     document.getElementById('adminSnapshot')?.addEventListener('click',captureAdminSnapshot);
     document.getElementById('adminCopySnapshot')?.addEventListener('click',copyAdminDiagnostics);
     document.getElementById('adminExportLog')?.addEventListener('click',copyAdminLog);
     document.getElementById('adminClearLog')?.addEventListener('click',()=>{adminFieldState.fieldLog=[];saveAdminFieldState();renderAdmin();toast('Field log cleared.');});
     document.getElementById('adminSetGuestRoute')?.addEventListener('click',setGuestRouteToTestTarget);
     document.getElementById('adminRestoreGuest')?.addEventListener('click',restoreGuestProgressSnapshot);
-    document.getElementById('adminExport')?.addEventListener('click',async()=>{const json=JSON.stringify(overrides,null,2);await adminCopyText(json,'Override JSON copied.','JSON placed in the text box.');});
+    document.getElementById('adminExport')?.addEventListener('click',async()=>{const json=JSON.stringify(overrides,null,2);await adminCopyText(json,'Survey candidate JSON copied.','JSON placed in the text box.');});
     document.getElementById('adminTestMessage')?.addEventListener('click',()=>{addMessage(`admin-test:${Date.now()}`,'MISSION CONTROL','TEST TRANSMISSION','This is a local Comms test message generated from the admin page.');toast('Test message added.');});
     document.getElementById('adminClearMessages')?.addEventListener('click',()=>{state.messages=[];state.messageSeq=0;state.messageAlert=false;save();toast('Comms feed cleared.');});
-    document.getElementById('adminImport')?.addEventListener('click',()=>{try{const parsed=JSON.parse(document.getElementById('adminImportText').value||'{}');overrides=parsed&&typeof parsed==='object'?parsed:{};saveOverrides();overridesEnabled=Object.keys(overrides).length>0;saveOverrideMode();renderAdmin();toast('Overrides imported.');}catch{toast('Invalid JSON.');}});
-    document.getElementById('adminResetOverrides')?.addEventListener('click',()=>{if(confirm('Reset all local coordinate overrides on this device? Master Silverstone coordinates are not affected.')){overrides={};saveOverrides();overridesEnabled=false;saveOverrideMode();renderAdmin();toast('All local overrides cleared.');}});
+    document.getElementById('adminImport')?.addEventListener('click',()=>{
+      try{
+        const parsed=JSON.parse(document.getElementById('adminImportText').value||'{}');
+        overrides=parsed&&typeof parsed==='object'?parsed:{};
+        saveOverrides();
+        renderAdmin();
+        toast('Survey candidates imported. Active coordinate mode was not changed.');
+      }catch{toast('Invalid JSON.');}
+    });
+    document.getElementById('adminResetOverrides')?.addEventListener('click',()=>{
+      if(confirm('Clear all saved survey candidates on this device? Silverstone Master and Culcheth Local Test coordinates are not affected.')){
+        overrides={};
+        saveOverrides();
+        renderAdmin();
+        toast('Survey candidates cleared.');
+      }
+    });
     document.getElementById('adminResetProgress')?.addEventListener('click',()=>{if(confirm('Reset all Mission Control guest progress on this device?')){state={...defaults};save();resetGeofenceRuntime();adminFieldState.guestSnapshot=null;adminFieldState.guestRouteTestActive=false;saveAdminFieldState();renderAdmin();toast('Guest progress reset.');}});
   }
 
@@ -215,7 +262,7 @@
     if(!latField||!lngField)return;
     latField.value=Number(fix.lat).toFixed(8);lngField.value=Number(fix.lng).toFixed(8);
     adminFieldState.lastCapture[id]={lat:fix.lat,lng:fix.lng,accuracy:fix.accuracy,samples:fix.samples||1,timestamp:fix.timestamp};saveAdminFieldState();
-    toast(`Position captured from ${fix.samples||1} recent GPS fix${(fix.samples||1)===1?'':'es'}. Save Local Override to apply it.`);
+    toast(`Position captured from ${fix.samples||1} recent GPS fix${(fix.samples||1)===1?'':'es'}. Save it as a survey candidate if required.`);
   }
   async function copyAdminCoords(id){
     const lat=Number(document.querySelector(`[data-field="lat"][data-id="${id}"]`)?.value),lng=Number(document.querySelector(`[data-field="lng"][data-id="${id}"]`)?.value);
@@ -234,7 +281,10 @@
       if(!Number.isFinite(detectionRadius)||!Number.isFinite(activationRadius)||activationRadius>=detectionRadius){toast('Detection radius must be larger than activation radius.');return;}
       next.detectionRadius=detectionRadius;next.activationRadius=activationRadius;
     }
-    overrides[id]=next;saveOverrides();overridesEnabled=true;saveOverrideMode();renderAdmin();toast(`${cp.mc} local override saved and LOCAL mode enabled.`);
+    overrides[id]=next;
+    saveOverrides();
+    renderAdmin();
+    toast(`${cp.mc} survey candidate saved. Active Silverstone/Culcheth coordinates were not changed.`);
   }
 
   function startAdminGps(){
@@ -246,7 +296,7 @@
 
   function updateAdminGps(){
     if(!IS_ADMIN||!document.getElementById('adminLat'))return;
-    const target=adminTestTarget(),diag=adminDiagnostic(target),nearest=adminNearest(),guestTarget=current(),guestDistance=adminDistance(guestTarget),circuit=adminCircuitPosition();
+    const target=adminTestTarget(),diag=adminDiagnostic(target),nearest=adminNearest(),guestTarget=current(),guestDistance=adminDistance(guestTarget,lastGps),circuit=adminCircuitPosition();
     const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
     setText('adminGpsStatus',lastGps?gpsCondition(lastGps.accuracy):'Not Started');
     setText('adminLat',lastGps?lastGps.lat.toFixed(7):'—');setText('adminLng',lastGps?lastGps.lng.toFixed(7):'—');
@@ -254,7 +304,9 @@
     setText('adminNearest',nearest?`${nearest.cp.mc} ${nearest.cp.name}`:'—');setText('adminNearestDistance',adminFormatDistance(nearest?.distance));
     setText('adminRouteTarget',guestTarget?.mc||'Complete');setText('adminRouteDistance',adminFormatDistance(guestDistance));
     setText('adminTestTargetMetric',target?.mc||'—');setText('adminTestDistance',adminFormatDistance(diag?.distance));
-    setText('adminOffTrack',circuit.projection?adminFormatDistance(circuit.projection.offTrackDistance):'—');
+    setText('adminVirtualCircuit',circuit.virtual?'ACTIVE':localTestEnabled?'WAITING FOR GPS':'PARKED');
+    setText('adminCircuitProgress',circuit.virtual?`${Math.round(circuit.virtual.progress*100)}%`:'—');
+    setText('adminOffTrack',circuit.virtual?adminFormatDistance(circuit.virtual.localOffRouteDistance):'—');
     setText('adminSvgPoint',circuit.point?`${circuit.point.x.toFixed(1)}, ${circuit.point.y.toFixed(1)}`:'—');
     setText('adminExpectedState',diag?.expected||'—');setText('adminActualState',adminGuestStatus(target));
     const rules=document.getElementById('adminRuleReadout');if(rules&&diag)rules.innerHTML=adminRulePill(`GPS ≤${DETECTION_ACCURACY_MAX}m`,diag.detectionAccuracy,!lastGps)+adminRulePill(`Inside detection ${diag.cfg.detectionRadius}m`,diag.insideDetection,!lastGps)+adminRulePill(`GPS ≤${ACTIVATION_ACCURACY_MAX}m`,diag.activationAccuracy,!lastGps)+adminRulePill(`Inside activation ${diag.cfg.activationRadius}m`,diag.insideActivation,!lastGps)+adminRulePill(`Pass GPS ≤${PASS_ACCURACY_MAX}m`,diag.passAccuracy,!lastGps)+adminRulePill(`Next-pass GPS ≤${NEXT_PASS_ACCURACY_MAX}m`,diag.nextPassAccuracy,!lastGps);
@@ -264,12 +316,12 @@
   function adminSnapshotPayload(){
     const target=adminTestTarget(),diag=adminDiagnostic(target),nearest=adminNearest(),circuit=adminCircuitPosition(),guestTarget=current();
     return {
-      capturedAt:new Date().toISOString(),coordinateMode:overridesEnabled?'LOCAL_OVERRIDES':'MASTER',
+      capturedAt:new Date().toISOString(),coordinateMode:localTestEnabled?'CULCHETH_LOCAL_TEST':'MASTER',localPreset:{id:LOCAL_TEST_PRESET.id,name:LOCAL_TEST_PRESET.name,...localTestRouteStatus()},
       gps:lastGps?{lat:lastGps.lat,lng:lastGps.lng,accuracy:lastGps.accuracy,fixAgeMs:adminCurrentFixAge(),condition:gpsCondition(lastGps.accuracy)}:null,
       nearest:nearest?{id:nearest.cp.id,mc:nearest.cp.mc,name:nearest.cp.name,distanceM:nearest.distance}:null,
       testTarget:target?{id:target.id,mc:target.mc,name:target.name,source:diag?.cfg.source,lat:diag?.cfg.lat,lng:diag?.cfg.lng,distanceM:diag?.distance,detectionRadiusM:diag?.cfg.detectionRadius,activationRadiusM:diag?.cfg.activationRadius,expectedState:diag?.expected,guestState:adminGuestStatus(target),insideDetection:diag?.insideDetection,insideActivation:diag?.insideActivation,detectionAccuracyOk:diag?.detectionAccuracy,activationAccuracyOk:diag?.activationAccuracy}:null,
       guestProgress:{mode:state.mode,routeIndex:state.routeIndex,routeTarget:guestTarget?.id||null,completed:[...state.completed],available:[...state.available]},
-      circuit:circuit.point?{svgX:circuit.point.x,svgY:circuit.point.y,offTrackDistanceM:circuit.projection?.offTrackDistance??null,routeProgress:circuit.projection?.progress??null}:null
+      circuit:circuit.point?{svgX:circuit.point.x,svgY:circuit.point.y,virtual:Boolean(circuit.virtual),localRouteOffsetM:circuit.virtual?.localOffRouteDistance??null,routeProgress:circuit.virtual?.progress??circuit.projection?.progress??null,fromId:circuit.virtual?.fromId??null,toId:circuit.virtual?.toId??null}:null
     };
   }
   function captureAdminSnapshot(){

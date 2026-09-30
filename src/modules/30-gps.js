@@ -139,6 +139,26 @@
     if(lastGps&&Number.isFinite(lastGps.lat)&&Number.isFinite(lastGps.lng)) return lastGps;
     return null;
   }
+  function activeRadarCircuitGeoPosition(){
+    const fix=activeRadarGeoPosition();
+    if(!fix) return null;
+    if(state.mode==='live'&&localTestEnabled){
+      const virtual=localTestVirtualProjection(fix.lat,fix.lng);
+      if(virtual) return virtual;
+    }
+    return fix;
+  }
+  function circuitRadarTargetPoint(cp,cfg){
+    if(!cp||!cfg) return null;
+    if(state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready){
+      // Local coordinates drive geofences, but the visible target remains at the
+      // equivalent Silverstone checkpoint so the village walk rehearses the
+      // actual circuit journey without feeding local lat/lng into the affine map.
+      return geoToCircuitPoint(cp.lat,cp.lng);
+    }
+    return geoToCircuitPoint(cfg.lat,cfg.lng);
+  }
+
   function primeCurrentCircuitTarget(){
     if(!state.completed.includes('entry')) return false;
     const cp=current();
@@ -167,7 +187,7 @@
     const art=document.getElementById('trackRadarArt');
     const target=document.getElementById('trackRadarTarget');
     if(!map||!art) return;
-    const fix=activeRadarGeoPosition();
+    const fix=activeRadarCircuitGeoPosition();
     if(!fix){map.classList.add('waiting');if(target)target.classList.add('hidden');return;}
     const userPoint=geoToCircuitPoint(fix.lat,fix.lng);
     if(!userPoint){map.classList.add('waiting');if(target)target.classList.add('hidden');return;}
@@ -179,7 +199,7 @@
     art.style.left=`calc(50% - ${userPoint.x*unitPct}%)`;
     art.style.top=`calc(50% - ${userPoint.y*unitPct}%)`;
     if(target&&cp&&cfg){
-      const targetPoint=geoToCircuitPoint(cfg.lat,cfg.lng);
+      const targetPoint=circuitRadarTargetPoint(cp,cfg);
       if(targetPoint){
         target.style.left=`calc(50% + ${(targetPoint.x-userPoint.x)*unitPct}%)`;
         target.style.top=`calc(50% + ${(targetPoint.y-userPoint.y)*unitPct}%)`;
@@ -200,7 +220,8 @@
     if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'GARAGES':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
-    const circuitMode=state.completed.includes('entry')||finalCircuitOverview;
+    const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
+    const circuitMode=state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
     if(finalCircuitOverview){
       if(target) target.classList.add('hidden');
       // Final mission state is a static full-circuit overview. GPS/Demo movement

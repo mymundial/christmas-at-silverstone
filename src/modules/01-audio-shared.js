@@ -125,15 +125,13 @@
     catch { return {}; }
   }
   function saveOverrides(){ localStorage.setItem(OVERRIDE_STORAGE, JSON.stringify(overrides)); }
-  function loadOverrideMode(){
-    try {
-      const stored=localStorage.getItem(OVERRIDE_MODE_STORAGE);
-      // Preserve Working V2 behaviour for devices that already had overrides:
-      // until a mode is explicitly chosen, existing overrides remain active.
-      return stored===null?Object.keys(overrides||{}).length>0:stored==='1';
-    } catch { return Object.keys(overrides||{}).length>0; }
+  function loadLocalTestMode(){
+    try { return localStorage.getItem(LOCAL_TEST_MODE_STORAGE)==='1'; }
+    catch { return false; }
   }
-  function saveOverrideMode(){ localStorage.setItem(OVERRIDE_MODE_STORAGE, overridesEnabled?'1':'0'); }
+  function saveLocalTestMode(){
+    try { localStorage.setItem(LOCAL_TEST_MODE_STORAGE,localTestEnabled?'1':'0'); }catch{}
+  }
   function set(patch, rerender=true){ state={...state,...patch}; save(); if(rerender) render(); }
   function recovery(){
     const restorationMissions=['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora'];
@@ -154,9 +152,19 @@
   }
   function activeConfig(cp){
     if(!cp) return null;
-    const hasOverride=Boolean(overrides[cp.id]);
-    const o=overridesEnabled&&hasOverride?overrides[cp.id]:{};
-    return {...cp,...o,source:overridesEnabled&&hasOverride?'LOCAL OVERRIDE':'MASTER'};
+    const localPoint=localTestEnabled&&(IS_ADMIN||state.mode==='live')?LOCAL_TEST_PRESET.points?.[cp.id]:null;
+    if(localPoint){
+      return {
+        ...cp,
+        lat:Number(localPoint.lat),
+        lng:Number(localPoint.lng),
+        detectionRadius:Number(localPoint.detectionRadius)||LOCAL_TEST_PRESET.detectionRadius,
+        activationRadius:Number(localPoint.activationRadius)||LOCAL_TEST_PRESET.activationRadius,
+        localLabel:localPoint.label||cp.location,
+        source:'CULCHETH LOCAL TEST'
+      };
+    }
+    return {...cp,source:'MASTER'};
   }
   function checkpointIndex(id){ return CHECKPOINTS.findIndex(c=>c.id===id); }
   function toast(msg){ if(!toastEl) return; toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'),1800); }

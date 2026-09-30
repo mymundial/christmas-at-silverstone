@@ -5,7 +5,8 @@
   // Test stream for ELF FM. Replace with the production HTTPS stream when available.
   const ELF_STREAM_URL = 'https://streams.radiomast.io/ref-128k-mp3-stereo';
   const OVERRIDE_STORAGE = 'silverstone-mc-gps-overrides-v1';
-  const OVERRIDE_MODE_STORAGE = 'silverstone-mc-gps-overrides-enabled-v1';
+  const OVERRIDE_MODE_STORAGE = 'silverstone-mc-gps-overrides-enabled-v1'; // legacy; no longer controls guest coordinates
+  const LOCAL_TEST_MODE_STORAGE = 'silverstone-mc-local-test-mode-v1';
   const IS_ADMIN = window.location.pathname.replace(/\/+$/, '') === '/admin';
   if(IS_ADMIN){
     document.documentElement.classList.add('admin-mode');
@@ -41,6 +42,35 @@
   const ACTIVATION_HITS_REQUIRED = 2;
   const ACTIVATION_DWELL_MS = 1200;
   const NEXT_PASS_DWELL_MS = 1800;
+
+  // Completely separate local test profile. These coordinates are used only when
+  // Culcheth Local Test is explicitly enabled in /admin. The canonical Silverstone
+  // CHECKPOINTS above remain the sole master/on-circuit coordinate source.
+  //
+  // The local route follows the agreed walk from 428 Warrington Road, around the
+  // Village Green via Lodge Drive and back down Common Lane. It is intentionally
+  // a linear rehearsal route rather than a replacement georeference.
+  const LOCAL_TEST_PRESET = Object.freeze({
+    id:'culcheth-loop',
+    name:'Culcheth Local Test',
+    detectionRadius:45,
+    activationRadius:20,
+    checkpointIds:Object.freeze(['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora','lapland','northern']),
+    points:Object.freeze({
+      entry:Object.freeze({lat:53.45296100,lng:-2.51642300,label:'428 Warrington Road'}),
+      velocity:Object.freeze({lat:53.45293000,lng:-2.51830000,label:'Lower east side · Village Green'}),
+      luffield:Object.freeze({lat:53.45332000,lng:-2.51800000,label:'East side · Village Green'}),
+      power:Object.freeze({lat:53.45373700,lng:-2.51793800,label:'26 Lodge Drive / east end'}),
+      spirit:Object.freeze({lat:53.45376100,lng:-2.51867700,label:'Mid Lodge Drive'}),
+      escapade:Object.freeze({lat:53.45376700,lng:-2.51941500,label:'1 Kirkby Road / Lodge Drive'}),
+      comet:Object.freeze({lat:53.45379000,lng:-2.52096000,label:'West Lodge Drive / bakery side'}),
+      jingle:Object.freeze({lat:53.45345000,lng:-2.52145000,label:'Upper Jackson Avenue'}),
+      lando:Object.freeze({lat:53.45303600,lng:-2.52158900,label:'31 Common Lane / Jackson Avenue'}),
+      aurora:Object.freeze({lat:53.45266492,lng:-2.52089185,label:'CPS Centre'}),
+      lapland:Object.freeze({lat:53.45212000,lng:-2.51977000,label:'Common Lane bend / red-pin area'}),
+      northern:Object.freeze({lat:53.45253000,lng:-2.51842100,label:'Culcheth Library / cycle shop area'})
+    })
+  });
 
   function isRouteCheckpoint(cp){ return !!cp && cp.routeEnabled!==false; }
   function normaliseRouteIndex(index){
@@ -117,7 +147,7 @@
 
   let state = load();
   let overrides = loadOverrides();
-  let overridesEnabled = loadOverrideMode();
+  let localTestEnabled = loadLocalTestMode();
   let cleanupMission = null;
   let audioCtx = null;
   let noiseNode = null;
