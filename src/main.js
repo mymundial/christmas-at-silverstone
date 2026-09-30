@@ -2138,62 +2138,87 @@
     if(adminRefreshTimer){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
     const target=adminTestTarget();
     if(target&&adminFieldState.testTargetId!==target.id){adminFieldState.testTargetId=target.id;saveAdminFieldState();}
-    const rows=CHECKPOINTS.map((cp,idx)=>adminCheckpoint(cp,idx)).join('');
     const overrideCount=Object.keys(overrides).length;
     const guestTarget=current();
-    app.innerHTML=`<main class="admin-shell">
-      <header class="admin-head"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test Console</h1><p>Live GPS diagnostics, local coordinate staging and on-site position capture. Master Silverstone coordinates are never overwritten by this page.</p></div><a class="btn secondary" href="/">Open Mission Control</a></header>
-      <section class="admin-coordinate-banner ${overridesEnabled?'local-active':'master-active'}">
-        <div><div class="kicker">Coordinate Mode</div><strong>${overridesEnabled?'LOCAL OVERRIDES ACTIVE':'MASTER SILVERSTONE ACTIVE'}</strong><p>${overridesEnabled?'Mission Control on this device is using saved local coordinates wherever an override exists. Switch back to MASTER before on-circuit validation unless you deliberately need an override.':`${overrideCount} saved local override${overrideCount===1?' is':'s are'} parked and ignored. Mission Control is using the canonical Silverstone coordinates.`}</p></div>
-        <div class="admin-mode-actions"><button class="btn ${overridesEnabled?'secondary':'success'}" id="adminUseMaster">Use Master</button><button class="btn ${overridesEnabled?'success':'secondary'}" id="adminUseLocal" ${overrideCount?'':'disabled'}>Use Local Overrides</button></div>
-      </section>
-      <section class="admin-live panel">
-        <div class="admin-live-head"><div><div class="kicker">Live GPS</div><h2 id="adminGpsStatus">${lastGps?gpsCondition(lastGps.accuracy):'Not Started'}</h2></div><button class="btn primary" id="adminStartGps">${lastGps?'Restart GPS':'Start Live GPS'}</button></div>
-        <div class="admin-metrics admin-metrics-live">
-          <div><span>Latitude</span><strong id="adminLat">—</strong></div><div><span>Longitude</span><strong id="adminLng">—</strong></div><div><span>Accuracy</span><strong id="adminAccuracy">—</strong></div><div><span>Fix Age</span><strong id="adminFixAge">—</strong></div>
-          <div><span>Nearest Activation</span><strong id="adminNearest">—</strong></div><div><span>Nearest Distance</span><strong id="adminNearestDistance">—</strong></div><div><span>Guest Route Target</span><strong id="adminRouteTarget">${guestTarget?.mc||'Complete'}</strong></div><div><span>Route Distance</span><strong id="adminRouteDistance">—</strong></div>
-          <div><span>Test Target</span><strong id="adminTestTargetMetric">${target?.mc||'—'}</strong></div><div><span>Test Distance</span><strong id="adminTestDistance">—</strong></div><div><span>Off Circuit Centreline</span><strong id="adminOffTrack">—</strong></div><div><span>SVG Position</span><strong id="adminSvgPoint">—</strong></div>
+    app.innerHTML=`<main class="admin-shell admin-shell-simple">
+      <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><a class="btn secondary" href="/">Open Mission Control</a></header>
+
+      <section class="admin-simple-section admin-gps-simple panel">
+        <div class="admin-live-head"><div><div class="kicker">1 · GPS Status</div><h2 id="adminGpsStatus">${lastGps?gpsCondition(lastGps.accuracy):'Not Started'}</h2></div><button class="btn primary" id="adminStartGps">${lastGps?'Restart GPS':'Start Live GPS'}</button></div>
+        <div class="admin-gps-primary">
+          <div><span>Accuracy</span><strong id="adminAccuracy">—</strong></div>
+          <div class="admin-gps-coords"><span>My Position</span><strong><span id="adminLat">—</span><br><span id="adminLng">—</span></strong></div>
+          <div><span>Nearest Installation</span><strong id="adminNearest">—</strong><small id="adminNearestDistance">—</small></div>
         </div>
       </section>
-      <section class="admin-test-panel panel">
-        <div class="admin-section-head"><div><div class="kicker">Isolated Diagnostics</div><h2>Field Test Target</h2></div><span class="admin-source">DOES NOT CHANGE GUEST PROGRESS</span></div>
-        <div class="admin-test-grid"><label>Test activation<select id="adminTargetSelect">${adminRouteCheckpoints().map(cp=>`<option value="${cp.id}" ${cp.id===target?.id?'selected':''}>${cp.mc} · ${cp.name}</option>`).join('')}</select></label><div class="admin-test-state"><span>Expected GPS state</span><strong id="adminExpectedState">—</strong></div><div class="admin-test-state"><span>Actual guest state</span><strong id="adminActualState">${adminGuestStatus(target)}</strong></div></div>
-        <div class="admin-rules" id="adminRuleReadout"></div>
-        <p class="admin-hint">Activation requires ${ACTIVATION_HITS_REQUIRED} good fixes and approximately ${(ACTIVATION_DWELL_MS/1000).toFixed(1)} s inside the activation radius. Exit/pass evidence requires approximately ${(PASS_DWELL_MS/1000).toFixed(1)} s; next-checkpoint confirmation uses ${(NEXT_PASS_DWELL_MS/1000).toFixed(1)} s.</p>
-        <div class="admin-tool-buttons"><button class="btn secondary" id="adminSnapshot">Capture Diagnostic Snapshot</button><button class="btn secondary" id="adminCopySnapshot">Copy Live Diagnostics</button><button class="btn secondary" id="adminExportLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Copy Field Log (${adminFieldState.fieldLog?.length||0})</button><button class="btn secondary" id="adminClearLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Clear Field Log</button></div>
+
+      <section class="admin-simple-section admin-installation-simple panel">
+        <div class="admin-section-head admin-simple-head"><div><div class="kicker">2 · Test Installation</div><h2>Select & Position</h2></div><span class="admin-source">SAFE TEST TARGET</span></div>
+        <label class="admin-main-select">Installation<select id="adminTargetSelect">${adminRouteCheckpoints().map(cp=>`<option value="${cp.id}" ${cp.id===target?.id?'selected':''}>${cp.mc} · ${cp.name} · ${cp.location}</option>`).join('')}</select></label>
+        ${adminCheckpoint(target)}
+        <div class="admin-coordinate-mode ${overridesEnabled?'local-active':'master-active'}">
+          <div><span>Coordinate Mode</span><strong>${overridesEnabled?'LOCAL TEST COORDINATES':'MASTER SILVERSTONE COORDINATES'}</strong><small>${overridesEnabled?`${overrideCount} saved override${overrideCount===1?'':'s'} available on this device.`:`${overrideCount?`${overrideCount} local override${overrideCount===1?' is':'s are'} parked. `:''}Canonical Silverstone positions are active.`}</small></div>
+          <div class="admin-mode-actions"><button class="btn small ${overridesEnabled?'secondary':'success'}" id="adminUseMaster">Use Master</button><button class="btn small ${overridesEnabled?'success':'secondary'}" id="adminUseLocal" ${overrideCount?'':'disabled'}>Use Local</button></div>
+        </div>
       </section>
-      <section class="admin-progress panel ${adminFieldState.guestRouteTestActive?'test-active':''}">
-        <div class="admin-section-head"><div><div class="kicker">Guest State</div><h2>Progress Protection</h2></div>${adminFieldState.guestRouteTestActive?'<span class="admin-source local">TEST ROUTE ACTIVE</span>':'<span class="admin-source">NORMAL</span>'}</div>
-        <div class="admin-progress-summary"><div><span>Mode</span><strong>${String(state.mode||'live').toUpperCase()}</strong></div><div><span>Route Index</span><strong>${state.routeIndex}</strong></div><div><span>Completed</span><strong>${state.completed.length}</strong></div><div><span>Available</span><strong>${state.available.length}</strong></div></div>
-        <p class="admin-hint">Selecting a Field Test Target above never alters guest progress. The route action below is only for deliberately exercising the real guest progression engine; the console automatically stores a restore snapshot first.</p>
-        <div class="admin-tool-buttons"><button class="btn secondary" id="adminSetGuestRoute">Set Guest Route To Test Target</button><button class="btn secondary" id="adminRestoreGuest" ${adminFieldState.guestSnapshot?'':'disabled'}>Restore Saved Guest Progress</button><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div>
+
+      <section class="admin-simple-section admin-route-simple panel ${adminFieldState.guestRouteTestActive?'test-active':''}">
+        <div class="admin-section-head admin-simple-head"><div><div class="kicker">3 · Route Testing</div><h2>Guest Progress</h2></div>${adminFieldState.guestRouteTestActive?'<span class="admin-source local">TEST ROUTE ACTIVE</span>':'<span class="admin-source">PROTECTED</span>'}</div>
+        <div class="admin-route-readout">
+          <div><span>Guest Next Checkpoint</span><strong id="adminRouteTarget">${guestTarget?.mc||'Complete'}</strong></div>
+          <div><span>Field Test Target</span><strong id="adminTestTargetMetric">${target?.mc||'—'}</strong></div>
+          <div><span>Target Guest State</span><strong id="adminActualState">${adminGuestStatus(target)}</strong></div>
+        </div>
+        <p class="admin-hint">Choosing an installation above does not change guest progress. Use the route-test button only when you deliberately want to exercise the real guest progression engine; the current guest state is saved first.</p>
+        <div class="admin-primary-actions"><button class="btn secondary" id="adminSetGuestRoute">Test This Installation In Guest Route</button><button class="btn secondary" id="adminRestoreGuest" ${adminFieldState.guestSnapshot?'':'disabled'}>Restore Guest Progress</button></div>
       </section>
-      <section class="admin-tools panel"><div><div class="kicker">Coordinate Data</div><h2>Local Override Tools</h2></div><div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Overrides JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Reset All Overrides</button></div><textarea id="adminImportText" class="admin-json" placeholder='Paste override JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button></section>
-      <div class="admin-list">${rows}</div>
+
+      <details class="admin-advanced panel">
+        <summary><span><span class="kicker">Only if needed</span><strong>Advanced Diagnostics</strong></span><span class="admin-advanced-arrow">⌄</span></summary>
+        <div class="admin-advanced-body">
+          <div class="admin-metrics admin-advanced-metrics">
+            <div><span>Fix Age</span><strong id="adminFixAge">—</strong></div><div><span>Route Distance</span><strong id="adminRouteDistance">—</strong></div><div><span>Test Distance</span><strong id="adminTestDistance">—</strong></div><div><span>Off Centreline</span><strong id="adminOffTrack">—</strong></div><div><span>SVG Position</span><strong id="adminSvgPoint">—</strong></div><div><span>Route Index</span><strong>${state.routeIndex}</strong></div><div><span>Completed</span><strong>${state.completed.length}</strong></div><div><span>Available</span><strong>${state.available.length}</strong></div>
+          </div>
+          <div class="admin-test-state admin-advanced-state"><span>Expected GPS State</span><strong id="adminExpectedState">—</strong></div>
+          <div class="admin-rules" id="adminRuleReadout"></div>
+          <p class="admin-hint">Activation: ${ACTIVATION_HITS_REQUIRED} good fixes / ~${(ACTIVATION_DWELL_MS/1000).toFixed(1)} s. Pass evidence: ~${(PASS_DWELL_MS/1000).toFixed(1)} s. Next-checkpoint confirmation: ~${(NEXT_PASS_DWELL_MS/1000).toFixed(1)} s.</p>
+          <div class="admin-tool-buttons"><button class="btn secondary" id="adminSnapshot">Save Diagnostic Snapshot</button><button class="btn secondary" id="adminCopySnapshot">Copy Live Diagnostics</button><button class="btn secondary" id="adminExportLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Copy Field Log (${adminFieldState.fieldLog?.length||0})</button><button class="btn secondary" id="adminClearLog" ${adminFieldState.fieldLog?.length?'':'disabled'}>Clear Field Log</button></div>
+          <div class="admin-advanced-divider"></div>
+          <div><div class="kicker">Data Tools</div><h3>Overrides & Utilities</h3></div>
+          <div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Overrides JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Reset All Overrides</button></div>
+          <textarea id="adminImportText" class="admin-json" placeholder='Paste override JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button>
+          <div class="admin-danger-zone"><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div>
+        </div>
+      </details>
     </main>`;
     bindAdmin();updateAdminGps();
     adminRefreshTimer=setInterval(updateAdminGps,1000);
   }
 
-  function adminCheckpoint(cp,idx){
+  function adminCheckpoint(cp){
+    if(!cp)return '';
     const o=overrides[cp.id];
     const effective=activeConfig(cp);
     const editCfg=o?{...cp,...o}:cp;
-    const isTest=cp.id===adminTestTarget()?.id;
-    const sourceLabel=o?(overridesEnabled?'LOCAL ACTIVE':'LOCAL PARKED'):'MASTER';
-    const sourceClass=o?'local':'';
     const diag=adminDiagnostic(cp);
     const capture=adminFieldState.lastCapture?.[cp.id];
-    return `<section class="admin-checkpoint panel ${o?'has-override':''} ${isTest?'is-test-target':''}">
-      <div class="admin-card-head"><div><div class="kicker">${cp.mc} · ${cp.location}</div><h2>${cp.name}</h2></div><span class="admin-source ${sourceClass}">${sourceLabel}</span></div>
-      <div class="admin-card-live"><span>Live distance <strong data-admin-distance="${cp.id}">${adminFormatDistance(diag?.distance)}</strong></span><span>Guest state <strong>${adminGuestStatus(cp)}</strong></span></div>
-      <div class="admin-master">Master: ${cp.lat.toFixed(14)}, ${cp.lng.toFixed(14)}${cp.id==='gantry'?' · QR only':''}</div>
-      ${o?`<div class="admin-local-value">Local: ${Number(o.lat).toFixed(14)}, ${Number(o.lng).toFixed(14)} · ${overridesEnabled?'currently in use':'parked'}</div>`:''}
-      <div class="admin-fields"><label>Latitude<input data-field="lat" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lat}"></label><label>Longitude<input data-field="lng" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lng}"></label>${cp.geofence===false?'':`<label>Detection radius (m)<input data-field="detectionRadius" data-id="${cp.id}" type="number" min="10" max="500" step="1" value="${editCfg.detectionRadius}"></label><label>Activation radius (m)<input data-field="activationRadius" data-id="${cp.id}" type="number" min="5" max="200" step="1" value="${editCfg.activationRadius}"></label>`}</div>
-      ${cp.geofence===false?'':`<div class="admin-check-rules" data-admin-rules="${cp.id}">${adminRulePill(`Detection ≤${DETECTION_ACCURACY_MAX}m`,diag?.detectionAccuracy,!lastGps)}${adminRulePill(`Inside ${effective.detectionRadius}m`,diag?.insideDetection,!lastGps)}${adminRulePill(`Activation ≤${ACTIVATION_ACCURACY_MAX}m`,diag?.activationAccuracy,!lastGps)}${adminRulePill(`Inside ${effective.activationRadius}m`,diag?.insideActivation,!lastGps)}</div>`}
-      ${capture?`<div class="admin-capture-note">Last capture: ${Number(capture.lat).toFixed(7)}, ${Number(capture.lng).toFixed(7)} · best fix ±${Math.round(capture.accuracy)} m · ${capture.samples} sample${capture.samples===1?'':'s'}</div>`:''}
-      <div class="admin-actions">${cp.geofence===false?'':`<button class="btn small ${isTest?'success':'secondary'}" data-admin-target="${cp.id}">${isTest?'Test Target Selected':'Select Test Target'}</button>`}<button class="btn small secondary" data-admin-current="${cp.id}">Capture Current Position</button><button class="btn small secondary" data-admin-copycoords="${cp.id}">Copy Candidate Coords</button><button class="btn small primary" data-admin-save="${cp.id}">Save Local Override</button><button class="btn small secondary" data-admin-reset="${cp.id}" ${o?'':'disabled'}>Reset Override</button></div>
-    </section>`;
+    const sourceLabel=o?(overridesEnabled?'LOCAL ACTIVE':'LOCAL SAVED'):'MASTER';
+    return `<div class="admin-selected-installation ${o?'has-override':''}">
+      <div class="admin-selected-head"><div><div class="kicker">${cp.mc} · ${cp.location}</div><h3>${cp.name}</h3></div><span class="admin-source ${o?'local':''}">${sourceLabel}</span></div>
+      <div class="admin-installation-readout">
+        <div><span>Master Position</span><strong>${cp.lat.toFixed(7)}<br>${cp.lng.toFixed(7)}</strong></div>
+        <div><span>${o?'Local/Test Position':'Local/Test Position'}</span><strong>${o?`${Number(o.lat).toFixed(7)}<br>${Number(o.lng).toFixed(7)}`:'NOT SET'}</strong></div>
+        <div><span>Distance From Me</span><strong data-admin-distance="${cp.id}">${adminFormatDistance(diag?.distance)}</strong></div>
+        <div><span>Trigger Radius</span><strong>${effective.activationRadius} m</strong></div>
+      </div>
+      <div class="admin-coordinate-editor">
+        <label>Latitude<input data-field="lat" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lat}"></label>
+        <label>Longitude<input data-field="lng" data-id="${cp.id}" type="number" step="0.0000001" value="${editCfg.lng}"></label>
+      </div>
+      ${capture?`<div class="admin-capture-note">Last capture: ${Number(capture.lat).toFixed(7)}, ${Number(capture.lng).toFixed(7)} · accuracy ±${Math.round(capture.accuracy)} m · ${capture.samples} sample${capture.samples===1?'':'s'}</div>`:''}
+      <div class="admin-primary-actions"><button class="btn primary" data-admin-current="${cp.id}">Capture My Position</button><button class="btn secondary" data-admin-save="${cp.id}">Save Local Position</button><button class="btn secondary" data-admin-reset="${cp.id}" ${o?'':'disabled'}>Restore Master</button></div>
+      <details class="admin-installation-advanced"><summary>Installation settings</summary><div class="admin-installation-advanced-body"><div class="admin-fields"><label>Detection radius (m)<input data-field="detectionRadius" data-id="${cp.id}" type="number" min="10" max="500" step="1" value="${editCfg.detectionRadius}"></label><label>Activation radius (m)<input data-field="activationRadius" data-id="${cp.id}" type="number" min="5" max="200" step="1" value="${editCfg.activationRadius}"></label></div><button class="btn small secondary" data-admin-copycoords="${cp.id}">Copy Candidate Coordinates</button></div></details>
+    </div>`;
   }
 
   function bindAdmin(){
@@ -2201,11 +2226,10 @@
     document.getElementById('adminUseMaster')?.addEventListener('click',()=>{overridesEnabled=false;saveOverrideMode();renderAdmin();toast('Master Silverstone coordinates active.');});
     document.getElementById('adminUseLocal')?.addEventListener('click',()=>{if(!Object.keys(overrides).length){toast('No local overrides saved.');return;}overridesEnabled=true;saveOverrideMode();renderAdmin();toast('Local coordinate overrides active.');});
     document.getElementById('adminTargetSelect')?.addEventListener('change',e=>setAdminTestTarget(e.target.value));
-    document.querySelectorAll('[data-admin-target]').forEach(b=>b.addEventListener('click',()=>setAdminTestTarget(b.dataset.adminTarget)));
     document.querySelectorAll('[data-admin-current]').forEach(b=>b.addEventListener('click',()=>captureAdminPosition(b.dataset.adminCurrent)));
     document.querySelectorAll('[data-admin-copycoords]').forEach(b=>b.addEventListener('click',()=>copyAdminCoords(b.dataset.adminCopycoords)));
     document.querySelectorAll('[data-admin-save]').forEach(b=>b.addEventListener('click',()=>saveAdminCheckpoint(b.dataset.adminSave)));
-    document.querySelectorAll('[data-admin-reset]').forEach(b=>b.addEventListener('click',()=>{delete overrides[b.dataset.adminReset];saveOverrides();if(!Object.keys(overrides).length){overridesEnabled=false;saveOverrideMode();}renderAdmin();toast('Local override reset.');}));
+    document.querySelectorAll('[data-admin-reset]').forEach(b=>b.addEventListener('click',()=>{delete overrides[b.dataset.adminReset];saveOverrides();if(!Object.keys(overrides).length){overridesEnabled=false;saveOverrideMode();}renderAdmin();toast('Master position restored for this installation.');}));
     document.getElementById('adminSnapshot')?.addEventListener('click',captureAdminSnapshot);
     document.getElementById('adminCopySnapshot')?.addEventListener('click',copyAdminDiagnostics);
     document.getElementById('adminExportLog')?.addEventListener('click',copyAdminLog);

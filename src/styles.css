@@ -10981,3 +10981,96 @@ button,[role="button"]{touch-action:manipulation;}
   .admin-metrics-live{grid-template-columns:1fr 1fr;}.admin-metrics-live strong{font-size:14px;}.admin-section-head{align-items:flex-start;flex-direction:column;}
   .admin-tool-buttons .btn{flex:1 1 145px;}.admin-actions .btn{flex:1 1 135px;}
 }
+
+/* === Working V2 · simplified field-test console ========================== */
+.admin-shell-simple{width:min(820px,100%);gap:12px;padding-bottom:48px;}
+.admin-head-simple{padding-bottom:4px;}
+.admin-head-simple h1{font-size:34px;}
+.admin-head-simple p{max-width:none;font-size:12px;}
+.admin-simple-section{padding:15px;}
+.admin-simple-section h2{font-family:var(--display);text-transform:uppercase;margin:3px 0;font-size:23px;}
+.admin-simple-head{margin-bottom:11px;}
+
+.admin-gps-primary{display:grid;grid-template-columns:.7fr 1fr 1.3fr;gap:8px;margin-top:13px;}
+.admin-gps-primary>div,.admin-route-readout>div,.admin-installation-readout>div{border:1px solid var(--line-soft);border-radius:9px;padding:10px;background:rgba(2,16,25,.35);min-width:0;}
+.admin-gps-primary span,.admin-route-readout span,.admin-installation-readout span,.admin-coordinate-mode span{display:block;color:#78a7b9;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+.admin-gps-primary strong,.admin-route-readout strong,.admin-installation-readout strong{display:block;margin-top:5px;font-family:var(--display);font-size:17px;line-height:1.12;color:#e5f8ff;word-break:break-word;}
+.admin-gps-primary small{display:block;margin-top:5px;color:#7fcbe3;font-size:11px;font-weight:700;}
+.admin-gps-coords strong{font-size:14px;font-family:var(--text);font-weight:700;line-height:1.35;}
+
+.admin-main-select{display:block;color:#78a7b9;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+.admin-main-select select{width:100%;margin-top:6px;border:1px solid #28566b;border-radius:9px;background:#041824;color:#e3f8ff;padding:12px 11px;font-family:var(--text);font-size:13px;outline:none;}
+.admin-main-select select:focus{border-color:var(--cyan);}
+
+.admin-selected-installation{margin-top:11px;border:1px solid var(--line-soft);border-radius:11px;padding:13px;background:rgba(2,16,25,.28);}
+.admin-selected-installation.has-override{border-color:#4ebee2;}
+.admin-selected-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.admin-selected-head h3{font-family:var(--display);font-size:21px;text-transform:uppercase;margin:3px 0 0;color:#e8f8ff;}
+.admin-installation-readout{display:grid;grid-template-columns:1.1fr 1.1fr .8fr .65fr;gap:7px;margin-top:11px;}
+.admin-installation-readout strong{font-size:14px;}
+.admin-coordinate-editor{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.admin-coordinate-editor label{display:block;color:#78a7b9;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+.admin-coordinate-editor input{width:100%;margin-top:5px;border:1px solid #28566b;border-radius:8px;background:#041824;color:#e3f8ff;padding:10px;font-family:var(--text);font-size:12px;outline:none;}
+.admin-coordinate-editor input:focus{border-color:var(--cyan);}
+.admin-primary-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;}
+.admin-primary-actions .btn{flex:1 1 170px;}
+.admin-installation-advanced{margin-top:10px;border-top:1px solid rgba(52,94,112,.45);padding-top:8px;}
+.admin-installation-advanced summary{cursor:pointer;color:#83adbd;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;list-style:none;}
+.admin-installation-advanced summary::-webkit-details-marker{display:none;}
+.admin-installation-advanced summary::after{content:' +';color:#5fbfde;}
+.admin-installation-advanced[open] summary::after{content:' −';}
+.admin-installation-advanced-body{display:grid;gap:9px;padding-top:9px;}
+
+.admin-coordinate-mode{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding:10px 11px;border:1px solid #348b70;border-radius:9px;background:rgba(20,84,68,.07);}
+.admin-coordinate-mode.local-active{border-color:#d99f32;background:rgba(112,72,8,.11);}
+.admin-coordinate-mode strong{display:block;margin-top:3px;font-family:var(--display);font-size:14px;color:#8cf0c9;}
+.admin-coordinate-mode.local-active strong{color:#ffd477;}
+.admin-coordinate-mode small{display:block;margin-top:3px;color:#7fa7b6;font-size:9px;line-height:1.35;}
+
+.admin-route-readout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.admin-route-simple.test-active{border-color:#d99f32;box-shadow:0 0 26px rgba(217,159,50,.06);}
+
+.admin-advanced{padding:0;overflow:hidden;}
+.admin-advanced>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:14px 15px;list-style:none;}
+.admin-advanced>summary::-webkit-details-marker{display:none;}
+.admin-advanced>summary strong{display:block;margin-top:2px;font-family:var(--display);font-size:18px;text-transform:uppercase;color:#dff7ff;}
+.admin-advanced-arrow{font-size:20px;color:#69cbea;transition:transform .18s ease;}
+.admin-advanced[open] .admin-advanced-arrow{transform:rotate(180deg);}
+.admin-advanced-body{display:grid;gap:12px;padding:0 15px 15px;border-top:1px solid rgba(53,91,107,.45);}
+.admin-advanced-metrics{grid-template-columns:repeat(4,1fr);margin-top:13px;}
+.admin-advanced-metrics strong{font-size:14px;}
+.admin-advanced-state{padding:10px;}
+.admin-advanced-divider{height:1px;background:rgba(53,91,107,.45);margin:1px 0;}
+.admin-advanced-body h3{font-family:var(--display);font-size:18px;text-transform:uppercase;margin:2px 0 0;}
+.admin-danger-zone{padding-top:2px;}
+
+@media(max-width:720px){
+  .admin-gps-primary{grid-template-columns:1fr 1fr;}
+  .admin-gps-primary>div:last-child{grid-column:1/-1;}
+  .admin-installation-readout{grid-template-columns:1fr 1fr;}
+  .admin-route-readout{grid-template-columns:1fr 1fr;}
+  .admin-route-readout>div:last-child{grid-column:1/-1;}
+  .admin-advanced-metrics{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:430px){
+  .admin-shell-simple{padding:15px 10px 38px;gap:10px;}
+  .admin-head-simple{gap:10px;}
+  .admin-head-simple h1{font-size:29px;}
+  .admin-simple-section{padding:12px;}
+  .admin-simple-section h2{font-size:20px;}
+  .admin-live-head{align-items:flex-start;}
+  .admin-live-head .btn{min-width:112px;}
+  .admin-gps-primary{grid-template-columns:.75fr 1.25fr;}
+  .admin-gps-primary>div:last-child{grid-column:1/-1;}
+  .admin-installation-readout{grid-template-columns:1fr 1fr;}
+  .admin-installation-readout strong{font-size:13px;}
+  .admin-coordinate-editor{grid-template-columns:1fr;}
+  .admin-primary-actions .btn{flex:1 1 100%;}
+  .admin-coordinate-mode{align-items:flex-start;flex-direction:column;}
+  .admin-mode-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
+  .admin-mode-actions .btn{width:100%;}
+  .admin-route-readout{grid-template-columns:1fr 1fr;}
+  .admin-route-readout>div:last-child{grid-column:1/-1;}
+  .admin-advanced-metrics{grid-template-columns:1fr 1fr;}
+  .admin-tool-buttons .btn{flex:1 1 100%;}
+}
