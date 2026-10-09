@@ -96,7 +96,7 @@
     const virtualActive=localTestEnabled&&routeStatus.ready;
     const guestTarget=current();
     app.innerHTML=`<main class="admin-shell admin-shell-simple">
-      <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><a class="btn secondary" href="/">Open Mission Control</a></header>
+      <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><div class="admin-head-actions"><a class="btn secondary" href="/">Open Mission Control</a><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div></header>
 
       <section class="admin-simple-section admin-gps-simple panel">
         <div class="admin-live-head"><div><div class="kicker">1 · GPS Status</div><h2 id="adminGpsStatus">${lastGps?gpsCondition(lastGps.accuracy):'Not Started'}</h2></div><button class="btn primary" id="adminStartGps">${lastGps?'Restart GPS':'Start Live GPS'}</button></div>
@@ -143,7 +143,6 @@
           <div><div class="kicker">Data Tools</div><h3>Survey Candidates & Utilities</h3></div>
           <div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Survey JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Clear Survey Candidates</button></div>
           <textarea id="adminImportText" class="admin-json" placeholder='Paste survey candidate JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button>
-          <div class="admin-danger-zone"><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div>
         </div>
       </details>
     </main>`;

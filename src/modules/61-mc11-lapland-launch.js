@@ -242,7 +242,7 @@
 
     // MC01–MC10 each restore one named system. Checks run down column 1 first,
     // then column 2, matching the visible mission-order layout.
-    const checks=['entry','velocity','luffield','power','spirit','escapade','jingle','comet','lando','aurora'];
+    const checks=['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora'];
     const systemKeys=['circuitry','diagnostic','comms','power','core','propulsion','guidance','control','response','navigation'];
     const setCharge=value=>panel.style.setProperty('--lapland-charge',String(Math.max(0,Math.min(1,value))));
     const setOnlineProgress=(onlineSystems,complete=false)=>{

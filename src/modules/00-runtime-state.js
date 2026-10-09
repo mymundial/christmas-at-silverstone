@@ -109,11 +109,11 @@
   };
 
   const SLEIGH_STAGES = [
-    {stage:1,trigger:null,name:'Grounded',asset:'./assets/sleigh-stage-1.webp',milestone:'Initial State',next:'Circuit Link',copy:'Santa-1 remains grounded in stripped-back recovery condition. Mission Control is waiting for enough circuit energy to energise the chassis and begin the rebuild.'},
-    {stage:2,trigger:'entry',name:'Recovery Initiated',asset:'./assets/sleigh-stage-2.webp',milestone:'Circuit Link',next:'Spirit Depot',copy:'Initial circuit energy has been routed into Santa-1. The chassis is energised and the recovery sequence is underway, while the individual sleigh systems remain offline until they are restored.'},
-    {stage:3,trigger:'spirit',name:'Core Recovery',asset:'./assets/sleigh-stage-3.webp',milestone:'Spirit Depot',next:'Jingle Beams',copy:'Spirit Depot has brought the Spirit Core online. Santa-1’s major body and core systems are now energised and the physical rebuild is visibly advancing.'},
-    {stage:4,trigger:'jingle',name:'Flight Systems Recovery',asset:'./assets/sleigh-stage-4.webp',milestone:'Jingle Beams',next:'Aurora Apex',copy:'Jingle Beams has brought Santa-1’s guidance system online. Flight hardware is now substantially restored and the sleigh is approaching full operational condition.'},
-    {stage:5,trigger:'aurora',name:'Rebuild Complete',asset:'./assets/sleigh-stage-5.webp',milestone:'Aurora Apex',next:'Lapland Launch',copy:'Aurora Apex has brought navigation online and completed the rebuild. Santa-1 now has a fully restored frame, active flight systems and a confirmed route home, ready for final verification at Lapland Launch.'}
+    {stage:1,trigger:null,name:'Grounded',asset:'./assets/sleigh-stage-1.webp',milestone:'Initial State',next:'Power Pulse',copy:'Santa-1 remains grounded while Mission Control restores the systems needed to begin the physical rebuild.'},
+    {stage:2,trigger:'power',name:'Power Restored',asset:'./assets/sleigh-stage-2.webp',milestone:'Power Pulse',next:'Jingle Beams',copy:'Power Pulse has stabilised the recovered energy. Santa-1 is now visibly rebuilding as the remaining flight systems come back online.'},
+    {stage:3,trigger:'jingle',name:'Guidance Restored',asset:'./assets/sleigh-stage-3.webp',milestone:'Jingle Beams',next:'Aurora Apex',copy:'Jingle Beams has restored guidance. The sleigh rebuild has advanced and Santa-1 is now waiting for a confirmed navigation route.'},
+    {stage:4,trigger:'aurora',name:'Ready for Launch Clearance',asset:'./assets/sleigh-stage-4.webp',milestone:'Aurora Apex',next:'Lapland Launch',copy:'Aurora Apex has restored navigation and confirmed the route home. Santa-1 is rebuilt and ready for final launch clearance.'},
+    {stage:5,trigger:'lapland',name:'Launch Cleared',asset:'./assets/sleigh-stage-5.webp',milestone:'Lapland Launch',next:'Northern Flight',copy:'Final launch verification is complete. Santa-1 is cleared for departure and awaiting the Northern Flight authorisation.'}
   ];
 
   const defaults = {

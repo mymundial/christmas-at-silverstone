@@ -24,17 +24,9 @@
     stopMc00Scan();
 
     const scanSystems = [
-      { key:'circuitry', start:2, end:10 },
-      { key:'diagnostic', start:11, end:19 },
-      { key:'comms', start:20, end:28 },
-      { key:'power', start:29, end:37 },
-      { key:'core', start:38, end:46 },
-      { key:'propulsion', start:47, end:55 },
-      { key:'guidance', start:56, end:64 },
-      { key:'control', start:65, end:73 },
-      { key:'response', start:74, end:82 },
-      { key:'navigation', start:83, end:96 }
-    ];
+      'circuitry','diagnostic','comms','power','core',
+      'propulsion','guidance','control','response','navigation'
+    ].map((key,index)=>({ key, start:index*10, end:(index+1)*10 }));
 
     let progressValue = 0;
     const lastStates = new Map();
@@ -49,8 +41,9 @@
       item.classList.remove('is-standby','is-checking','is-offline','is-online');
       item.classList.add(`is-${nextState}`);
       status.textContent=nextState==='checking'?'Checking':nextState==='offline'?'Offline':nextState==='online'?'Online':'Standby';
-      // Exactly one diagnostic pop for each of the ten system checks.
-      if(previous&&nextState==='checking') ping(560 + (scanSystems.findIndex(system=>system.key===key)*34),.048,.018);
+      // Ten evenly spaced scan pings: 0%, 10% ... 90%.
+      // Navigation is deliberately on the same cadence as every other system.
+      if(previous&&nextState==='checking') ping(620,.05,.018);
     };
 
     const paint = ()=>{

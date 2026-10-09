@@ -44,7 +44,7 @@
     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
   }
   function navSleighIcon(){
-    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.35.2" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.35.2" alt=""></span>`;
+    return `<span class="nav-mask nav-mask-sleigh" aria-hidden="true"></span>`;
   }
   function navIcon(id){
     const icons={
@@ -66,35 +66,33 @@
     const activationDistance=distanceToActivation(cp,state.distance);
     const distanceValue=!cp?'GARAGES':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
     const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
+    const demoRestart=state.mode==='demo'?`<button class="demo-restart-btn" type="button" data-demo-restart>Restart Demo</button>`:'';
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
       <div class="status-cell"><div class="status-label">Sleigh Rebuild</div><div class="status-value ${recovery()>=100?'is-complete':''}">${recovery()}%</div></div>
       <div class="status-cell"><div class="status-label">Next Checkpoint</div><div class="status-value">${distanceValue}</div></div>
-    </div></section>`;
+    </div>${demoRestart}</section>`;
   }
 
   function radarMessage(cp){
     if(cp&&state.targetInRange&&cp.playable){
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
-    if(state.messageAlert&&unreadCount()>0){
-      return `<div class="mission-card message-card panel comms-alert" id="radarMessage"><div class="comms-alert-copy"><div class="kicker">Mission Control</div><h3>New Message</h3></div><div class="comms-alert-actions"><button class="linkbtn comms-action" data-read-messages>Read</button><button class="linkbtn comms-action" data-dismiss-messages>Dismiss</button></div></div>`;
-    }
     if(!cp) return `<div class="mission-card message-card panel complete-message compact-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
     if(cp.type==='activation'){
-      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Target Acquired</h3></div></div>`;
-      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Checkpoint Ahead</h3></div></div>`;
-      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Locating Checkpoint</h3></div></div>`;
+      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
+      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Locating Checkpoint</h3></div></div>`;
     }
     if(acquired){
-      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Target Acquired</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
     }
     if(state.targetVisible){
-      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Checkpoint Ahead</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
     }
-    return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Radar Searching</h3></div></div>`;
+    return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Radar Searching</h3></div></div>`;
   }
 
 
@@ -236,7 +234,9 @@
     const radioButton=state.elfUnlocked
       ? `<button class="mission-setting-toggle radio-setting ${state.elfAudioOn?'on':'off'}" id="elfAudioToggle" data-elf-audio aria-pressed="${state.elfAudioOn?'true':'false'}" aria-label="ELF FM ${state.elfAudioOn?'on':'off'}" ${streamReady?'':'aria-disabled="true"'}><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`
       : `<button class="mission-setting-toggle radio-setting off" data-tune-elf aria-pressed="false" aria-label="Tune ELF FM"><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`;
-    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsOn?'on':'off'}" aria-label="GPS Location ${state.mode==='demo'?'demo':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span><strong>${state.mode==='demo'?'DEMO':gpsOn?'ACTIVE':state.gpsCondition}</strong></span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
+    const gpsClass=state.mode==='demo'?'demo':gpsOn?'on':'off';
+    const gpsStateLabel=state.mode==='demo'?'':`<strong>${gpsOn?'ACTIVE':state.gpsCondition}</strong>`;
+    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsClass}" aria-label="GPS Location ${state.mode==='demo'?'demo mode':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span>${gpsStateLabel}</span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
     const feedBody=feed||'<div class="comms-empty panel">No transmissions received.</div>';
     return `${settings}<section class="comms-feed"><div class="comms-section-title"><span>Message Feed</span></div><div class="comms-feed-viewport"><div class="comms-feed-scroll">${feedBody}</div></div></section>`;
   }

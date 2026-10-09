@@ -109,11 +109,11 @@
   };
 
   const SLEIGH_STAGES = [
-    {stage:1,trigger:null,name:'Grounded',asset:'./assets/sleigh-stage-1.webp',milestone:'Initial State',next:'Circuit Link',copy:'Santa-1 remains grounded in stripped-back recovery condition. Mission Control is waiting for enough circuit energy to energise the chassis and begin the rebuild.'},
-    {stage:2,trigger:'entry',name:'Recovery Initiated',asset:'./assets/sleigh-stage-2.webp',milestone:'Circuit Link',next:'Spirit Depot',copy:'Initial circuit energy has been routed into Santa-1. The chassis is energised and the recovery sequence is underway, while the individual sleigh systems remain offline until they are restored.'},
-    {stage:3,trigger:'spirit',name:'Core Recovery',asset:'./assets/sleigh-stage-3.webp',milestone:'Spirit Depot',next:'Jingle Beams',copy:'Spirit Depot has brought the Spirit Core online. Santa-1’s major body and core systems are now energised and the physical rebuild is visibly advancing.'},
-    {stage:4,trigger:'jingle',name:'Flight Systems Recovery',asset:'./assets/sleigh-stage-4.webp',milestone:'Jingle Beams',next:'Aurora Apex',copy:'Jingle Beams has brought Santa-1’s guidance system online. Flight hardware is now substantially restored and the sleigh is approaching full operational condition.'},
-    {stage:5,trigger:'aurora',name:'Rebuild Complete',asset:'./assets/sleigh-stage-5.webp',milestone:'Aurora Apex',next:'Lapland Launch',copy:'Aurora Apex has brought navigation online and completed the rebuild. Santa-1 now has a fully restored frame, active flight systems and a confirmed route home, ready for final verification at Lapland Launch.'}
+    {stage:1,trigger:null,name:'Grounded',asset:'./assets/sleigh-stage-1.webp',milestone:'Initial State',next:'Power Pulse',copy:'Santa-1 remains grounded while Mission Control restores the systems needed to begin the physical rebuild.'},
+    {stage:2,trigger:'power',name:'Power Restored',asset:'./assets/sleigh-stage-2.webp',milestone:'Power Pulse',next:'Jingle Beams',copy:'Power Pulse has stabilised the recovered energy. Santa-1 is now visibly rebuilding as the remaining flight systems come back online.'},
+    {stage:3,trigger:'jingle',name:'Guidance Restored',asset:'./assets/sleigh-stage-3.webp',milestone:'Jingle Beams',next:'Aurora Apex',copy:'Jingle Beams has restored guidance. The sleigh rebuild has advanced and Santa-1 is now waiting for a confirmed navigation route.'},
+    {stage:4,trigger:'aurora',name:'Ready for Launch Clearance',asset:'./assets/sleigh-stage-4.webp',milestone:'Aurora Apex',next:'Lapland Launch',copy:'Aurora Apex has restored navigation and confirmed the route home. Santa-1 is rebuilt and ready for final launch clearance.'},
+    {stage:5,trigger:'lapland',name:'Launch Cleared',asset:'./assets/sleigh-stage-5.webp',milestone:'Lapland Launch',next:'Northern Flight',copy:'Final launch verification is complete. Santa-1 is cleared for departure and awaiting the Northern Flight authorisation.'}
   ];
 
   const defaults = {
@@ -755,7 +755,7 @@
     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
   }
   function navSleighIcon(){
-    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.35.2" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.35.2" alt=""></span>`;
+    return `<span class="nav-mask nav-mask-sleigh" aria-hidden="true"></span>`;
   }
   function navIcon(id){
     const icons={
@@ -777,35 +777,33 @@
     const activationDistance=distanceToActivation(cp,state.distance);
     const distanceValue=!cp?'GARAGES':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
     const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
+    const demoRestart=state.mode==='demo'?`<button class="demo-restart-btn" type="button" data-demo-restart>Restart Demo</button>`:'';
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
       <div class="status-cell"><div class="status-label">Sleigh Rebuild</div><div class="status-value ${recovery()>=100?'is-complete':''}">${recovery()}%</div></div>
       <div class="status-cell"><div class="status-label">Next Checkpoint</div><div class="status-value">${distanceValue}</div></div>
-    </div></section>`;
+    </div>${demoRestart}</section>`;
   }
 
   function radarMessage(cp){
     if(cp&&state.targetInRange&&cp.playable){
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
-    if(state.messageAlert&&unreadCount()>0){
-      return `<div class="mission-card message-card panel comms-alert" id="radarMessage"><div class="comms-alert-copy"><div class="kicker">Mission Control</div><h3>New Message</h3></div><div class="comms-alert-actions"><button class="linkbtn comms-action" data-read-messages>Read</button><button class="linkbtn comms-action" data-dismiss-messages>Dismiss</button></div></div>`;
-    }
     if(!cp) return `<div class="mission-card message-card panel complete-message compact-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
     if(cp.type==='activation'){
-      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Target Acquired</h3></div></div>`;
-      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Checkpoint Ahead</h3></div></div>`;
-      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Locating Checkpoint</h3></div></div>`;
+      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
+      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Locating Checkpoint</h3></div></div>`;
     }
     if(acquired){
-      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Target Acquired</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
     }
     if(state.targetVisible){
-      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Checkpoint Ahead</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
     }
-    return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Mission Control</div><h3>Radar Searching</h3></div></div>`;
+    return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Radar Searching</h3></div></div>`;
   }
 
 
@@ -947,7 +945,9 @@
     const radioButton=state.elfUnlocked
       ? `<button class="mission-setting-toggle radio-setting ${state.elfAudioOn?'on':'off'}" id="elfAudioToggle" data-elf-audio aria-pressed="${state.elfAudioOn?'true':'false'}" aria-label="ELF FM ${state.elfAudioOn?'on':'off'}" ${streamReady?'':'aria-disabled="true"'}><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`
       : `<button class="mission-setting-toggle radio-setting off" data-tune-elf aria-pressed="false" aria-label="Tune ELF FM"><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`;
-    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsOn?'on':'off'}" aria-label="GPS Location ${state.mode==='demo'?'demo':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span><strong>${state.mode==='demo'?'DEMO':gpsOn?'ACTIVE':state.gpsCondition}</strong></span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
+    const gpsClass=state.mode==='demo'?'demo':gpsOn?'on':'off';
+    const gpsStateLabel=state.mode==='demo'?'':`<strong>${gpsOn?'ACTIVE':state.gpsCondition}</strong>`;
+    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsClass}" aria-label="GPS Location ${state.mode==='demo'?'demo mode':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span>${gpsStateLabel}</span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
     const feedBody=feed||'<div class="comms-empty panel">No transmissions received.</div>';
     return `${settings}<section class="comms-feed"><div class="comms-section-title"><span>Message Feed</span></div><div class="comms-feed-viewport"><div class="comms-feed-scroll">${feedBody}</div></div></section>`;
   }
@@ -1401,6 +1401,11 @@
     document.querySelectorAll('[data-elf-audio]').forEach(b=>b.addEventListener('click',toggleElfAudio));
     document.querySelectorAll('[data-mission-audio-setting]').forEach(b=>b.addEventListener('click',toggleMissionAudioSetting));
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
+    document.querySelectorAll('[data-demo-restart]').forEach(b=>b.addEventListener('click',()=>{
+      if(state.mode!=='demo') return;
+      startDemoExperience();
+      toast('Demo route restarted.');
+    }));
     document.querySelectorAll('[data-onboard]').forEach(b=>b.addEventListener('click',()=>{
       if(state.audio) ensureAudio();
       set({bootDone:b.dataset.onboard});
@@ -1530,7 +1535,12 @@
     } else updateRadarLive();
   }
   function triggerCircuitEntry(){
-    const cp=current(); if(!cp||cp.id!=='entry'||state.completed.includes('entry')) return;
+    const cp=CHECKPOINTS.find(checkpoint=>checkpoint.id==='entry');
+    if(!cp||state.completed.includes('entry')) return;
+    const entryIndex=checkpointIndex('entry');
+    const retrospectivelyAvailable=state.available.includes('entry')||entryIndex<state.routeIndex;
+    const isCurrentTarget=current()?.id==='entry';
+    if(!isCurrentTarget&&!retrospectivelyAvailable) return;
     if(state.mode==='demo') clearDemo();
     if(state.missionOpen==='entry') return;
     resetGeofenceRuntime();
@@ -1570,17 +1580,9 @@
     stopMc00Scan();
 
     const scanSystems = [
-      { key:'circuitry', start:2, end:10 },
-      { key:'diagnostic', start:11, end:19 },
-      { key:'comms', start:20, end:28 },
-      { key:'power', start:29, end:37 },
-      { key:'core', start:38, end:46 },
-      { key:'propulsion', start:47, end:55 },
-      { key:'guidance', start:56, end:64 },
-      { key:'control', start:65, end:73 },
-      { key:'response', start:74, end:82 },
-      { key:'navigation', start:83, end:96 }
-    ];
+      'circuitry','diagnostic','comms','power','core',
+      'propulsion','guidance','control','response','navigation'
+    ].map((key,index)=>({ key, start:index*10, end:(index+1)*10 }));
 
     let progressValue = 0;
     const lastStates = new Map();
@@ -1595,8 +1597,9 @@
       item.classList.remove('is-standby','is-checking','is-offline','is-online');
       item.classList.add(`is-${nextState}`);
       status.textContent=nextState==='checking'?'Checking':nextState==='offline'?'Offline':nextState==='online'?'Online':'Standby';
-      // Exactly one diagnostic pop for each of the ten system checks.
-      if(previous&&nextState==='checking') ping(560 + (scanSystems.findIndex(system=>system.key===key)*34),.048,.018);
+      // Ten evenly spaced scan pings: 0%, 10% ... 90%.
+      // Navigation is deliberately on the same cadence as every other system.
+      if(previous&&nextState==='checking') ping(620,.05,.018);
     };
 
     const paint = ()=>{
@@ -2297,7 +2300,7 @@
     const virtualActive=localTestEnabled&&routeStatus.ready;
     const guestTarget=current();
     app.innerHTML=`<main class="admin-shell admin-shell-simple">
-      <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><a class="btn secondary" href="/">Open Mission Control</a></header>
+      <header class="admin-head admin-head-simple"><div><div class="kicker">Silverstone Mission Control · Working V2</div><h1>Field Test</h1><p>GPS, installation positions and route testing.</p></div><div class="admin-head-actions"><a class="btn secondary" href="/">Open Mission Control</a><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div></header>
 
       <section class="admin-simple-section admin-gps-simple panel">
         <div class="admin-live-head"><div><div class="kicker">1 · GPS Status</div><h2 id="adminGpsStatus">${lastGps?gpsCondition(lastGps.accuracy):'Not Started'}</h2></div><button class="btn primary" id="adminStartGps">${lastGps?'Restart GPS':'Start Live GPS'}</button></div>
@@ -2344,7 +2347,6 @@
           <div><div class="kicker">Data Tools</div><h3>Survey Candidates & Utilities</h3></div>
           <div class="admin-tool-buttons"><button class="btn secondary" id="adminExport">Copy Survey JSON</button><button class="btn secondary" id="adminTestMessage">Send Test Message</button><button class="btn secondary" id="adminClearMessages">Clear Comms Feed</button><button class="btn secondary" id="adminResetOverrides">Clear Survey Candidates</button></div>
           <textarea id="adminImportText" class="admin-json" placeholder='Paste survey candidate JSON here to import'></textarea><button class="btn secondary" id="adminImport">Import JSON</button>
-          <div class="admin-danger-zone"><button class="btn danger" id="adminResetProgress">Reset Mission Progress</button></div>
         </div>
       </details>
     </main>`;
@@ -5054,7 +5056,7 @@
 
     // MC01–MC10 each restore one named system. Checks run down column 1 first,
     // then column 2, matching the visible mission-order layout.
-    const checks=['entry','velocity','luffield','power','spirit','escapade','jingle','comet','lando','aurora'];
+    const checks=['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora'];
     const systemKeys=['circuitry','diagnostic','comms','power','core','propulsion','guidance','control','response','navigation'];
     const setCharge=value=>panel.style.setProperty('--lapland-charge',String(Math.max(0,Math.min(1,value))));
     const setOnlineProgress=(onlineSystems,complete=false)=>{
@@ -5423,6 +5425,22 @@
     });
   }
 
+
+  // Warm mission artwork after the first render so later pages do not flash
+  // unloaded icons/backgrounds on mobile Safari. Critical first-screen assets
+  // remain declared as <link rel="preload"> in index.html.
+  const missionImagePreloads = [
+    './assets/radar-bezel.webp',
+    './assets/mc02-control-mid-ring.svg','./assets/mc02-response-arrow.svg','./assets/mc02-response-cones.svg',
+    './assets/mc02-stability-front-car.svg','./assets/mc02-stability-headlights.svg','./assets/mc02-traction-car.svg','./assets/mc02-traction-skids.svg',
+    './assets/care-bears-logo.png','./assets/lando-gantry.webp',
+    './assets/aurora-sky.webp','./assets/aurora-ring-outer.webp','./assets/aurora-ring-middle.webp','./assets/aurora-ring-inner.webp',
+    './assets/las-vegas-logo-white.svg',
+    './assets/sleigh-stage-2.webp','./assets/sleigh-stage-3.webp','./assets/sleigh-stage-4.webp','./assets/sleigh-stage-5.webp'
+  ];
+  const warmMissionImages=()=>missionImagePreloads.forEach(src=>{const img=new Image();img.decoding='async';img.src=src;});
+  if('requestIdleCallback' in window) requestIdleCallback(warmMissionImages,{timeout:1400});
+  else setTimeout(warmMissionImages,350);
 
   if(IS_ADMIN){renderAdmin();}
   else {

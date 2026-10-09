@@ -11083,3 +11083,76 @@ button,[role="button"]{touch-action:manipulation;}
 .admin-local-route-progress.is-ready{border-color:#348b70;background:rgba(20,84,68,.07);}
 .admin-local-route-progress.is-ready>strong{color:#8cf0c9;}
 @media(max-width:430px){.admin-local-route-progress{grid-template-columns:1fr;}.admin-local-route-progress>span{grid-row:auto;}}
+
+/* === Final polish pass 7.39.0 =========================================== */
+/* Onboarding cards: explicitly register Briefing and Radar to the same
+   vertical geometry as the ELF FM prompt on mobile. */
+.setup-page.briefing-page .setup-card,
+.setup-page.radar-setup-page .setup-card,
+.setup-page.elf-setup-page .setup-card{margin-top:24px!important;}
+@media(max-width:390px){
+  .setup-page.briefing-page .setup-card,
+  .setup-page.radar-setup-page .setup-card,
+  .setup-page.elf-setup-page .setup-card{margin-top:20px!important;}
+}
+@media(max-height:740px){
+  .setup-page.briefing-page .setup-card,
+  .setup-page.radar-setup-page .setup-card,
+  .setup-page.elf-setup-page .setup-card{margin-top:8px!important;}
+}
+
+/* Radar/demo controls. Keep the restart affordance in the telemetry header so
+   it does not steal vertical room from the radar circle. */
+.demo-restart-btn{
+  position:absolute;right:0;top:-6px;z-index:4;
+  border:1px solid rgba(255,173,53,.55);border-radius:999px;
+  background:rgba(72,43,4,.34);color:var(--amber);
+  padding:5px 8px;font-family:var(--text);font-size:7px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+}
+.demo-restart-btn:active{transform:translateY(1px);}
+
+/* Communications: active audio follows the same cyan icon language as ELF FM;
+   Demo GPS is a locked amber status tile with no redundant DEMO text. */
+.mission-setting-toggle.on[data-mission-audio-setting] .mission-setting-icon{color:var(--cyan)!important;}
+.mission-setting-toggle.on[data-mission-audio-setting] .mission-setting-icon svg{
+  stroke:var(--cyan)!important;opacity:1!important;
+  filter:drop-shadow(0 0 4px rgba(89,224,255,.72))!important;
+}
+.mission-setting-status.demo{
+  cursor:default!important;
+  border-color:rgba(255,173,53,.72)!important;
+  background:linear-gradient(180deg,rgba(77,45,5,.48),rgba(42,27,7,.42))!important;
+  color:#ffd27f!important;
+  box-shadow:0 0 16px rgba(255,173,53,.08)!important;
+}
+.mission-setting-status.demo .mission-setting-icon{
+  border-color:rgba(255,173,53,.56)!important;
+  background:rgba(92,54,7,.28)!important;
+  box-shadow:inset 0 0 12px rgba(255,173,53,.05)!important;
+}
+.mission-setting-status.demo .mission-setting-icon img{
+  opacity:1!important;
+  filter:brightness(0) saturate(100%) invert(76%) sepia(68%) saturate(1324%) hue-rotate(337deg) brightness(103%) contrast(103%)!important;
+}
+
+/* Sleigh nav now uses the same currentColor system as Radar/Missions/Comms. */
+.nav .nav-mask-sleigh{width:30px;height:18px;opacity:1;}
+.nav button.active .nav-mask-sleigh{filter:drop-shadow(0 0 4px rgba(98,216,255,.28));}
+
+/* Missions: soften the top scroll fade/shadow so MC-01 keeps a clean outline. */
+.missions-feed-viewport::before{
+  height:5px!important;
+  background:linear-gradient(180deg,rgba(3,19,31,.38) 0%,rgba(3,19,31,.10) 55%,rgba(3,19,31,0) 100%)!important;
+}
+.phone:has(.nav-view[data-view="missions"]) .topbar{
+  box-shadow:0 6px 12px rgba(1,12,20,.24),0 1px 0 rgba(116,222,246,.06)!important;
+}
+
+/* Admin primary safety actions belong together at the top. */
+.admin-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+.admin-head-actions .btn{white-space:nowrap;}
+@media(max-width:520px){
+  .admin-head-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
+  .admin-head-actions .btn{width:100%;}
+}

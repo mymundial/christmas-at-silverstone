@@ -20,6 +20,11 @@
     document.querySelectorAll('[data-elf-audio]').forEach(b=>b.addEventListener('click',toggleElfAudio));
     document.querySelectorAll('[data-mission-audio-setting]').forEach(b=>b.addEventListener('click',toggleMissionAudioSetting));
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
+    document.querySelectorAll('[data-demo-restart]').forEach(b=>b.addEventListener('click',()=>{
+      if(state.mode!=='demo') return;
+      startDemoExperience();
+      toast('Demo route restarted.');
+    }));
     document.querySelectorAll('[data-onboard]').forEach(b=>b.addEventListener('click',()=>{
       if(state.audio) ensureAudio();
       set({bootDone:b.dataset.onboard});
@@ -149,7 +154,12 @@
     } else updateRadarLive();
   }
   function triggerCircuitEntry(){
-    const cp=current(); if(!cp||cp.id!=='entry'||state.completed.includes('entry')) return;
+    const cp=CHECKPOINTS.find(checkpoint=>checkpoint.id==='entry');
+    if(!cp||state.completed.includes('entry')) return;
+    const entryIndex=checkpointIndex('entry');
+    const retrospectivelyAvailable=state.available.includes('entry')||entryIndex<state.routeIndex;
+    const isCurrentTarget=current()?.id==='entry';
+    if(!isCurrentTarget&&!retrospectivelyAvailable) return;
     if(state.mode==='demo') clearDemo();
     if(state.missionOpen==='entry') return;
     resetGeofenceRuntime();

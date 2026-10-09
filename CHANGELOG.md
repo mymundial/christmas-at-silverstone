@@ -1,3 +1,17 @@
+# Pass 7.39.0 — Final polish baseline
+
+- Moved Admin “Reset Mission Progress” beside “Open Mission Control”.
+- Re-timed MC-00 diagnostics to ten evenly spaced system pings through 90%, plus the final 100% completion ping.
+- Added critical/system icon preloads and background warming for Radar, Velocity Vault, Power Pulse, Spirit Depot, Lightspeed Lando, Aurora Apex and Lapland Launch artwork.
+- Registered Mission Briefing and Mission Radar onboarding card spacing to the ELF FM prompt geometry.
+- Removed new-message alerts from the Radar status card and clarified target search/approach captions.
+- Standardised Comms selected icon styling; Demo GPS is now a locked amber tile without duplicate DEMO copy.
+- Corrected Santa-1 visual stage milestones: Power Pulse → Stage 2, Jingle Beams → Stage 3, Aurora Apex → Stage 4, Lapland Launch → Stage 5.
+- Standardised the bottom Sleigh nav icon to the same current-colour system as the other navigation buttons.
+- Softened the Missions top shadow and fixed retrospective Circuit Link activation from the Missions page.
+- Added an in-game Restart Demo control to Radar telemetry.
+- Preserved Aurora Apex visual/gameplay for a later rethink and parked the larger Sleigh/instrument redesign.
+
 # Working V2 — Canonical freeze / housekeeping
 
 - Declared the cumulative current build as **Working V2**, the baseline for GPS/geofence development.
