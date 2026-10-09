@@ -407,7 +407,7 @@ body.admin-mode button{
 
 .nav .ico{position:relative;}
 .nav-mask{display:block;width:30px;height:18px;background:currentColor;opacity:.9;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;}
-.nav-mask-sleigh{-webkit-mask-image:url("./assets/nav-sleigh.svg");mask-image:url("./assets/nav-sleigh.svg");}
+.nav-mask-sleigh{-webkit-mask-image:url("../assets/nav-sleigh.svg");mask-image:url("../assets/nav-sleigh.svg");}
 
 .sleigh-title-row > div{display:flex;flex-direction:column;}
 .sleigh-pretitle{color:var(--cyan);margin:0;letter-spacing:.14em;}
@@ -11131,14 +11131,8 @@ button,[role="button"]{touch-action:manipulation;}
 .nav .nav-mask-sleigh{display:block!important;width:30px;height:18px;opacity:1;}
 .nav button.active .nav-mask-sleigh{filter:drop-shadow(0 0 4px rgba(98,216,255,.28));}
 
-/* Demo restart only appears in the final Mission Complete radar capsule. */
-.final-radar-message{align-items:center;gap:12px;}
-.final-demo-restart{
-  flex:0 0 auto;border-color:rgba(255,173,53,.68)!important;
-  background:rgba(6,31,44,.94)!important;color:#fff!important;
-  box-shadow:0 0 12px rgba(255,173,53,.10)!important;
-}
-.final-demo-restart:active{transform:translateY(1px);}
+/* Final demo restart uses the same compact primary treatment as Start Mission. */
+.final-radar-message{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;}
 
 /* Missions: soften the top scroll fade/shadow so MC-01 keeps a clean outline. */
 .missions-feed-viewport::before{

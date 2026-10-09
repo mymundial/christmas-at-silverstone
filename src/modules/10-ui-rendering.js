@@ -78,7 +78,7 @@
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
-      const demoRestart=state.mode==='demo'?`<button class="btn small final-demo-restart" type="button" data-demo-restart>Restart Demo</button>`:'';
+      const demoRestart=state.mode==='demo'?`<button class="btn small primary" type="button" data-demo-restart>Restart</button>`:'';
       return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div>${demoRestart}</div>`;
     }
     const activationGap=distanceToActivation(cp,state.distance);

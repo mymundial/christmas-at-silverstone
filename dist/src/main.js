@@ -789,7 +789,7 @@
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
-      const demoRestart=state.mode==='demo'?`<button class="btn small final-demo-restart" type="button" data-demo-restart>Restart Demo</button>`:'';
+      const demoRestart=state.mode==='demo'?`<button class="btn small primary" type="button" data-demo-restart>Restart</button>`:'';
       return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div>${demoRestart}</div>`;
     }
     const activationGap=distanceToActivation(cp,state.distance);
@@ -1586,7 +1586,7 @@
     const scanSystems = [
       'circuitry','diagnostic','comms','power','core',
       'propulsion','guidance','control','response','navigation'
-    ].map((key,index)=>({ key, start:index*10, end:(index+1)*10 }));
+    ].map((key,index)=>({ key, start:index*9, end:(index+1)*9 }));
 
     let progressValue = 0;
     const lastStates = new Map();
@@ -1631,16 +1631,16 @@
     card.classList.remove('is-complete');
     complete.hidden = true;
 
-    // Give the browser a fraction of a second to finish resuming WebAudio after
-    // the Start Mission gesture. Then fire ten equally spaced scan pings at
-    // 0/10/.../90%, followed by the distinct completion ping at 100%.
+    // Ten diagnostic pops are locked to the ten system-complete transitions.
+    // Each completed system advances the bar by 9%, taking the scan to 90%.
+    // Nothing sounds at 0%: the first pop lands exactly as the first system
+    // changes to Offline. The distinct completion ping lands at 100%.
     mc00ScanStartTimer = setTimeout(()=>{
       mc00ScanStartTimer = null;
-      ping(620,.05,.018);
       mc00ScanTimer = setInterval(()=>{
         progressValue = Math.min(100, progressValue + 1);
         paint();
-        if(progressValue > 0 && progressValue < 100 && progressValue % 10 === 0){
+        if(progressValue <= 90 && progressValue % 9 === 0){
           ping(620,.05,.018);
         }
         if(progressValue === 100){
