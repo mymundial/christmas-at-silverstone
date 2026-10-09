@@ -777,19 +777,21 @@
     const activationDistance=distanceToActivation(cp,state.distance);
     const distanceValue=!cp?'GARAGES':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
     const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
-    const demoRestart=state.mode==='demo'?`<button class="demo-restart-btn" type="button" data-demo-restart>Restart Demo</button>`:'';
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
       <div class="status-cell"><div class="status-label">Sleigh Rebuild</div><div class="status-value ${recovery()>=100?'is-complete':''}">${recovery()}%</div></div>
       <div class="status-cell"><div class="status-label">Next Checkpoint</div><div class="status-value">${distanceValue}</div></div>
-    </div>${demoRestart}</section>`;
+    </div></section>`;
   }
 
   function radarMessage(cp){
     if(cp&&state.targetInRange&&cp.playable){
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
-    if(!cp) return `<div class="mission-card message-card panel complete-message compact-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
+    if(!cp){
+      const demoRestart=state.mode==='demo'?`<button class="btn small final-demo-restart" type="button" data-demo-restart>Restart Demo</button>`:'';
+      return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div>${demoRestart}</div>`;
+    }
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
     if(cp.type==='activation'){
@@ -1555,10 +1557,12 @@
     },()=>toast('Location permission is required for Live Radar.'),{enableHighAccuracy:true,timeout:10000,maximumAge:0});
   }
   let mc00ScanTimer = null;
+  let mc00ScanStartTimer = null;
   let mc00ScanRaf = null;
 
   function stopMc00Scan(){
     if(mc00ScanTimer){ clearInterval(mc00ScanTimer); mc00ScanTimer = null; }
+    if(mc00ScanStartTimer){ clearTimeout(mc00ScanStartTimer); mc00ScanStartTimer = null; }
     if(mc00ScanRaf){ cancelAnimationFrame(mc00ScanRaf); mc00ScanRaf = null; }
   }
 
@@ -1597,9 +1601,8 @@
       item.classList.remove('is-standby','is-checking','is-offline','is-online');
       item.classList.add(`is-${nextState}`);
       status.textContent=nextState==='checking'?'Checking':nextState==='offline'?'Offline':nextState==='online'?'Online':'Standby';
-      // Ten evenly spaced scan pings: 0%, 10% ... 90%.
-      // Navigation is deliberately on the same cadence as every other system.
-      if(previous&&nextState==='checking') ping(620,.05,.018);
+      // System-state changes are visual only; the scan pings are driven by the
+      // fixed cadence below so the first sound cannot be lost during AudioContext resume.
     };
 
     const paint = ()=>{
@@ -1628,14 +1631,24 @@
     card.classList.remove('is-complete');
     complete.hidden = true;
 
-    mc00ScanTimer = setInterval(()=>{
-      progressValue = Math.min(100, progressValue + 1);
-      paint();
-      if(progressValue === 100){
-        ping(860,.12,.05);
-        haptic([20,35,65]);
-      }
-    }, 45);
+    // Give the browser a fraction of a second to finish resuming WebAudio after
+    // the Start Mission gesture. Then fire ten equally spaced scan pings at
+    // 0/10/.../90%, followed by the distinct completion ping at 100%.
+    mc00ScanStartTimer = setTimeout(()=>{
+      mc00ScanStartTimer = null;
+      ping(620,.05,.018);
+      mc00ScanTimer = setInterval(()=>{
+        progressValue = Math.min(100, progressValue + 1);
+        paint();
+        if(progressValue > 0 && progressValue < 100 && progressValue % 10 === 0){
+          ping(620,.05,.018);
+        }
+        if(progressValue === 100){
+          ping(860,.12,.05);
+          haptic([20,35,65]);
+        }
+      }, 45);
+    }, 180);
   }
   let mc01Timers=[];
   let mc01BloomEl=null;

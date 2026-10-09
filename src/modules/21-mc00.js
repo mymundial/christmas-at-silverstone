@@ -1,8 +1,10 @@
   let mc00ScanTimer = null;
+  let mc00ScanStartTimer = null;
   let mc00ScanRaf = null;
 
   function stopMc00Scan(){
     if(mc00ScanTimer){ clearInterval(mc00ScanTimer); mc00ScanTimer = null; }
+    if(mc00ScanStartTimer){ clearTimeout(mc00ScanStartTimer); mc00ScanStartTimer = null; }
     if(mc00ScanRaf){ cancelAnimationFrame(mc00ScanRaf); mc00ScanRaf = null; }
   }
 
@@ -41,9 +43,8 @@
       item.classList.remove('is-standby','is-checking','is-offline','is-online');
       item.classList.add(`is-${nextState}`);
       status.textContent=nextState==='checking'?'Checking':nextState==='offline'?'Offline':nextState==='online'?'Online':'Standby';
-      // Ten evenly spaced scan pings: 0%, 10% ... 90%.
-      // Navigation is deliberately on the same cadence as every other system.
-      if(previous&&nextState==='checking') ping(620,.05,.018);
+      // System-state changes are visual only; the scan pings are driven by the
+      // fixed cadence below so the first sound cannot be lost during AudioContext resume.
     };
 
     const paint = ()=>{
@@ -72,12 +73,22 @@
     card.classList.remove('is-complete');
     complete.hidden = true;
 
-    mc00ScanTimer = setInterval(()=>{
-      progressValue = Math.min(100, progressValue + 1);
-      paint();
-      if(progressValue === 100){
-        ping(860,.12,.05);
-        haptic([20,35,65]);
-      }
-    }, 45);
+    // Give the browser a fraction of a second to finish resuming WebAudio after
+    // the Start Mission gesture. Then fire ten equally spaced scan pings at
+    // 0/10/.../90%, followed by the distinct completion ping at 100%.
+    mc00ScanStartTimer = setTimeout(()=>{
+      mc00ScanStartTimer = null;
+      ping(620,.05,.018);
+      mc00ScanTimer = setInterval(()=>{
+        progressValue = Math.min(100, progressValue + 1);
+        paint();
+        if(progressValue > 0 && progressValue < 100 && progressValue % 10 === 0){
+          ping(620,.05,.018);
+        }
+        if(progressValue === 100){
+          ping(860,.12,.05);
+          haptic([20,35,65]);
+        }
+      }, 45);
+    }, 180);
   }
