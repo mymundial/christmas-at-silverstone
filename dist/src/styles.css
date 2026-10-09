@@ -9680,7 +9680,7 @@ body.admin-page,.admin-page .app-shell{height:auto;min-height:100%;overflow:visi
   box-shadow:0 0 8px rgba(83,218,255,.55);
   pointer-events:none;
 }
-.sleigh-development-bar.is-complete .sleigh-development-marker{background:var(--green);border-color:#e9fff0;box-shadow:0 0 8px rgba(87,239,145,.58);}
+.sleigh-development-bar.is-complete .sleigh-development-marker{display:none;}
 @media(max-width:520px){
   .nav-view>.sleigh-card{margin-top:8px!important;margin-bottom:8px!important;padding:10px 10px 8px!important;}
   .sleigh-title-row{padding-bottom:4px!important;}

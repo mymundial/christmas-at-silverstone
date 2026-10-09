@@ -755,7 +755,7 @@
     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
   }
   function navSleighIcon(){
-    return `<span class="nav-mask nav-mask-sleigh" aria-hidden="true"></span>`;
+    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.39.3" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.39.3" alt=""></span>`;
   }
   function navIcon(id){
     const icons={
@@ -1405,8 +1405,13 @@
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
     document.querySelectorAll('[data-demo-restart]').forEach(b=>b.addEventListener('click',()=>{
       if(state.mode!=='demo') return;
-      startDemoExperience();
-      toast('Demo route restarted.');
+      clearDemo();
+      stopGpsWatch();
+      resetGeofenceRuntime();
+      if(cleanupMission){ try{cleanupMission();}catch{} cleanupMission=null; }
+      state={...defaults};
+      save();
+      render();
     }));
     document.querySelectorAll('[data-onboard]').forEach(b=>b.addEventListener('click',()=>{
       if(state.audio) ensureAudio();

@@ -22,8 +22,13 @@
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
     document.querySelectorAll('[data-demo-restart]').forEach(b=>b.addEventListener('click',()=>{
       if(state.mode!=='demo') return;
-      startDemoExperience();
-      toast('Demo route restarted.');
+      clearDemo();
+      stopGpsWatch();
+      resetGeofenceRuntime();
+      if(cleanupMission){ try{cleanupMission();}catch{} cleanupMission=null; }
+      state={...defaults};
+      save();
+      render();
     }));
     document.querySelectorAll('[data-onboard]').forEach(b=>b.addEventListener('click',()=>{
       if(state.audio) ensureAudio();
