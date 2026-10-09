@@ -1,3 +1,9 @@
+
+## 7.39.5 — Onboarding copy + diagnostics scale
+- Mission Radar onboarding now includes a second explanatory line with a clear paragraph gap.
+- ELF FM onboarding now explains the journey audio and that Mission Audio / radio can be controlled from Comms.
+- MC00 keeps the corrected 10-ping timing through 90% but restores the original rising pitch progression; the 100% completion ping remains distinct.
+
 # Pass 7.39.0 — Final polish baseline
 
 - Moved Admin “Reset Mission Progress” beside “Open Mission Control”.

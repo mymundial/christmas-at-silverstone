@@ -9242,6 +9242,8 @@ body.admin-page,.admin-page .app-shell{height:auto;min-height:100%;overflow:visi
 }
 .setup-page .briefing-copy{display:grid;gap:9px;max-width:390px!important;}
 .setup-page .briefing-copy p{margin:0;line-height:1.42;}
+.setup-page .setup-copy-stack{display:grid;gap:12px;max-width:390px!important;}
+.setup-page .setup-copy-stack p{margin:0;line-height:1.42;}
 .setup-page .setup-actions{padding-bottom:0!important;}
 @media(max-width:390px){
   .setup-page .setup-card,.setup-page.briefing-page .setup-card,.setup-page.radar-setup-page .setup-card{

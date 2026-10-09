@@ -83,7 +83,10 @@
         progressValue = Math.min(100, progressValue + 1);
         paint();
         if(progressValue <= 90 && progressValue % 9 === 0){
-          ping(620,.05,.018);
+          const scanStep = (progressValue / 9) - 1;
+          // Restore the original rising diagnostic scale while keeping the
+          // corrected cadence locked to each system's Offline transition.
+          ping(560 + scanStep * 34,.048,.018);
         }
         if(progressValue === 100){
           ping(860,.12,.05);
