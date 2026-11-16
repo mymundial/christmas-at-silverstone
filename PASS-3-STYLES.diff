@@ -1,0 +1,281 @@
+--- /mnt/data/pass2b_work/christmas-at-silverstone-main/src/styles.css	2026-11-02 11:36:46.035286097 +0000
++++ src/styles.css	2026-11-02 11:49:14.647416257 +0000
+@@ -11642,3 +11642,278 @@
+ 
+ @media(max-width:390px){.nav button{font-size:6.2px;letter-spacing:.08em;}}
+ .nav button>span:last-child{line-height:8px;}
++
++/* ========================================================================== 
++   PASS 3 — TYPOGRAPHY + INFORMATION HIERARCHY
++   Scope: shared text hierarchy only. No card/button geometry redesign, no
++   game artwork, no radar internals, no mission mechanics.
++   ========================================================================== */
++:root{
++  --type-display-xl:clamp(34px,9vw,46px);
++  --type-display-lg:clamp(29px,7.4vw,38px);
++  --type-display-md:clamp(23px,5.8vw,29px);
++  --type-heading:18px;
++  --type-body:13px;
++  --type-body-sm:11px;
++  --type-label:8px;
++  --type-status:clamp(20px,5.4vw,25px);
++  --leading-display:.88;
++  --leading-heading:.96;
++  --leading-body:1.44;
++  --tracking-label:.22em;
++}
++
++/* Canonical micro-label language: small, tracked and quiet unless a component
++   has an intentional action/status colour. */
++.kicker,
++.telemetry-heading,
++.status-label,
++.row-status,
++.comms-section-title,
++.mission-progress,
++.system-status-name,
++.system-status-value,
++.mission-settings-head .kicker{
++  font-family:var(--font-text);
++  text-transform:uppercase;
++}
++.kicker{
++  font-size:var(--type-label)!important;
++  line-height:1.15!important;
++  font-weight:700!important;
++  letter-spacing:var(--tracking-label)!important;
++}
++
++/* Shared body copy. */
++.support-copy,.sub,
++.mission-head p,
++.setup-page .support-copy,
++.comms-message p,
++.comms-empty,
++.completion p{
++  font-family:var(--font-text);
++  font-size:var(--type-body)!important;
++  line-height:var(--leading-body)!important;
++  font-weight:400;
++  letter-spacing:0;
++}
++
++/* Setup/onboarding hierarchy. Keep existing layout in Pass 3; strengthen the
++   typographic contrast only. */
++.setup-page .setup-card h1,
++.setup-page.demo-scan-page .demo-scan-card h1,
++.mc00-copy h1{
++  font-family:var(--font-display)!important;
++  font-size:var(--type-display-xl)!important;
++  line-height:var(--leading-display)!important;
++  font-weight:900!important;
++  letter-spacing:.005em!important;
++  text-transform:uppercase;
++  color:var(--color-text-primary)!important;
++}
++.mc00-copy .support-copy{
++  margin-top:7px!important;
++  font-size:var(--type-body-sm)!important;
++  letter-spacing:.08em;
++  text-transform:uppercase;
++  color:var(--color-text-secondary)!important;
++}
++
++/* Mission hierarchy follows the Silverstone references: location/context is
++   subordinate; the challenge name is the dominant poster-style headline. */
++.mission-head{
++  text-align:left!important;
++}
++.mission-head .meta{
++  min-height:24px;
++  align-items:center;
++}
++.mission-head .meta .kicker{
++  color:var(--color-text-secondary)!important;
++  max-width:78%;
++}
++.mission-head h1,
++.diagnostics-head h1,
++.mc01-head h1,
++.artifact-head h1,
++.spirit-head h1,
++.raceway-head h1,
++.lapland-head h1{
++  margin:10px 0 8px!important;
++  text-align:left!important;
++  font-family:var(--font-display)!important;
++  font-size:var(--type-display-xl)!important;
++  line-height:var(--leading-display)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++  text-transform:uppercase;
++  color:var(--color-text-primary)!important;
++}
++.mission-head>p,
++.mission-head .support-copy{
++  max-width:390px!important;
++  margin:0!important;
++  text-align:left!important;
++  color:var(--color-text-secondary)!important;
++}
++.mission-head .linkbtn{
++  font-family:var(--font-text);
++  font-size:8px!important;
++  line-height:1;
++  font-weight:700;
++  letter-spacing:.16em!important;
++}
++
++/* Radar / tracker shared hierarchy. */
++.telemetry-heading{
++  font-size:8px!important;
++  line-height:1!important;
++  font-weight:700!important;
++  letter-spacing:.24em!important;
++}
++.status-label{
++  font-size:7px!important;
++  line-height:1.1!important;
++  font-weight:700!important;
++  letter-spacing:.18em!important;
++  color:var(--color-text-tertiary)!important;
++}
++.status-value{
++  font-family:var(--font-display)!important;
++  font-size:var(--type-status)!important;
++  line-height:.92!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++}
++#radarMessage .kicker{
++  color:var(--color-action)!important;
++}
++#radarMessage h3{
++  margin:5px 0 0!important;
++  font-family:var(--font-display)!important;
++  font-size:18px!important;
++  line-height:var(--leading-heading)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++  text-transform:uppercase;
++  color:var(--color-text-primary)!important;
++}
++
++/* Pit-stop list hierarchy: compact context, strong installation name, small
++   status. Layout/card treatment remains the Pass 1/2 implementation. */
++.mission-row .kicker{
++  color:var(--color-text-secondary)!important;
++}
++.mission-row h3{
++  margin:4px 0 0!important;
++  font-family:var(--font-display)!important;
++  font-size:var(--type-heading)!important;
++  line-height:var(--leading-heading)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++  text-transform:uppercase;
++}
++.nav-view .row-status,
++.row-status{
++  font-size:7px!important;
++  line-height:1.05!important;
++  font-weight:700!important;
++  letter-spacing:.13em!important;
++}
++
++/* Sleigh / system hierarchy. */
++.sleigh-pretitle,
++.sleigh-systems-title{
++  font-size:var(--type-label)!important;
++  letter-spacing:var(--tracking-label)!important;
++  font-weight:700!important;
++}
++.sleigh-title-row h1{
++  font-family:var(--font-display)!important;
++  font-size:var(--type-display-md)!important;
++  line-height:var(--leading-display)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++}
++.sleigh-percent{
++  font-family:var(--font-display)!important;
++  font-size:var(--type-display-md)!important;
++  line-height:var(--leading-display)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++}
++.system-status-name,
++.system-status-value{
++  font-weight:700;
++  letter-spacing:.12em;
++  text-transform:uppercase;
++}
++
++/* Team Radio hierarchy. */
++.comms-section-title{
++  font-size:var(--type-label)!important;
++  line-height:1!important;
++  font-weight:700!important;
++  letter-spacing:var(--tracking-label)!important;
++}
++.comms-message-head .kicker{
++  color:var(--color-text-secondary)!important;
++}
++.comms-message h3{
++  margin:6px 0 5px!important;
++  font-family:var(--font-display)!important;
++  font-size:var(--type-heading)!important;
++  line-height:var(--leading-heading)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++  text-transform:uppercase;
++}
++.comms-message p{margin-top:0;}
++.mission-setting-copy>span{
++  font-family:var(--font-text);
++  font-size:9px!important;
++  line-height:1.05;
++  font-weight:700!important;
++  letter-spacing:.11em;
++  text-transform:uppercase;
++}
++.mission-setting-copy strong{
++  font-family:var(--font-display);
++  font-size:12px!important;
++  line-height:1;
++  font-weight:900!important;
++  letter-spacing:.02em;
++  text-transform:uppercase;
++}
++
++/* Completion hierarchy. */
++.completion h2,
++.mc00-complete-popup h2{
++  font-family:var(--font-display)!important;
++  font-size:var(--type-display-xl)!important;
++  line-height:var(--leading-display)!important;
++  font-weight:900!important;
++  letter-spacing:0!important;
++  text-transform:uppercase;
++}
++
++/* CTA typography only. Geometry / colour remains owned by the component pass. */
++.btn{
++  font-family:var(--font-text)!important;
++  font-size:11px!important;
++  line-height:1!important;
++  font-weight:900!important;
++  letter-spacing:.045em!important;
++}
++.btn.small{font-size:9px!important;letter-spacing:.05em!important;}
++
++@media(max-width:360px){
++  :root{
++    --type-display-xl:clamp(31px,9.2vw,36px);
++    --type-display-md:22px;
++    --type-heading:16px;
++    --type-body:12px;
++  }
++  .mission-head .meta .kicker{max-width:72%;}
++  .btn{font-size:10px!important;}
++}

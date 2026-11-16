@@ -1,0 +1,281 @@
+--- /mnt/data/pass2a_compare/christmas-at-silverstone-main/src/styles.css	2026-11-02 11:21:58.000000000 +0000
++++ src/styles.css	2026-11-02 11:36:46.035286097 +0000
+@@ -11367,3 +11367,278 @@
+    Masthead, bottom navigation, radar artwork and game internals are untouched.
+    ========================================================================== */
+ .hero::before,.hero::after{background:none!important;box-shadow:none!important;filter:none!important;opacity:0!important;}
++
++/* ========================================================================== 
++   PASS 2B — CHRISTMAS AT SILVERSTONE MASTHEAD + NAVIGATION SHELL
++   Scope: persistent masthead and bottom navigation only.
++   Radar internals, game artwork and mission mechanics remain untouched.
++   ========================================================================== */
++:root{
++  --masthead-logo-width:clamp(125px,31vw,148px);
++  --masthead-progress-h:3px;
++}
++
++/* Persistent Silverstone masthead: compact official lockup + Pit Crew status. */
++.topbar,
++.radar-page>.topbar,
++.mission-shell>.topbar,
++.setup-page>.topbar,
++.phone:has(.nav-view[data-view="missions"]) .topbar{
++  position:relative;
++  z-index:60;
++  flex:0 0 auto;
++  width:100%;
++  min-height:0!important;
++  margin:0;
++  padding:calc(env(safe-area-inset-top,0px) + 10px) var(--page-gutter) 8px;
++  display:block;
++  overflow:hidden;
++  background:var(--brand-midnight);
++  border:0;
++  border-bottom:0!important;
++  box-shadow:none!important;
++}
++.masthead-row{
++  width:100%;
++  min-height:48px;
++  display:flex;
++  align-items:center;
++  justify-content:space-between;
++  gap:16px;
++}
++.topbar .brand,
++.topbar .brand-christmas{
++  margin:0;
++  padding:0;
++  line-height:0;
++  display:flex;
++  align-items:center;
++  justify-content:flex-start;
++  flex:0 0 auto;
++}
++.topbar .brand img,
++.topbar .brand-christmas img{
++  display:block;
++  width:var(--masthead-logo-width)!important;
++  max-width:148px!important;
++  min-width:125px;
++  height:auto;
++  aspect-ratio:auto!important;
++  object-fit:contain;
++  filter:none;
++}
++.topbar .mission-control-logo{display:none!important;}
++.pitcrew-status{
++  min-width:116px;
++  display:grid;
++  justify-items:end;
++  align-content:center;
++  gap:3px;
++  text-align:right;
++  color:var(--brand-white);
++  text-transform:uppercase;
++}
++.pitcrew-status strong{
++  margin:0;
++  font-family:var(--font-display);
++  font-size:13px;
++  line-height:.86;
++  letter-spacing:.055em;
++  font-weight:900;
++}
++.pitcrew-status span{
++  font-family:var(--font-text);
++  font-size:7px;
++  line-height:1;
++  letter-spacing:.22em;
++  font-weight:700;
++  color:var(--color-text-secondary);
++  white-space:nowrap;
++}
++.masthead-progress{
++  width:100%;
++  height:var(--masthead-progress-h);
++  margin-top:8px;
++  overflow:hidden;
++  background:rgba(255,255,255,.10);
++}
++.masthead-progress>span{
++  display:block;
++  height:100%;
++  min-width:0;
++  background:var(--color-action);
++  transition:width .28s ease;
++}
++
++/* Navigation keeps all four working destinations, but adopts the supplied shell language. */
++.nav,
++.phone:has(.nav-view[data-view="missions"]) .nav{
++  height:calc(var(--nav-h) + var(--nav-safe));
++  padding:0 0 var(--nav-safe);
++  overflow:hidden;
++  display:grid;
++  grid-template-columns:repeat(4,minmax(0,1fr));
++  background:var(--brand-midnight);
++  border:0;
++  border-top:1px solid rgba(255,255,255,.13)!important;
++  border-radius:0!important;
++  box-shadow:none!important;
++  backdrop-filter:none;
++}
++.nav button{
++  position:relative;
++  min-width:0;
++  min-height:var(--nav-h);
++  padding:8px 3px 4px;
++  gap:4px;
++  border:0;
++  background:transparent;
++  display:flex;
++  flex-direction:column;
++  align-items:center;
++  justify-content:center;
++  overflow:visible;
++  color:rgba(255,255,255,.48);
++  font-family:var(--font-text);
++  font-size:7px;
++  line-height:1;
++  font-weight:700;
++  letter-spacing:.15em;
++  text-transform:uppercase;
++  transition:color .14s ease,background-color .14s ease;
++}
++.nav button::before{
++  content:"";
++  position:absolute;
++  top:-1px;
++  left:50%;
++  width:42px;
++  height:3px;
++  transform:translateX(-50%) scaleX(0);
++  transform-origin:center;
++  background:var(--color-action);
++  transition:transform .16s ease;
++}
++.nav button.active{
++  color:var(--brand-white)!important;
++  background:transparent;
++}
++.nav button.active::before{transform:translateX(-50%) scaleX(1);}
++.nav button>span:last-child{
++  display:block;
++  max-width:100%;
++  padding:0;
++  overflow:hidden;
++  text-overflow:ellipsis;
++  white-space:nowrap;
++  line-height:9px;
++}
++.nav .ico{
++  position:relative;
++  height:22px;
++  flex:0 0 22px;
++  display:grid;
++  place-items:center;
++  line-height:1;
++}
++.nav .ico svg,
++.nav .nav-line-icon{
++  display:block;
++  width:27px;
++  height:20px;
++  fill:none;
++  stroke:currentColor;
++  stroke-width:1.6;
++  stroke-linecap:round;
++  stroke-linejoin:round;
++  filter:none!important;
++  opacity:1;
++}
++.nav button.active .ico svg,
++.nav button.active .nav-line-icon{filter:none!important;}
++.nav-sleigh-icon-wrap,.nav-sleigh-icon,.nav-mask,.nav-mask-sleigh{display:none!important;}
++.nav-badge{
++  top:-7px;
++  right:-9px;
++  min-width:17px;
++  height:17px;
++  padding:0 4px;
++  border:2px solid var(--brand-midnight);
++  background:var(--color-action);
++  color:var(--brand-white);
++  box-shadow:none;
++}
++
++@media(max-width:360px){
++  :root{--masthead-logo-width:125px;}
++  .topbar,
++  .radar-page>.topbar,
++  .mission-shell>.topbar,
++  .setup-page>.topbar{padding:calc(env(safe-area-inset-top,0px) + 8px) var(--page-gutter) 7px;}
++  .masthead-row{min-height:44px;gap:10px;}
++  .pitcrew-status{min-width:106px;}
++  .pitcrew-status strong{font-size:12px;}
++  .pitcrew-status span{font-size:6.5px;letter-spacing:.18em;}
++  .masthead-progress{margin-top:7px;}
++  .nav button{font-size:6.6px;letter-spacing:.12em;}
++}
++
++@media(max-height:720px){
++  .topbar,
++  .radar-page>.topbar,
++  .mission-shell>.topbar,
++  .setup-page>.topbar{padding-top:calc(env(safe-area-inset-top,0px) + 7px);padding-bottom:6px;}
++  .masthead-row{min-height:42px;}
++  .topbar .brand img,.topbar .brand-christmas img{width:125px!important;max-width:125px!important;}
++  .pitcrew-status strong{font-size:11.5px;}
++  .masthead-progress{margin-top:6px;}
++}
++
++/* Pass 2B validation corrections: constrain masthead geometry and explicitly colour SVG strokes. */
++.topbar,
++.radar-page>.topbar,
++.mission-shell>.topbar,
++.setup-page>.topbar,
++.phone:has(.nav-view[data-view="missions"]) .topbar{width:auto!important;align-self:stretch;box-sizing:border-box;}
++.masthead-row{width:auto;max-width:100%;box-sizing:border-box;}
++.pitcrew-status{flex:0 0 auto;max-width:46%;}
++.nav button .nav-line-icon{color:inherit;stroke:rgba(255,255,255,.48)!important;}
++.nav button .nav-line-icon circle{fill:rgba(255,255,255,.48)!important;}
++.nav button.active .nav-line-icon{stroke:var(--brand-white)!important;}
++.nav button.active .nav-line-icon circle{fill:var(--brand-white)!important;}
++
++/* Pass 2B final geometry: fixed left/right masthead anchors and opacity-driven nav icons. */
++.masthead-row{position:relative;display:block;height:48px;min-height:48px;}
++.topbar .brand,.topbar .brand-christmas{position:absolute;left:0;top:50%;transform:translateY(-50%);}
++.pitcrew-status{position:absolute;right:0;top:50%;transform:translateY(-50%);max-width:none;}
++.nav button .nav-line-icon{stroke:#fff!important;opacity:.48;}
++.nav button .nav-line-icon circle{fill:#fff!important;}
++.nav button.active .nav-line-icon{stroke:#fff!important;opacity:1;}
++.nav button.active .nav-line-icon circle{fill:#fff!important;}
++@media(max-height:720px){.masthead-row{height:44px;min-height:44px;}}
++
++/* Keep masthead content inset while the progress rule remains full-bleed. */
++.topbar,
++.radar-page>.topbar,
++.mission-shell>.topbar,
++.setup-page>.topbar,
++.phone:has(.nav-view[data-view="missions"]) .topbar{padding-left:0!important;padding-right:0!important;}
++.masthead-row{width:auto;max-width:none;margin-left:var(--page-gutter);margin-right:var(--page-gutter);}
++
++/* Explicit masthead inner width for deterministic mobile geometry. */
++.masthead-row{width:calc(100% - 32px)!important;margin-left:16px!important;margin-right:16px!important;}
++@media(max-width:360px){.masthead-row{width:calc(100% - 28px)!important;margin-left:14px!important;margin-right:14px!important;}}
++
++/* Avoid grid-dependent alignment in the compact masthead status block. */
++.pitcrew-status{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;}
++
++@media(max-width:340px){
++  .nav button{font-size:6.1px;letter-spacing:.08em;padding-left:1px;padding-right:1px;}
++  .nav button>span:last-child{max-width:66px;white-space:normal;text-align:center;line-height:7.5px;min-height:15px;display:flex;align-items:center;justify-content:center;}
++  .nav button::before{width:36px;}
++}
++
++.nav button>span:last-child{width:100%;text-align:center;}
++
++@media(max-width:390px){.nav button{font-size:6.2px;letter-spacing:.08em;}}
++.nav button>span:last-child{line-height:8px;}

@@ -1,0 +1,12 @@
+--- /mnt/data/pass2b_work/christmas-at-silverstone-main/src/modules/10-ui-rendering.js	2026-11-02 11:36:45.836200545 +0000
++++ src/modules/10-ui-rendering.js	2026-11-02 11:46:04.384650474 +0000
+@@ -248,7 +248,8 @@
+ 
+ 
+   function missionHeader(cp){
+-    const label=`${cp.mc} / ${cp.location}`;
++    const pitStopNumber=String(cp.mc||'').replace('MC-','').padStart(2,'0');
++    const label=`PIT STOP ${pitStopNumber} / ${cp.location}`;
+     if(cp.type==='diagnostics'){
+       return `<div class="mission-head diagnostics-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="diagnostics-brand"><img src="./assets/audi-rings-2026.webp" alt="Audi"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+     }

@@ -1,0 +1,321 @@
+--- /mnt/data/pass3_work/christmas-at-silverstone-main/src/styles.css	2026-11-02 11:49:14.647416257 +0000
++++ src/styles.css	2026-11-02 11:57:45.985091515 +0000
+@@ -11917,3 +11917,318 @@
+   .mission-head .meta .kicker{max-width:72%;}
+   .btn{font-size:10px!important;}
+ }
++
++/* ========================================================================== 
++   PASS 4 — SHARED COMPONENTS
++   Scope: reusable component presentation only. No copy, shell, navigation,
++   game internals, mission mechanics or GPS behaviour changes.
++   ========================================================================== */
++:root{
++  --component-surface:var(--brand-midnight);
++  --component-surface-soft:rgba(18,5,49,.72);
++  --component-border:rgba(255,255,255,.24);
++  --component-border-strong:rgba(255,255,255,.48);
++  --component-disabled:rgba(255,255,255,.34);
++  --component-overlay:rgba(7,1,23,.72);
++  --component-radius:14px;
++  --component-control-radius:10px;
++}
++
++/* Generic cards / panels: flat Silverstone surfaces, no cyan ambience. */
++.panel,
++.onboard-card,
++.mission-card,
++.message-card,
++.mission-row,
++.nav-view>.mission-settings,
++.comms-message,
++.comms-empty,
++.nav-view>.sleigh-card,
++.sleigh-systems,
++.status-strip,
++.completion{
++  background:var(--component-surface)!important;
++  border-color:var(--component-border)!important;
++  box-shadow:none!important;
++  text-shadow:none;
++}
++.panel.soft,
++.sleigh-systems.panel.soft{
++  background:var(--component-surface-soft)!important;
++  border-color:var(--component-border)!important;
++  box-shadow:none!important;
++}
++.message-card.target-message,
++.mission-row.available,
++.mission-row.interactive,
++.comms-message.unread{
++  border-color:var(--color-action)!important;
++  box-shadow:none!important;
++}
++.mission-row.interactive:hover,
++.mission-row.interactive:focus-visible{
++  background:rgba(255,0,54,.08)!important;
++  border-color:var(--color-action)!important;
++  box-shadow:none!important;
++}
++
++/* Buttons: one shared control language. */
++.btn{
++  min-height:var(--control-height)!important;
++  border:1px solid var(--component-border-strong)!important;
++  border-radius:var(--component-control-radius)!important;
++  background:transparent!important;
++  color:var(--brand-white)!important;
++  box-shadow:none!important;
++  text-shadow:none!important;
++  filter:none;
++  transition:background-color .14s ease,border-color .14s ease,color .14s ease,opacity .14s ease,transform .08s ease!important;
++}
++.btn.primary{
++  background:var(--color-action)!important;
++  border-color:var(--color-action)!important;
++  color:var(--brand-white)!important;
++}
++.btn.secondary{
++  background:transparent!important;
++  border-color:var(--component-border-strong)!important;
++  color:var(--brand-white)!important;
++}
++.btn.success{
++  background:transparent!important;
++  border-color:var(--status-success)!important;
++  color:var(--brand-white)!important;
++}
++.btn.danger{
++  background:transparent!important;
++  border-color:var(--status-danger)!important;
++  color:var(--brand-white)!important;
++}
++.btn:hover:not(:disabled){filter:none!important;}
++.btn.primary:hover:not(:disabled){background:#e60031!important;border-color:#e60031!important;}
++.btn.secondary:hover:not(:disabled){background:rgba(255,255,255,.08)!important;border-color:var(--brand-white)!important;}
++.btn.success:hover:not(:disabled){background:rgba(87,239,145,.08)!important;}
++.btn.danger:hover:not(:disabled){background:rgba(255,106,104,.08)!important;}
++.btn:active:not(:disabled){transform:translateY(1px);}
++.btn:disabled,
++.btn[aria-disabled="true"]{
++  opacity:.38!important;
++  cursor:not-allowed!important;
++  box-shadow:none!important;
++  filter:none!important;
++}
++.linkbtn{
++  color:var(--brand-white)!important;
++  text-decoration-color:var(--color-action)!important;
++  text-shadow:none!important;
++  filter:none!important;
++}
++.btn:focus-visible,
++.linkbtn:focus-visible,
++.mission-row.interactive:focus-visible,
++.mission-setting-toggle:focus-visible{
++  outline:2px solid var(--color-focus)!important;
++  outline-offset:2px!important;
++  box-shadow:none!important;
++}
++
++/* Shared progress: Midnight track, Race Red progress, no luminous cyan. */
++.masthead-progress,
++.mc00-progress,
++.sleigh-development-bar{
++  background:rgba(255,255,255,.10)!important;
++  border-color:var(--component-border)!important;
++  box-shadow:none!important;
++}
++.masthead-progress>span,
++#mc00ProgressFill,
++.sleigh-development-spectrum{
++  background:var(--color-action)!important;
++  box-shadow:none!important;
++}
++.mc00-progress::before{
++  background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 19px,transparent 19px 21px)!important;
++}
++#mc00ProgressValue{
++  color:var(--brand-white)!important;
++  text-shadow:none!important;
++}
++.sleigh-development-mask{background:var(--brand-midnight)!important;box-shadow:none!important;}
++.sleigh-development-marker{
++  background:var(--brand-white)!important;
++  border-color:var(--brand-white)!important;
++  box-shadow:none!important;
++}
++.mission-progress{color:var(--color-text-tertiary)!important;}
++.mission-progress strong{color:var(--color-action)!important;text-shadow:none!important;}
++
++/* Shared status chips / badges. Functional success/warning/error colours stay semantic. */
++.nav-badge{
++  background:var(--color-action)!important;
++  color:var(--brand-white)!important;
++  border-color:var(--brand-midnight)!important;
++  box-shadow:none!important;
++}
++.row-status,
++.radio-state{
++  border:1px solid var(--component-border)!important;
++  border-radius:999px;
++  background:transparent!important;
++  color:var(--color-text-secondary)!important;
++  box-shadow:none!important;
++  text-shadow:none!important;
++}
++.mission-row.available .row-status,
++.mission-row.interactive .row-status{
++  border-color:var(--color-action)!important;
++  color:var(--color-action)!important;
++}
++.mission-row.done .row-status,
++.radio-state.is-success{
++  border-color:var(--status-success)!important;
++  color:var(--status-success)!important;
++}
++.comms-radio.locked .radio-state,
++.radio-state.muted{
++  border-color:var(--component-border)!important;
++  color:var(--color-text-tertiary)!important;
++}
++
++/* Shared modal / overlay containers. */
++.mc00-complete-popup{
++  background:var(--component-surface)!important;
++  border:1px solid var(--component-border-strong)!important;
++  border-radius:var(--radius-large)!important;
++  box-shadow:0 18px 60px rgba(0,0,0,.46)!important;
++}
++.mc00-card.is-complete::after{
++  background:var(--component-overlay)!important;
++}
++.mc00-complete-icon{
++  border-color:var(--color-action)!important;
++  color:var(--brand-white)!important;
++  background:var(--color-action)!important;
++  box-shadow:none!important;
++  text-shadow:none!important;
++}
++.toast{
++  background:var(--component-surface)!important;
++  border:1px solid var(--component-border)!important;
++  border-left:3px solid var(--color-action)!important;
++  color:var(--brand-white)!important;
++  box-shadow:0 12px 28px rgba(0,0,0,.28)!important;
++  text-shadow:none!important;
++}
++
++/* Shared instruction / locked presentation. Copy and layout remain unchanged. */
++.setup-copy-stack,
++.briefing-copy,
++.comms-lock{
++  color:var(--color-text-secondary)!important;
++}
++.comms-lock{
++  border:1px solid var(--component-border)!important;
++  border-radius:var(--component-radius)!important;
++  background:var(--component-surface)!important;
++  box-shadow:none!important;
++}
++.comms-lock .big-lock{
++  color:var(--color-text-tertiary)!important;
++  filter:none!important;
++  text-shadow:none!important;
++}
++
++/* Shared control tiles / common states. */
++.mission-setting-toggle{
++  border-color:var(--component-border)!important;
++  background:var(--component-surface-soft)!important;
++  color:var(--color-text-secondary)!important;
++  box-shadow:none!important;
++  text-shadow:none!important;
++}
++.mission-setting-icon{
++  border-color:var(--component-border)!important;
++  background:transparent!important;
++  color:var(--color-text-secondary)!important;
++  box-shadow:none!important;
++}
++.mission-setting-icon img,
++.mission-setting-icon svg{
++  filter:none!important;
++  text-shadow:none!important;
++}
++.mission-setting-toggle.on{
++  border-color:var(--color-action)!important;
++  background:var(--color-action-soft)!important;
++  color:var(--brand-white)!important;
++  box-shadow:none!important;
++}
++.mission-setting-toggle.on .mission-setting-icon{
++  border-color:var(--color-action)!important;
++  background:transparent!important;
++  color:var(--color-action)!important;
++  box-shadow:none!important;
++  animation:none!important;
++}
++.mission-setting-toggle.on .mission-setting-icon img{
++  opacity:1!important;
++  filter:brightness(0) invert(1)!important;
++  transform:none!important;
++}
++.mission-setting-toggle.on .mission-setting-icon svg{
++  stroke:var(--color-action)!important;
++  opacity:1!important;
++  filter:none!important;
++  transform:none!important;
++}
++.mission-setting-toggle.on .mission-setting-copy strong{color:var(--color-action)!important;text-shadow:none!important;}
++.mission-setting-toggle.off .mission-setting-icon{color:var(--color-text-tertiary)!important;}
++.mission-setting-toggle[aria-disabled="true"]{
++  opacity:.42!important;
++  cursor:not-allowed!important;
++  border-color:var(--component-border)!important;
++  background:transparent!important;
++  box-shadow:none!important;
++}
++
++/* Shared system-status readout: retain semantic state colour, remove technical glow. */
++.system-status-name,
++.system-status-value{
++  border-bottom-color:rgba(255,255,255,.14)!important;
++}
++.system-node{
++  border-color:var(--component-border)!important;
++  background:transparent!important;
++  box-shadow:none!important;
++}
++.system-status-item.is-checking .system-node{
++  border-color:var(--color-action)!important;
++  background:var(--color-action)!important;
++  box-shadow:none!important;
++  animation:none!important;
++}
++.system-status-item.is-checking .system-status-value{color:var(--color-action)!important;text-shadow:none!important;}
++.system-status-item.is-offline .system-node,
++.system-status-item.is-blocked .system-node{border-color:var(--status-danger)!important;background:var(--status-danger)!important;box-shadow:none!important;}
++.system-status-item.is-offline .system-status-value,
++.system-status-item.is-blocked .system-status-value{color:var(--status-danger)!important;text-shadow:none!important;}
++.system-status-item.is-online .system-node,
++.system-status-item.is-complete .system-node{border-color:var(--status-success)!important;background:var(--status-success)!important;box-shadow:none!important;}
++.system-status-item.is-online .system-status-value,
++.system-status-item.is-complete .system-status-value{color:var(--status-success)!important;text-shadow:none!important;}
++.system-status-item.is-clear .system-node{border-color:var(--status-warning)!important;background:var(--status-warning)!important;box-shadow:none!important;}
++.system-status-item.is-clear .system-status-value{color:var(--status-warning)!important;text-shadow:none!important;}
++
++/* Shared completion states remain semantic, but without luminous effects. */
++.complete-message,
++.completion{
++  border-color:var(--status-success)!important;
++  box-shadow:none!important;
++}
++.completion .check{
++  border-color:var(--status-success)!important;
++  color:var(--status-success)!important;
++  background:transparent!important;
++  box-shadow:none!important;
++  text-shadow:none!important;
++}

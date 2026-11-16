@@ -1,0 +1,11 @@
+--- /mnt/data/pass4_work/christmas-at-silverstone-main/src/modules/10-ui-rendering.js	2026-11-02 11:46:04.384650474 +0000
++++ src/modules/10-ui-rendering.js	2026-11-02 12:11:12.258006807 +0000
+@@ -129,7 +129,7 @@
+     }
+   }
+   function renderLaunch(){
+-    if(state.bootDone===false) return `<section class="hero"><div class="hero-content"><img class="hero-logo hero-logo-stacked" src="./assets/silverstone-logo-landing.webp" alt="Silverstone"><img class="hero-mission-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"><div class="hero-actions"><button class="btn primary" data-onboard="mc00-live">Start Mission</button></div></div></section>`;
++    if(state.bootDone===false) return `<section class="hero"><div class="hero-content"><img class="hero-brand-lockup" src="./assets/brand/christmas-at-silverstone-master-light.svg" alt="Christmas at Silverstone"><div class="hero-actions"><button class="btn primary" data-onboard="mc00-live">Start Mission</button></div></div></section>`;
+     return renderOnboardStep(state.bootDone);
+   }
+   function renderOnboardStep(step){

@@ -1,0 +1,41 @@
+--- /mnt/data/pass2a_compare/christmas-at-silverstone-main/src/modules/10-ui-rendering.js	2026-10-09 12:55:47.000000000 +0000
++++ src/modules/10-ui-rendering.js	2026-11-02 11:36:45.836200545 +0000
+@@ -39,28 +39,31 @@
+     }
+     app.innerHTML=navShell();
+   }
+-  function brand(){return `<div class="brand"><img src="./assets/silverstone-logo-landscape-cropped.webp" alt="Silverstone"></div>`}
++  function brand(){return `<div class="brand brand-christmas"><img class="brand-lockup brand-lockup--compact" src="./assets/brand/christmas-at-silverstone-compact-light.svg" alt="Christmas at Silverstone"></div>`}
+   function settingAudioIcon(){
+     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
+   }
+   function navSleighIcon(){
+-    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.39.3" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.39.3" alt=""></span>`;
++    return `<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M4 15.5h17.4c3.2 0 5.5-1.3 6.9-4"/><path d="M3 17c1.5 3 4 4.5 7.5 4.5H25"/><path d="M9 15.5c.7-4.8 3.7-7.8 8.7-7.8 3.5 0 6.1 1.2 9 4"/><path d="M14.5 9.2h4.7"/><path d="M17.2 7.6 15.4 4.7"/></svg>`;
+   }
+   function navIcon(id){
+     const icons={
+-      radar:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 60.5c-11.8 0-23.1 4.9-31.2 13.6l4.4 4.1c13.7-14.8 36.8-15.7 51.6-1.9.6.6 1.2 1.2 1.8 1.8l4.4-4.1C128 65.3 116.7 60.5 105 60.5Zm0 30c-7 0-12.7 5.6-12.7 12.6S98 115.8 105 115.8s12.7-5.6 12.7-12.6c0-3.3-1.2-6.4-3.5-8.8-2.4-2.5-5.8-3.9-9.2-3.9Zm0 19.3c-3.7 0-6.6-3-6.6-6.6s3-6.6 6.6-6.6c3.6 0 6.6 3 6.6 6.6s-2.9 6.5-6.6 6.6ZM105 9.2C79 9.2 54.1 20 36.4 39l4.4 4.1c33.1-35.4 88.6-37.4 124.1-4.3 1.4 1.3 2.8 2.7 4.1 4.1l4.4-4.1C155.7 19.9 130.9 9.2 105 9.2Zm0 25.6c-18.9 0-37 7.8-49.9 21.7l4.4 4.1c23.4-25.1 62.7-26.5 87.9-3.1 1 .9 2 1.9 3 2.9l4.4-4.1c-13.1-13.7-31-21.5-49.8-21.5Z"/></svg>`,
+-      missions:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M142 62.7H86.9v6H142v-6Zm0 15.4H86.9v6H142v-6Zm0-30.9H86.9v6H142v-6Zm-61.1-15.4H68.1v6h12.8v-6Zm61.1 0H86.9v6H142v-6Zm2.2-26.5H65.8l-12.3 6v102l12.3 6h78.5l12.3-6v-102l-12.4-6Zm6.3 108H59.5v-102h91.1v102ZM80.9 78.1H68.1v6h12.8v-6Zm0-30.9H68.1v6h12.8v-6Zm0 15.5H68.1v6h12.8v-6Z"/></svg>`,
+-      comms:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 8.62a46.17 46.17 0 0 1 46.12 46.12h6a52.14 52.14 0 0 0-104.27 0h6A46.17 46.17 0 0 1 105 8.62Zm41.18 50.67c-7.73 0-13.12 5.49-13.12 13.36V86c0 7.89 4.87 13.18 12.11 13.18a12.52 12.52 0 0 0 4.41-.77c-2.54 7.83-8.27 11.22-18.1 11.22H119a9 9 0 0 0-8.45-6H99.32a8.95 8.95 0 1 0 0 17.89h11.25a9 9 0 0 0 8.39-5.86h12.51c17.54 0 25.7-9.42 25.7-29.64V59.29Zm-35.6 56.2H99.32a2.93 2.93 0 0 1 0-5.86h11.25a2.93 2.93 0 1 1 0 5.86ZM151.16 86c0 4.49-2.24 7.17-6 7.17s-6.1-2.61-6.1-7.17V72.65c0-3.55 1.87-7.34 7.11-7.34h5Zm-14-44.19A3 3 0 0 0 140 43.69a3.17 3.17 0 0 0 1.12-.21 3 3 0 0 0 1.67-3.92 40.73 40.73 0 0 0-75.58 0 3 3 0 1 0 5.58 2.25 34.71 34.71 0 0 1 64.42 0ZM63.85 59.29h-11V86c0 7.89 4.82 13.18 12 13.18S77 93.89 77 86V72.65C77 64.78 71.58 59.29 63.85 59.29ZM71 86c0 4.56-2.23 7.17-6.11 7.17s-6-2.68-6-7.17V65.31h5c5.24 0 7.11 3.79 7.11 7.34Z"/></svg>`,
++      radar:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M5 10.5a15.6 15.6 0 0 1 22 0"/><path d="M8.7 14.2a10.4 10.4 0 0 1 14.6 0"/><path d="M12.5 18a5 5 0 0 1 7 0"/><circle cx="16" cy="21" r="1.25" fill="#ffffff" stroke="none"/></svg>`,
++      missions:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M9 3v18"/><path d="M10 4.5h12l-2.7 4 2.7 4H10"/><path d="M9 20.5h15"/></svg>`,
++      comms:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M6 13v-2a10 10 0 0 1 20 0v2"/><path d="M6 12.5h3.5v7H7.8c-1 0-1.8-.8-1.8-1.8z"/><path d="M26 12.5h-3.5v7h1.7c1 0 1.8-.8 1.8-1.8z"/><path d="M22.5 19.5c-1 1.3-2.5 2-4.5 2h-2"/></svg>`,
+       sleigh:navSleighIcon()
+     };
+     return icons[id]||'';
+   }
+-  function navBar(){ return `<nav class="nav" aria-label="Mission Control">${navButton('radar','Radar')}${navButton('missions','Missions')}${navButton('sleigh','Sleigh')}${navButton('comms','Comms')}</nav>`; }
++  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Team<br>Radio')}</nav>`; }
+   function navButton(id,label){
+     const unread=id==='comms'?unreadCount():0;
+     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
+   }
+-  function topBar(){ return `<header class="topbar">${brand()}<img class="mission-control-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"></header>`; }
++  function topBar(){
++    const progress=Math.max(0,Math.min(100,Number(recovery())||0));
++    return `<header class="topbar"><div class="masthead-row">${brand()}<div class="pitcrew-status"><strong>SANTA'S<br>PIT CREW</strong><span>SLEIGH ${progress}% FIXED</span></div></div><div class="masthead-progress" aria-hidden="true"><span style="width:${progress}%"></span></div></header>`;
++  }
+   function statusStrip(){
+     const cp=current();
+     const activationDistance=distanceToActivation(cp,state.distance);

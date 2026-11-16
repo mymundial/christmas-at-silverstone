@@ -1,0 +1,97 @@
+--- /mnt/data/pass1b_work/christmas-at-silverstone-main/src/styles.css	2026-11-02 11:16:42.248930996 +0000
++++ src/styles.css	2026-11-02 11:21:58.704123675 +0000
+@@ -16,6 +16,9 @@
+   --brand-stirling-silver:#8c8c8a;
+   --brand-white:#ffffff;
+ 
++  /* PASS 2A — global environment. */
++  --color-canvas:var(--brand-midnight);
++
+   /* Semantic roles. Shared UI consumes these directly. */
+   --color-surface:rgba(18,5,49,.92);
+   --color-surface-soft:rgba(18,5,49,.72);
+@@ -97,25 +100,15 @@
+   --text:var(--font-text);
+ }
+ *{box-sizing:border-box;}
+-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:var(--text);}
+-body{overflow-x:hidden;background:
+-  radial-gradient(circle at 50% -10%, rgba(43,146,198,.22), transparent 35%),
+-  radial-gradient(circle at 20% 35%, rgba(18,74,106,.18), transparent 28%),
+-  linear-gradient(180deg,#031724 0%,#03121e 55%,#020d16 100%);}
+-body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:
+-  radial-gradient(circle at 8% 12%,#fff 0 1px,transparent 1.4px),
+-  radial-gradient(circle at 75% 7%,#bfeeff 0 1px,transparent 1.4px),
+-  radial-gradient(circle at 33% 19%,#fff 0 1px,transparent 1.3px),
+-  radial-gradient(circle at 90% 28%,#bfeeff 0 1px,transparent 1.3px),
+-  radial-gradient(circle at 14% 65%,#bfeeff 0 1px,transparent 1.3px),
+-  radial-gradient(circle at 70% 70%,#fff 0 1px,transparent 1.4px);
+-  background-size:330px 330px,420px 420px,500px 500px,470px 470px,520px 520px,380px 380px;}
++html,body{margin:0;min-height:100%;background:var(--color-canvas);color:var(--color-text-primary);font-family:var(--text);}
++body{overflow-x:hidden;background:var(--color-canvas);}
++body::before{content:none;}
+ button,input{font:inherit;}
+ button{cursor:pointer;}
+ button:disabled{cursor:not-allowed;opacity:.38;}
+ .app-shell{width:100%;display:flex;justify-content:center;}
+ .phone{position:relative;}
+-.screen{overflow-y:auto;overscroll-behavior:contain;padding-bottom:18px;scrollbar-width:thin;scrollbar-color:#24556b transparent;}
++.screen{overflow-y:auto;overscroll-behavior:contain;padding-bottom:18px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent;}
+ .brand{display:flex;justify-content:center;align-items:center;padding:0;}
+ .brand img{width:176px;max-width:56vw;height:auto;}
+ .kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);font-weight:800;}
+@@ -405,7 +398,7 @@
+ .mission-row.interactive:active{transform:translateY(1px);}
+ .mission-row.interactive .row-status{color:var(--cyan);}
+ .row-action{min-width:auto;justify-items:end;}
+-.screen::-webkit-scrollbar{width:5px;}.screen::-webkit-scrollbar-thumb{background:#24556b;border-radius:10px;}.screen::-webkit-scrollbar-track{background:transparent;}
++.screen::-webkit-scrollbar{width:5px;}.screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:10px;}.screen::-webkit-scrollbar-track{background:transparent;}
+ 
+ .sleigh-page-head p{max-width:390px;}
+ 
+@@ -1556,13 +1549,14 @@
+ @supports(padding:max(0px)){:root{--nav-safe:max(env(safe-area-inset-bottom),12px);}}
+ 
+ /* The phone frame itself is edge-to-edge. Individual content regions own their gutters. */
+-.app-shell{height:var(--viewport-h);min-height:var(--viewport-h);overflow:hidden;}
++.app-shell{height:var(--viewport-h);min-height:var(--viewport-h);overflow:hidden;background:var(--color-canvas);}
+ .phone{
+   width:min(100%,480px);
+   height:var(--viewport-h);
+   min-height:0;
+   padding:0;
+   overflow:hidden;
++  background:var(--color-canvas);
+ }
+ .screen{
+   height:calc(100% - var(--nav-h) - var(--nav-safe));
+@@ -1571,6 +1565,8 @@
+   overflow:hidden;
+   display:flex;
+   flex-direction:column;
++  background:var(--color-canvas);
++  scrollbar-color:rgba(255,255,255,.28) transparent;
+ }
+ .phone.no-nav .screen{
+   height:100%;
+@@ -1751,7 +1747,7 @@
+   padding:0 0 10px;
+   position:relative;
+ }
+-.comms-section-title{position:sticky;top:0;z-index:2;background:#031522;padding:5px 2px;}
++.comms-section-title{position:sticky;top:0;z-index:2;background:var(--color-canvas);padding:5px 2px;}
+ .comms-message{padding:11px 12px 10px;}
+ .comms-message h3{font-size:17px;margin:6px 0 4px;}
+ .comms-message p{font-size:10px;line-height:1.4;}
+@@ -11363,3 +11359,11 @@
+ .mission-setting-toggle.on .mission-setting-icon img{filter:brightness(0) invert(1);opacity:1;}
+ .mission-setting-status.demo .mission-setting-icon img{filter:brightness(0) invert(1)!important;opacity:1!important;}
+ .sleigh-percent{color:var(--color-text-primary)!important;}
++
++
++/* ==========================================================================
++   PASS 2A — GLOBAL ENVIRONMENT
++   Scope: canvas, viewport shell and environment-only decoration.
++   Masthead, bottom navigation, radar artwork and game internals are untouched.
++   ========================================================================== */
++.hero::before,.hero::after{background:none!important;box-shadow:none!important;filter:none!important;opacity:0!important;}

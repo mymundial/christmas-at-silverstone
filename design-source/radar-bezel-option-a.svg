@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254">
+<defs>
+
+ <linearGradient id="body" x1="0" x2=".9" y1="0" y2="1">
+  <stop offset="0" stop-color="#302040"/>
+  <stop offset=".52" stop-color="#211134"/>
+  <stop offset="1" stop-color="#180b29"/>
+ </linearGradient>
+</defs>
+<g>
+<!-- Each ring layer has a transparent opening. No red segment lights or external halo. -->
+<circle cx="627" cy="627" r="560" fill="none" stroke="url(#body)" stroke-width="104"/>
+<circle cx="627" cy="627" r="609" fill="none" stroke="#40304F" stroke-width="3" opacity=".75"/>
+<circle cx="627" cy="627" r="592" fill="none" stroke="#0D061A" stroke-width="5" opacity=".55"/>
+<circle cx="627" cy="627" r="574" fill="none" stroke="#FF0036" stroke-width="9"/>
+<circle cx="627" cy="627" r="553" fill="none" stroke="#42304F" stroke-width="3" opacity=".65"/>
+<circle cx="627" cy="627" r="526" fill="none" stroke="#F7F5FF" stroke-width="6"/>
+<circle cx="627" cy="627" r="515" fill="none" stroke="#050216" stroke-width="2" opacity=".35"/>
+
+</g>
+<!-- white instrument ticks at four cardinal points (relative to inner keyline) -->
+<g fill="none" stroke="#F7F5FF" stroke-width="7" stroke-linecap="square">
+  <path d="M627 99 V132 M1155 627 H1122 M627 1155 V1122 M99 627 H132" />
+</g>
+</svg>
