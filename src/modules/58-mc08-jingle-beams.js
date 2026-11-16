@@ -161,6 +161,8 @@
       vx=speed*lateral;
       vy=Math.sqrt(Math.max(.001,speed*speed-vx*vx));
       running=true;
+      // A new launch restores the live puck trail after the previous goal.
+      trail.style.opacity='';
       last=performance.now();
       stateEl.textContent=`Beam 0${beam} live`;
     }
@@ -233,6 +235,8 @@
     function scoreGoal(){
       if(!running) return;
       running=false;
+      // Remove the last puck streak as soon as the goal is registered.
+      trail.style.opacity='0';
       const scoredBeam=beam;
       markBeamCharged(scoredBeam);
       stateEl.textContent=`BEAM 0${scoredBeam} CHARGED`;
@@ -322,7 +326,8 @@
       puck.classList.add('is-countdown');
       puck.setAttribute('aria-label','Jingle Beams countdown');
       trail.style.opacity='0';
-      updateBounds(false);
+      // Preserve any deflector movement made before the countdown begins.
+      updateBounds();
       puckX=bounds.w/2;
       puckY=bounds.h/2;
       previousPuck={x:puckX,y:puckY};
@@ -344,7 +349,8 @@
         puck.setAttribute('aria-label','Jingle Beams puck');
         arena.classList.remove('is-counting');
         arena.classList.add('is-live');
-        updateBounds(false);
+        // Keep the player's chosen deflector position when 3-2-1 ends.
+        updateBounds();
         puckX=bounds.w/2;
         puckY=bounds.h/2;
         previousPuck={x:puckX,y:puckY};

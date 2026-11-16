@@ -2,12 +2,13 @@
     const panel=document.querySelector('.aurora-panel');
     const dial=document.getElementById('auroraDial');
     const lockCount=document.getElementById('auroraLockCount');
+    const alignBtn=document.getElementById('auroraAlignBtn');
     const lockTrack=[...document.querySelectorAll('#auroraLockTrack i')];
     const stateEl=document.getElementById('auroraState');
     const north=document.querySelector('.aurora-north');
     const pulseEl=document.querySelector('.aurora-charge-pulse');
     const finalWave=document.querySelector('.aurora-final-wave');
-    if(!dial||!lockCount||lockTrack.length!==3||!stateEl)return;
+    if(!dial||!lockCount||lockTrack.length!==3||!stateEl||!alignBtn)return;
 
     const ringEls={
       outer:document.querySelector('[data-aurora-ring="outer"]'),
@@ -25,9 +26,48 @@
     const reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     const speedScale=reduced ? .72 : 1;
 
+    // Aurora Apex: size the complete game panel, not just the CTA. The panel
+    // has content below TAP TO ALIGN, and the scrollport has bottom padding;
+    // omitting either creates an unnecessary internal scrollbar on screens
+    // where the game otherwise fits.
+    const content=panel.closest('.mission-content');
+    const dialFitMinimum=210;
+    let dialFitFrame=0;
+    function fitAuroraDial(){
+      if(!content||!panel.isConnected)return;
+      const panelStyle=getComputedStyle(panel);
+      const fullWidth=Math.min(520,Math.max(0,panel.clientWidth-
+        parseFloat(panelStyle.paddingLeft||0)-parseFloat(panelStyle.paddingRight||0)));
+      if(!fullWidth)return;
+      // Start at the natural size after every resize. Shrink only when the
+      // entire panel (including bottom padding) cannot fit in the viewport.
+      dial.style.setProperty('width',`${fullWidth}px`,'important');
+      const contentStyle=getComputedStyle(content);
+      const bottomPadding=parseFloat(contentStyle.paddingBottom)||0;
+      const availableBottom=content.getBoundingClientRect().bottom-bottomPadding-2;
+      for(let i=0;i<3;i++){
+        const extra=panel.getBoundingClientRect().bottom-availableBottom;
+        const size=dial.getBoundingClientRect().width;
+        if(extra<=1||size<=dialFitMinimum+1)break;
+        dial.style.setProperty('width',`${Math.max(dialFitMinimum,size-extra-3)}px`,'important');
+      }
+      // For genuinely short viewports the 210px minimum is retained and
+      // scrolling remains the fallback, rather than clipping the CTA.
+    }
+    function scheduleAuroraFit(){
+      cancelAnimationFrame(dialFitFrame);
+      dialFitFrame=requestAnimationFrame(fitAuroraDial);
+    }
+    window.addEventListener('resize',scheduleAuroraFit);
+    scheduleAuroraFit();
+
     const lockAudio=new Audio('./assets/aurora-ring-lock.wav');
     lockAudio.preload='auto';
     lockAudio.volume=.78;
+    // Supplied incorrect-alignment cue, attenuated in the asset and at playback.
+    const wrongAudio=new Audio('./assets/aurora-wrong.mp3');
+    wrongAudio.preload='auto';
+    wrongAudio.volume=.25;
     const ambientAudio=new Audio('./assets/aurora-ambient-loop.wav');
     ambientAudio.preload='auto';
     ambientAudio.loop=true;
@@ -99,8 +139,11 @@
         const isActive=!isLocked&&i===activeIndex;
         ringEls[key].classList.toggle('active',isActive);
         ringEls[key].classList.toggle('tracking',!isLocked&&!isActive);
+        const ringArt=ringEls[key].querySelector('img');
+        if(ringArt)ringArt.src=isActive?'./assets/aurora-ring-active.webp':`./assets/aurora-ring-${key}.webp`;
       });
       const active=activeKey();
+      if(active)dial.dataset.activeRing=active;
       if(active) stateEl.textContent=`Align the ${labels[active].toLowerCase()} navigation ring with the North Pole axis.`;
       updateProgress();
     }
@@ -123,6 +166,9 @@
 
     function finishSequence(){
       finished=true;
+      alignBtn.disabled=true;
+      alignBtn.textContent='NAVIGATION LOCKED';
+      dial.dataset.activeRing='complete';
       dial.classList.remove('capture-ready','miss','desync');
       dial.classList.add('complete');
       panel?.classList.add('is-complete');
@@ -178,6 +224,15 @@
       clearMomentClass(dial,'desync',230);
       clearMomentClass(ringEls[key],'miss',250);
       stateEl.textContent='Navigation alignment missed.';
+      // Use the user-supplied incorrect alignment cue; no synthesized fallback.
+      if(state.audio){
+        try{
+          wrongAudio.pause();
+          wrongAudio.currentTime=0;
+          const play=wrongAudio.play();
+          if(play&&typeof play.catch==='function')play.catch(()=>{});
+        }catch{}
+      }
       haptic([12,22,12]);
       feedbackTimers.push(setTimeout(()=>{
         if(!finished&&key===activeKey())stateEl.textContent=`Align the ${labels[key].toLowerCase()} navigation ring with the North Pole axis.`;
@@ -220,15 +275,14 @@
 
     function captureRing(event){
       event?.preventDefault?.();
-      const requested=event?.currentTarget?.dataset?.auroraRing;
       const key=activeKey();
-      if(!key||finished||requested!==key)return;
+      if(!key||finished)return;
       startAmbient();
       const offset=Math.abs(signed(angles[key]));
       if(offset<=captureWindows[key]) lockRing(key);
       else missCapture(key);
     }
-    order.forEach(key=>ringEls[key]?.addEventListener('click',captureRing));
+    alignBtn.addEventListener('click',captureRing);
 
     order.forEach(renderRing);
     updateStage();
@@ -237,12 +291,16 @@
     raf=requestAnimationFrame(frame);
 
     cleanupMission=()=>{
+      window.removeEventListener('resize',scheduleAuroraFit);
+      cancelAnimationFrame(dialFitFrame);
+      dial.style.removeProperty('width');
       cancelAnimationFrame(raf);
       cancelAnimationFrame(ambientFadeRaf);
       clearTimeout(completionTimer);
       feedbackTimers.forEach(clearTimeout);
-      order.forEach(key=>ringEls[key]?.removeEventListener('click',captureRing));
+      alignBtn.removeEventListener('click',captureRing);
       try{lockAudio.pause();lockAudio.currentTime=0;}catch{}
+      try{wrongAudio.pause();wrongAudio.currentTime=0;}catch{}
       try{ambientAudio.pause();ambientAudio.currentTime=0;ambientAudio.volume=.17;}catch{}
       endMissionAudioRadioOverride('aurora');
     };

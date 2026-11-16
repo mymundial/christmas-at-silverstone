@@ -74,13 +74,23 @@
       if(activeScanAudio===audio){audio.volume=.72;activeScanAudio=null;}
     }));
 
+    function updateDiagProgress(count){
+      const value=document.getElementById('diagProgressValue');
+      if(value)value.textContent=`${count}/6`;
+      document.querySelectorAll('[data-diag-progress]').forEach((node,index)=>{
+        node.classList.toggle('is-complete',index<count);
+      });
+    }
+    updateDiagProgress(0);
+
     document.querySelectorAll('[data-sensor]').forEach(btn=>btn.onclick=()=>{
       const i=Number(btn.dataset.sensor);
       if(done.has(i)||busy)return;
       busy=true;
       document.querySelectorAll('[data-sensor]').forEach(other=>{ if(other!==btn&&!other.classList.contains('done')) other.classList.add('scan-locked'); });
       btn.classList.add('active');
-      btn.querySelector('.state').textContent='Scanning…';
+      btn.querySelector('.state').textContent='CHECKING....';
+      updateDiagProgress(done.size);
       playDiagnosticScanFx(i);
       haptic(12);
       setTimeout(()=>{
@@ -88,7 +98,8 @@
         done.add(i);
         btn.classList.remove('active');
         btn.classList.add('done');
-        btn.querySelector('.state').innerHTML='Captured <span class="checkmark-icon checkmark-icon--inline" aria-hidden="true"></span>';
+        btn.querySelector('.state').textContent='CHECKED!';
+        updateDiagProgress(done.size);
         document.querySelectorAll('[data-sensor]').forEach(other=>other.classList.remove('scan-locked'));
         playOneShot(captureAudio);
         haptic(24);

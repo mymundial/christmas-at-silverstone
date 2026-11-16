@@ -5,7 +5,7 @@
     const progressCount=document.getElementById('relayLockedCount');
     const progressHead=document.querySelector('.relay-progress-head');
     const progressBars=[...document.querySelectorAll('[data-relay-progress]')];
-        const cycles=[1900,1650,1450,1300];
+    const cycles=[1900,1650,1450,1300];
     const relayFxShort=new Audio('./assets/mc03-relay-success-short.mp3');
     const relayFxFull=new Audio('./assets/mc03-relay-success-full.mp3');
     const relayFxMiss=new Audio('./assets/mc03-relay-miss.mp3');
@@ -16,6 +16,8 @@
     }
     function stopRelayFx(){[relayFxShort,relayFxFull,relayFxMiss].forEach(a=>{try{a.pause();a.currentTime=0;}catch{}});}
     let stage=0,phase=0,start=performance.now(),raf=0,locked=false,finishing=false;
+    let finalHandoffRaf=0,incomingTimer=0;
+    const FINAL_HANDOFF_MS=1400; // Visible carrier: LINK 04 -> RADIO.
     const santa=getSantaCommsAudio();
     try{santa.load();}catch{}
     const routeSvg=document.querySelector('.relay-route');
@@ -84,12 +86,71 @@
       carrierPackets.forEach(packet=>packet.style.opacity='0');
       requestAnimationFrame(alignRelayRoute);
       stateEl.textContent=`Relay 0${stage+1} armed`;
-      if(progressCount)progressCount.textContent=`${stage} / 4`;
+      if(progressCount)progressCount.textContent=`${stage}/4`;
       progressHead?.classList.remove('is-complete');
       progressBars.forEach((bar,i)=>{
         bar.classList.toggle('on',i<stage);
         bar.classList.remove('complete');
       });
+    }
+    // Preserve the four original tap windows. After the final successful tap,
+    // let the fifth carrier segment travel from Link 04 to RADIO. Do not lock
+    // the destination or play the full success effect until it has arrived.
+    function beginFinalRadioHandoff(){
+      finishing=true;
+      cancelAnimationFrame(raf);
+      carrierPackets.forEach(packet=>packet.style.opacity='0');
+      alignRelayRoute();
+      const finalHop=hops[4];
+      finalHop?.classList.remove('locked');
+      finalHop?.classList.add('active');
+      const radio=document.querySelector('.relay-destination');
+      radio?.classList.remove('locked');
+      const packet=carrierPackets[4];
+      const beganAt=performance.now();
+      stateEl.textContent='Link 04 locked. Transmitting to Santa.';
+      const arrive=()=>{
+        if(packet)packet.style.opacity='0';
+        finalHop?.classList.remove('active');
+        finalHop?.classList.add('locked');
+        radio?.classList.add('locked');
+        const receiverIcon=radio?.querySelector('.relay-receiver-icon img');
+        if(receiverIcon)receiverIcon.src='./assets/relay-receiver-hi-spec-green.svg';
+        progressHead?.classList.add('is-complete');
+        progressBars.forEach(bar=>bar.classList.add('complete'));
+        stateEl.textContent='Radio linked. Incoming transmission.';
+        playRelayFx(relayFxFull,.95);
+        haptic([16,30,22]);
+        // Each passenger finishes the relay, but the Santa transmission belongs
+        // only to the final passenger, immediately before Mission Complete.
+        const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+        const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+        incomingTimer=setTimeout(()=>{
+          if(turn<passengers){
+            showCompletion('Comms Link Restored','Communications have been established and Mission Control is now connected to Santa-1.');
+          }else{
+            showIncomingTransmission();
+          }
+        },2350);
+      };
+      const animateFinalHop=(now)=>{
+        const progress=Math.max(0,Math.min(1,(now-beganAt)/FINAL_HANDOFF_MS));
+        const segment=carrierSegments[4];
+        if(packet&&segment?.a&&segment?.b){
+          const eased=progress*progress*(3-2*progress);
+          const x=segment.a.x+(segment.b.x-segment.a.x)*eased;
+          const y=segment.a.y+(segment.b.y-segment.a.y)*eased;
+          const angle=Math.atan2(segment.b.y-segment.a.y,segment.b.x-segment.a.x)*180/Math.PI;
+          packet.style.left=`${x}px`;
+          packet.style.top=`${y}px`;
+          packet.style.transform=`translate(-100%,-50%) rotate(${angle}deg)`;
+          packet.style.opacity=String(Math.max(0,Math.min(1,progress/.07,(1-progress)/.03)));
+        }
+        if(progress<1){finalHandoffRaf=requestAnimationFrame(animateFinalHop);return;}
+        finalHandoffRaf=0;
+        arrive();
+      };
+      finalHandoffRaf=requestAnimationFrame(animateFinalHop);
     }
     function showIncomingTransmission(){
       finishing=true;cancelAnimationFrame(raf);
@@ -148,22 +209,13 @@
       hops[stage]?.classList.remove('active');
       hops[stage]?.classList.add('locked');
       carrierPackets.forEach(packet=>packet.style.opacity='0');
-      if(progressCount)progressCount.textContent=`${stage+1} / 4`;
+      if(progressCount)progressCount.textContent=`${stage+1}/4`;
       progressBars.forEach((bar,i)=>bar.classList.toggle('on',i<=stage));
+      stateEl.textContent=stage===3?'Link 04 captured.':'Relay locked · signal strengthened.';
+      // The short tap-confirmation remains; the final sound plays at RADIO.
+      playRelayFx(relayFxShort,.9);haptic([20,25,38]);
       if(stage===3){
-        progressHead?.classList.add('is-complete');
-        progressBars.forEach(bar=>bar.classList.add('complete'));
-      }
-      stateEl.textContent=stage===3?'Transmission path locked.':'Relay locked · signal strengthened.';
-      playRelayFx(stage===3?relayFxFull:relayFxShort,stage===3?.95:.9);haptic([20,25,38]);
-      if(stage===3){
-        hops.forEach(h=>h.classList.add('locked'));
-        const dest=document.querySelector('.relay-destination');dest?.classList.add('locked');
-        const receiverIcon=dest?.querySelector('.relay-receiver-icon img');
-        if(receiverIcon) receiverIcon.src='./assets/relay-receiver-hi-spec-green.svg';
-        // Prime the Santa media element inside the final user gesture, but at
-        // zero volume. This preserves reliable mobile playback while the
-        // visible carrier/static intro and clean pause happen afterwards.
+        // Prime Santa audio inside the user gesture for iOS playback.
         if(state.audio){
           try{
             santa.currentTime=0;santa.volume=0;
@@ -171,10 +223,10 @@
             if(prime&&typeof prime.then==='function') prime.then(()=>{try{santa.pause();santa.currentTime=0;santa.volume=1;}catch{}}).catch(()=>{});
           }catch{}
         }
-        setTimeout(()=>showIncomingTransmission(),2350);
+        beginFinalRadioHandoff();
       }else setTimeout(()=>arm(stage+1),460);
     });
-    cleanupMission=()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',onRelayResize);stopRelayFx();stopSantaTransmission(true);};
+    cleanupMission=()=>{cancelAnimationFrame(raf);cancelAnimationFrame(finalHandoffRaf);clearTimeout(incomingTimer);window.removeEventListener('resize',onRelayResize);stopRelayFx();stopSantaTransmission(true);};
     hops[0]?.classList.add('active');
     requestAnimationFrame(alignRelayRoute);
     raf=requestAnimationFrame(draw);

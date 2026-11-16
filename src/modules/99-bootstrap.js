@@ -7,7 +7,7 @@
     './assets/mc02-control-mid-ring.svg','./assets/mc02-response-arrow.svg','./assets/mc02-response-cones.svg',
     './assets/mc02-stability-front-car.svg','./assets/mc02-stability-headlights.svg','./assets/mc02-traction-car.svg','./assets/mc02-traction-skids.svg',
     './assets/care-bears-logo.png','./assets/lando-gantry.webp',
-    './assets/aurora-sky.webp','./assets/aurora-ring-outer.webp','./assets/aurora-ring-middle.webp','./assets/aurora-ring-inner.webp',
+    './assets/aurora-sky.webp','./assets/aurora-ring-outer.webp','./assets/aurora-ring-middle.webp','./assets/aurora-ring-inner.webp','./assets/aurora-ring-active.webp','./assets/north-star-brand-guide.webp',
     './assets/las-vegas-logo-white.svg',
     './assets/sleigh-stage-2.webp','./assets/sleigh-stage-3.webp','./assets/sleigh-stage-4.webp','./assets/sleigh-stage-5.webp'
   ];

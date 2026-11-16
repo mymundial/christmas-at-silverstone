@@ -4,6 +4,7 @@
     const roundEl=document.getElementById('landoRound');
     const lamps=[...document.querySelectorAll('.lando-lamp')];
     const results=[...document.querySelectorAll('[data-lando-result]')];
+    const progress=[...document.querySelectorAll('[data-lando-progress]')];
     const redLightAudio=Array.from({length:5},()=>new Audio('./assets/lando-red-light-beep.wav'));
     const goAudio=new Audio('./assets/lando-go-beep.wav');
     redLightAudio.forEach(audio=>{audio.preload='auto';audio.volume=.72;});
@@ -37,9 +38,13 @@
     function setResultState(n,status,value=null){
       const el=results[n-1]; if(!el)return;
       el.className=`lando-result ${status}`;
+      const segment=progress[n-1];
+      if(segment){
+        segment.className=`lando-progress-segment ${status}`;
+      }
       if(value!==null){
         const ms=Math.max(0,Math.round(Number(value)||0));
-        el.innerHTML=`<span class="lando-result-value"><b>${ms}</b><small>ms</small></span>`;
+        el.innerHTML=`<span class="lando-score-label">GO ${n}</span><span class="lando-result-value"><b>${ms}</b><small>ms</small></span>`;
       }
     }
     function resetLights(){lamps.forEach(l=>l.className='lando-lamp');}
@@ -83,7 +88,7 @@
         roundEl.classList.add('is-complete');
         const scored=results.map(el=>({el,ms:Number(el.dataset.ms)})).filter(x=>Number.isFinite(x.ms));
         const best=scored.sort((a,b)=>a.ms-b.ms)[0];
-        timers.push(setTimeout(()=>{best?.el.classList.add('best');haptic([18,20,52]);},520));
+        timers.push(setTimeout(()=>{best?.el.classList.add('best');const bestSegment=progress[results.indexOf(best?.el)];bestSegment?.classList.add('best');haptic([18,20,52]);},520));
         timers.push(setTimeout(()=>showCompletion('Response Calibrated','Santa-1’s flight response has been calibrated for high-speed operation.'),1750));
       }else{
         timers.push(setTimeout(()=>{

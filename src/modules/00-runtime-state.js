@@ -16,17 +16,17 @@
   const CHECKPOINTS = [
     {id:'gantry', mc:'MC-00', location:'Entrance Gantry', name:'Scan QR', type:'qr', playable:false, core:false, geofence:false, routeEnabled:false, lat:52.0735668895174, lng:-1.0234212294205571},
     {id:'entry', mc:'MC-01', location:'National Link Road', name:'Circuit Link', type:'activation', playable:true, core:false, mission:'Circuit Link', geofence:true, lat:52.07317077672548, lng:-1.0116046670979981, detectionRadius:80, activationRadius:30},
-    {id:'velocity', mc:'MC-02', location:'Wellington Straight', name:'Velocity Vault', type:'diagnostics', playable:true, core:true, mission:'Velocity Vault', lat:52.07672858114103, lng:-1.0179463765923242, detectionRadius:150, activationRadius:35},
-    {id:'luffield', mc:'MC-03', location:'Luffield', name:'Comms Relay', type:'commsrelay', playable:true, core:false, mission:'Comms Relay', routeEnabled:true, geofence:true, lat:52.07588935484336, lng:-1.0202073683140254, detectionRadius:120, activationRadius:30},
-    {id:'power', mc:'MC-04', location:'National Pit Straight', name:'Power Pulse', type:'artifacts', playable:true, core:true, mission:'Power Pulse', lat:52.07867166248026, lng:-1.0177768332976036, detectionRadius:150, activationRadius:35},
-    {id:'spirit', mc:'MC-05', location:'Copse', name:'Spirit Depot', type:'spirit', playable:true, core:true, mission:'Spirit Depot', lat:52.07895798720806, lng:-1.0124059222979016, detectionRadius:120, activationRadius:30},
-    {id:'escapade', mc:'MC-06', location:'Escapade', name:'Reindeer Raceway', type:'power', playable:true, core:true, mission:'Reindeer Raceway', lat:52.07480005189975, lng:-1.0102119794664433, detectionRadius:120, activationRadius:30},
-    {id:'comet', mc:'MC-07', location:'Becketts', name:'Comet Curve', type:'comet', playable:true, core:true, mission:'Comet Curve', lat:52.07247136741095, lng:-1.0099658493552224, detectionRadius:140, activationRadius:30},
-    {id:'jingle', mc:'MC-08', location:'Hangar Straight', name:'Jingle Beams', type:'jingle', playable:true, core:true, mission:'Jingle Beams', lat:52.067475902465475, lng:-1.0132842109045421, detectionRadius:150, activationRadius:35},
-    {id:'lando', mc:'MC-09', location:'Stowe', name:'Lightspeed Lando', type:'lando', playable:true, core:true, mission:'Lightspeed Lando', lat:52.06363909240851, lng:-1.017077251994755, detectionRadius:120, activationRadius:30},
+    {id:'velocity', mc:'MC-02', location:'Wellington Straight', name:"Santa's Parc Fermé", type:'diagnostics', playable:true, core:true, mission:"Santa's Parc Fermé", lat:52.07672858114103, lng:-1.0179463765923242, detectionRadius:150, activationRadius:35},
+    {id:'luffield', mc:'MC-03', location:'Luffield', name:'Box, Box, Ho, Ho, Ho!', type:'commsrelay', playable:true, core:false, mission:'Box, Box, Ho, Ho, Ho!', routeEnabled:true, geofence:true, lat:52.07588935484336, lng:-1.0202073683140254, detectionRadius:120, activationRadius:30},
+    {id:'power', mc:'MC-04', location:'National Pit Straight', name:'Pit Lane Power-Up', type:'artifacts', playable:true, core:true, mission:'Pit Lane Power-Up', lat:52.07867166248026, lng:-1.0177768332976036, detectionRadius:150, activationRadius:35},
+    {id:'spirit', mc:'MC-05', location:'Copse', name:'Christmas Spirit Charging Station', type:'spirit', playable:true, core:true, mission:'Christmas Spirit Charging Station', lat:52.07895798720806, lng:-1.0124059222979016, detectionRadius:120, activationRadius:30},
+    {id:'escapade', mc:'MC-06', location:'Escapade', name:'Reindeer Racing Line', type:'power', playable:true, core:true, mission:'Reindeer Racing Line', lat:52.07480005189975, lng:-1.0102119794664433, detectionRadius:120, activationRadius:30},
+    {id:'comet', mc:'MC-07', location:'Becketts', name:"Comet's Corner", type:'comet', playable:true, core:true, mission:"Comet's Corner", lat:52.07247136741095, lng:-1.0099658493552224, detectionRadius:140, activationRadius:30},
+    {id:'jingle', mc:'MC-08', location:'Hangar Straight', name:'Sleigh Speed Straight', type:'jingle', playable:true, core:true, mission:'Jingle Beams', lat:52.067475902465475, lng:-1.0132842109045421, detectionRadius:150, activationRadius:35},
+    {id:'lando', mc:'MC-09', location:'Stowe', name:"Lando's Landing Lights", type:'lando', playable:true, core:true, mission:"Lando's Landing Lights", lat:52.06363909240851, lng:-1.017077251994755, detectionRadius:120, activationRadius:30},
     {id:'aurora', mc:'MC-10', location:'Vale', name:'Aurora Apex', type:'aurora', playable:true, core:true, mission:'Aurora Apex', lat:52.065488708771205, lng:-1.0204674536551839, detectionRadius:120, activationRadius:30},
-    {id:'lapland', mc:'MC-11', location:'Hamilton Straight', name:'Lapland Launch', type:'lapland', playable:true, core:true, mission:'Lapland Launch', lat:52.06828247188286, lng:-1.0234649670014986, detectionRadius:150, activationRadius:35},
-    {id:'northern', mc:'MC-12', location:'Farm Curve', name:'Northern Flight', type:'northern', playable:true, core:true, mission:'Northern Flight', lat:52.07236283289121, lng:-1.0138972673152702, detectionRadius:120, activationRadius:30}
+    {id:'lapland', mc:'MC-11', location:'Hamilton Straight', name:'Lights Out & Sleigh Away', type:'lapland', playable:true, core:true, mission:'Lights Out & Sleigh Away', lat:52.06828247188286, lng:-1.0234649670014986, detectionRadius:150, activationRadius:35},
+    {id:'northern', mc:'MC-12', location:'Farm Curve', name:'North Pole Position', type:'northern', playable:true, core:true, mission:'North Pole Position', lat:52.07236283289121, lng:-1.0138972673152702, detectionRadius:120, activationRadius:30}
   ];
 
   const ELF_RADIO_MISSION = {id:'elf-radio', mc:'COMMS', location:'RADIO', name:'ELF FM', type:'radio', playable:true, core:false, mission:'Tune In'};
@@ -136,8 +136,12 @@
     elfUnlocked:false,
     elfAudioOn:false,
     elfPromptSeen:false,
+    pitCrewConfirmed:false,
+    pitCrewPlayers:1,
+    missionPlayerTurn:1,
+    missionPlayerTurnId:null,
     lastMessage:'SEARCHING FOR RECOVERY SIGNALS',
-    bootDone:false,
+    bootDone:'brief',
     messages:[],
     messageSeq:0,
     messageAlert:false,
@@ -197,6 +201,8 @@
       return {
         ...defaults,
         ...parsed,
+        // Retire the old splash/scan entry for incomplete onboarding only.
+        bootDone:(!parsed.onboarded && (parsed.bootDone==='location-finding'||parsed.bootDone==='location-result'))?'location':(!parsed.onboarded && (parsed.bootDone===false || parsed.bootDone==='mc00-live' || parsed.bootDone==null))?'brief':(parsed.bootDone??defaults.bootDone),
         completed,
         available,
         messages,
@@ -206,6 +212,11 @@
         elfUnlocked:Boolean(parsed.elfUnlocked),
         elfAudioOn:false,
         elfPromptSeen:Boolean(parsed.elfPromptSeen),
+        // Existing completed sessions stay completed; new onboarding reaches Step 4.
+        pitCrewConfirmed:parsed.pitCrewConfirmed===undefined?Boolean(parsed.elfPromptSeen):Boolean(parsed.pitCrewConfirmed),
+        pitCrewPlayers:Number.isInteger(parsed.pitCrewPlayers)?Math.max(1,Math.min(4,parsed.pitCrewPlayers)):1,
+        missionPlayerTurn:Number.isInteger(parsed.missionPlayerTurn)?Math.max(1,Math.min(4,parsed.missionPlayerTurn)):1,
+        missionPlayerTurnId:typeof parsed.missionPlayerTurnId==='string'?parsed.missionPlayerTurnId:null,
         // Never trust a persisted in-range lock after a refresh. Live GPS must
         // revalidate the checkpoint before a mission can be opened again.
         targetInRange:liveMode?false:Boolean(parsed.targetInRange),

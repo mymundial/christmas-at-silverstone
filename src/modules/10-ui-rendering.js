@@ -35,36 +35,77 @@
       view.dataset.view=state.nav;
       view.innerHTML=navPageContent();
       syncNavChrome();
+      initSleighRepairScroll();
       return;
     }
     app.innerHTML=navShell();
+    initSleighRepairScroll();
   }
-  function brand(){return `<div class="brand"><img src="./assets/silverstone-logo-landscape-cropped.webp" alt="Silverstone"></div>`}
+  // A persistent visual scrollbar is needed because mobile Safari hides native
+  // scrollbars even when overflow-y is set to scroll.
+  function initSleighRepairScroll(){
+    const list=document.querySelector('.nav-view[data-view="sleigh"] .sleigh-repair-list');
+    const viewport=document.querySelector('.nav-view[data-view="sleigh"] .sleigh-repair-viewport');
+    if(!list||!viewport) return;
+    const thumb=viewport.querySelector('.sleigh-scroll-thumb');
+    const update=()=>{
+      const viewHeight=list.clientHeight;
+      const fullHeight=list.scrollHeight;
+      const overflowing=fullHeight>viewHeight+2;
+      viewport.classList.toggle('can-scroll',overflowing);
+      viewport.classList.toggle('at-bottom',!overflowing||list.scrollTop>=fullHeight-viewHeight-2);
+      if(!thumb) return;
+      const trackHeight=viewport.querySelector('.sleigh-scroll-track')?.clientHeight||0;
+      const thumbHeight=overflowing&&fullHeight>0?Math.max(28,trackHeight*viewHeight/fullHeight):trackHeight;
+      const travel=Math.max(0,trackHeight-thumbHeight);
+      const progress=overflowing?(list.scrollTop/Math.max(1,fullHeight-viewHeight)):0;
+      thumb.style.height=`${thumbHeight}px`;
+      thumb.style.transform=`translateY(${travel*progress}px)`;
+    };
+    let scrollRestTimer;
+    list.addEventListener('scroll',()=>{
+      update();
+      viewport.classList.add('is-scrolling');
+      clearTimeout(scrollRestTimer);
+      scrollRestTimer=setTimeout(()=>viewport.classList.remove('is-scrolling'),750);
+    },{passive:true});
+    if(typeof ResizeObserver!=='undefined'){
+      const observer=new ResizeObserver(update);
+      observer.observe(list);
+      const content=list.querySelector('.sleigh-repair-rows');
+      if(content) observer.observe(content);
+    }
+    update();
+  }
+  function brand(){return `<div class="brand brand-christmas"><img class="brand-lockup brand-lockup--master" src="./assets/brand/christmas-at-silverstone-master-light.svg" alt="Christmas at Silverstone"></div>`}
   function settingAudioIcon(){
     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
   }
   function navSleighIcon(){
-    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.39.3" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.39.3" alt=""></span>`;
+    return `<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M4 15.5h17.4c3.2 0 5.5-1.3 6.9-4"/><path d="M3 17c1.5 3 4 4.5 7.5 4.5H25"/><path d="M9 15.5c.7-4.8 3.7-7.8 8.7-7.8 3.5 0 6.1 1.2 9 4"/><path d="M14.5 9.2h4.7"/><path d="M17.2 7.6 15.4 4.7"/></svg>`;
   }
   function navIcon(id){
     const icons={
-      radar:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 60.5c-11.8 0-23.1 4.9-31.2 13.6l4.4 4.1c13.7-14.8 36.8-15.7 51.6-1.9.6.6 1.2 1.2 1.8 1.8l4.4-4.1C128 65.3 116.7 60.5 105 60.5Zm0 30c-7 0-12.7 5.6-12.7 12.6S98 115.8 105 115.8s12.7-5.6 12.7-12.6c0-3.3-1.2-6.4-3.5-8.8-2.4-2.5-5.8-3.9-9.2-3.9Zm0 19.3c-3.7 0-6.6-3-6.6-6.6s3-6.6 6.6-6.6c3.6 0 6.6 3 6.6 6.6s-2.9 6.5-6.6 6.6ZM105 9.2C79 9.2 54.1 20 36.4 39l4.4 4.1c33.1-35.4 88.6-37.4 124.1-4.3 1.4 1.3 2.8 2.7 4.1 4.1l4.4-4.1C155.7 19.9 130.9 9.2 105 9.2Zm0 25.6c-18.9 0-37 7.8-49.9 21.7l4.4 4.1c23.4-25.1 62.7-26.5 87.9-3.1 1 .9 2 1.9 3 2.9l4.4-4.1c-13.1-13.7-31-21.5-49.8-21.5Z"/></svg>`,
-      missions:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M142 62.7H86.9v6H142v-6Zm0 15.4H86.9v6H142v-6Zm0-30.9H86.9v6H142v-6Zm-61.1-15.4H68.1v6h12.8v-6Zm61.1 0H86.9v6H142v-6Zm2.2-26.5H65.8l-12.3 6v102l12.3 6h78.5l12.3-6v-102l-12.4-6Zm6.3 108H59.5v-102h91.1v102ZM80.9 78.1H68.1v6h12.8v-6Zm0-30.9H68.1v6h12.8v-6Zm0 15.5H68.1v6h12.8v-6Z"/></svg>`,
-      comms:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 8.62a46.17 46.17 0 0 1 46.12 46.12h6a52.14 52.14 0 0 0-104.27 0h6A46.17 46.17 0 0 1 105 8.62Zm41.18 50.67c-7.73 0-13.12 5.49-13.12 13.36V86c0 7.89 4.87 13.18 12.11 13.18a12.52 12.52 0 0 0 4.41-.77c-2.54 7.83-8.27 11.22-18.1 11.22H119a9 9 0 0 0-8.45-6H99.32a8.95 8.95 0 1 0 0 17.89h11.25a9 9 0 0 0 8.39-5.86h12.51c17.54 0 25.7-9.42 25.7-29.64V59.29Zm-35.6 56.2H99.32a2.93 2.93 0 0 1 0-5.86h11.25a2.93 2.93 0 1 1 0 5.86ZM151.16 86c0 4.49-2.24 7.17-6 7.17s-6.1-2.61-6.1-7.17V72.65c0-3.55 1.87-7.34 7.11-7.34h5Zm-14-44.19A3 3 0 0 0 140 43.69a3.17 3.17 0 0 0 1.12-.21 3 3 0 0 0 1.67-3.92 40.73 40.73 0 0 0-75.58 0 3 3 0 1 0 5.58 2.25 34.71 34.71 0 0 1 64.42 0ZM63.85 59.29h-11V86c0 7.89 4.82 13.18 12 13.18S77 93.89 77 86V72.65C77 64.78 71.58 59.29 63.85 59.29ZM71 86c0 4.56-2.23 7.17-6.11 7.17s-6-2.68-6-7.17V65.31h5c5.24 0 7.11 3.79 7.11 7.34Z"/></svg>`,
+      radar:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M5 10.5a15.6 15.6 0 0 1 22 0"/><path d="M8.7 14.2a10.4 10.4 0 0 1 14.6 0"/><path d="M12.5 18a5 5 0 0 1 7 0"/><circle cx="16" cy="21" r="1.25" fill="#ffffff" stroke="none"/></svg>`,
+      missions:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M9 3v18"/><path d="M10 4.5h12l-2.7 4 2.7 4H10"/><path d="M9 20.5h15"/></svg>`,
+      comms:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M6 13v-2a10 10 0 0 1 20 0v2"/><path d="M6 12.5h3.5v7H7.8c-1 0-1.8-.8-1.8-1.8z"/><path d="M26 12.5h-3.5v7h1.7c1 0 1.8-.8 1.8-1.8z"/><path d="M22.5 19.5c-1 1.3-2.5 2-4.5 2h-2"/></svg>`,
       sleigh:navSleighIcon()
     };
     return icons[id]||'';
   }
-  function navBar(){ return `<nav class="nav" aria-label="Mission Control">${navButton('radar','Radar')}${navButton('missions','Missions')}${navButton('sleigh','Sleigh')}${navButton('comms','Comms')}</nav>`; }
+  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Team<br>Radio')}</nav>`; }
   function navButton(id,label){
     const unread=id==='comms'?unreadCount():0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
   }
-  function topBar(){ return `<header class="topbar">${brand()}<img class="mission-control-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"></header>`; }
+  function topBar(){
+    const progress=Math.max(0,Math.min(100,Number(recovery())||0));
+    return `<header class="topbar"><div class="masthead-row">${brand()}<div class="pitcrew-status"><strong>SANTA'S<br>PIT CREW</strong><span>SLEIGH ${progress}% FIXED</span></div></div><div class="masthead-progress" aria-hidden="true"><span style="width:${progress}%"></span></div></header>`;
+  }
   function statusStrip(){
     const cp=current();
     const activationDistance=distanceToActivation(cp,state.distance);
-    const distanceValue=!cp?'GARAGES':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
+    const distanceValue=!cp?'–':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
     const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
@@ -78,8 +119,7 @@
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
-      const demoRestart=state.mode==='demo'?`<button class="btn small primary" type="button" data-demo-restart>Restart</button>`:'';
-      return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div>${demoRestart}</div>`;
+      return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
     }
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
@@ -111,6 +151,7 @@
     }
     if(state.missionOpen){ app.innerHTML=shell(renderMission(state.missionOpen),false); bindGlobal(); bindMission(state.missionOpen); return; }
     if(state.nav==='radar'&&!state.elfPromptSeen&&!state.elfUnlocked){ app.innerHTML=shell(renderElfOnboarding(),false); bindGlobal(); return; }
+    if(state.nav==='radar'&&state.elfPromptSeen&&!state.pitCrewConfirmed){ app.innerHTML=shell(renderPitCrewOnboarding(),false); bindGlobal(); return; }
     if(state.nav==='comms') markAllMessagesRead();
     renderNavShell();
     bindGlobal();
@@ -126,11 +167,44 @@
     }
   }
   function renderLaunch(){
-    if(state.bootDone===false) return `<section class="hero"><div class="hero-content"><img class="hero-logo hero-logo-stacked" src="./assets/silverstone-logo-landing.webp" alt="Silverstone"><img class="hero-mission-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"><div class="hero-actions"><button class="btn primary" data-onboard="mc00-live">Start Mission</button></div></div></section>`;
-    return renderOnboardStep(state.bootDone);
+    // The Mission Briefing is the app entry screen; there is no splash/Start Mission gate.
+    return renderOnboardStep(state.bootDone===false?'brief':state.bootDone);
   }
   function renderOnboardStep(step){
     const setupHeader=topBar();
+    if(step==='location-finding'||step==='location-result'){
+      const finding=step==='location-finding';
+      const result=locationOnboardingOutcome;
+      const connected=!finding&&result?.status==='connected';
+      const failed=!finding&&!connected;
+      const accuracy=connected&&Number.isFinite(result.position?.coords?.accuracy)?Math.max(1,Math.round(result.position.coords.accuracy)):null;
+      const resultTitle=connected?'<span>LOCATION</span><span>CONNECTED!</span>':'<span>LOCATION</span><span>NOT CONNECTED</span>';
+      const detail=connected
+        ? `<span>Accurate to about ${accuracy===null?'—':`<strong>${accuracy} m</strong>`}.</span><span>We’ll tell you when a pit stop is close.</span>`
+        : 'We couldn’t establish your location.<br>Check your signal and location settings,<br>then try again.';
+      const controls=failed?`<button type="button" class="gps-status-demo-link" data-gps-status="demo"><span>CONTINUE WITHOUT LOCATION</span><small>You’ll tap to unlock each pit stop when you see it</small></button>`:'';
+      const retryControl=failed?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="retry"><span>TRY AGAIN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
+      const continueControl=connected?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="continue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
+      const findingSpinner=finding?'<div class="gps-finding-spinner" aria-hidden="true"></div>':'';
+      const findingTitle=finding?'<h1 class="gps-finding-title"><span>FINDING</span><span>YOU…</span></h1>':'';
+      const resultVisual=!finding&&failed?'<div class="gps-error-symbol" aria-hidden="true">!</div>':connected?'<div class="gps-error-symbol gps-success-symbol" aria-hidden="true"><span class="checkmark-icon"></span></div>':'';
+      const bodyTitle=!finding?`<h1 class="gps-status-compact-title">${resultTitle}</h1>`:'';
+      const bodyCopy=finding
+        ? '<span>Your phone may ask for permission.</span><span>Tap <strong>Allow</strong> so we can find you.</span>'
+        : detail;
+      return `<section class="onboard with-masthead setup-page gps-status-page ${finding?'gps-finding-page':connected?'gps-connected-page':'gps-failed-page'}">${setupHeader}
+        <div class="gps-status-content">
+          <p class="gps-status-kicker">STEP 2 OF 4 · LOCATION</p>
+          <div class="gps-status-progress" aria-label="Onboarding step 2 of 4"><i class="complete"></i><i class="active"></i><i></i><i></i></div>
+          <div class="gps-status-main" role="${finding?'status':'group'}" ${finding?'aria-live="polite"':''}>
+            ${findingSpinner}${findingTitle}${resultVisual}${bodyTitle}
+            <p class="${finding?'gps-finding-description':connected?'gps-connected-description':''}">${bodyCopy}</p>
+            ${retryControl}${continueControl}
+          </div>
+          <div class="gps-status-actions">${controls}</div>
+        </div>
+      </section>`;
+    }
     if(step==='mc00-live'){
       const systems=[
         systemStatusEntry('circuitry'),
@@ -146,11 +220,64 @@
       ];
       return `<section class="onboard with-masthead setup-page mc00-page">${setupHeader}<div class="onboard-card panel mc00-card" data-mc00-mode="${step}"><div class="mc00-copy"><h1>System Diagnostics</h1><p class="support-copy">Santa-1 Sleigh Recovery</p></div><div class="mc00-visual-wrap"><div class="mc00-sleigh-frame"><div class="sleigh-visual sleigh-stage-1 mc00-sleigh-visual" role="img" aria-label="Santa-1 sleigh system diagnostics visual"><div class="sleigh-glow" aria-hidden="true"></div><img class="sleigh-art" src="./assets/sleigh-stage-1.webp" alt="" aria-hidden="true" fetchpriority="high"><div class="mc00-scan-beam" aria-hidden="true"></div></div></div></div>${systemStatusBank(systems,'mc00-system-bank','mc00')}<div class="mc00-progress-row"><div class="mc00-progress" role="progressbar" aria-label="System diagnostics progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="mc00ProgressFill"></span></div><strong id="mc00ProgressValue">0%</strong></div><div class="mc00-complete-popup panel" id="mc00CompleteBlock" hidden><div class="mc00-complete-icon" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Scan Complete</h2><button class="btn primary wide" id="mc00Continue" data-mc00-continue="${step}">Continue</button></div></div></section>`;
     }
-    if(step==='brief') return `<section class="onboard with-masthead setup-page briefing-page">${setupHeader}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/mission-briefing-icon.svg" alt=""></span></div><h1>Mission Briefing</h1><div class="support-copy briefing-copy"><p><strong>Santa needs your help.</strong></p><p>Santa-1 has made an emergency landing at Silverstone and the recovery is underway.</p><p>Follow the signals around the circuit and help bring each system back online to get the sleigh race-ready again.</p></div><div class="setup-actions"><button class="btn primary wide" data-onboard="location">Continue</button></div></div></section>`;
-    return `<section class="onboard with-masthead setup-page radar-setup-page">${setupHeader}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/radar-setup-icon.svg" alt=""></span></div><h1>Mission Radar</h1><div class="support-copy setup-copy-stack"><p>Mission Control uses your location to detect each installation as you move around the circuit.</p><p>The radar will identify your next checkpoint as its signal comes into range.</p></div><div class="setup-actions stack"><button class="btn primary wide" data-location="request">Enable GPS Location</button><button class="btn secondary wide" data-location="demo">Demo Mode</button></div></div></section>`;
+    if(step==='brief') return `<section class="onboard with-masthead setup-page briefing-page">${setupHeader}<div class="briefing-welcome">
+      <p class="briefing-welcome-kicker">CALLING ALL ELVES!</p>
+      <div class="briefing-welcome-progress" aria-label="Onboarding step 1 of 4"><i class="active"></i><i></i><i></i><i></i></div>
+      <div class="briefing-welcome-intro"><h1><span class="line-1">UH OH!</span><span class="line-2">SANTA'S SLEIGH</span><span class="line-3">HAS BROKEN DOWN!</span></h1></div>
+      <div class="briefing-welcome-art"><img src="./assets/mission-briefing-santa.webp" alt="Santa waving with his sack of presents"></div>
+      <p class="briefing-welcome-description"><span>It’s stuck at Silverstone,</span><span>and Christmas is just around the corner.</span><span>Join Santa’s pit crew,</span><span>take on 12 pit stop challenges and</span><span>help get him back to the North Pole in time!</span></p>
+      <button type="button" class="btn primary wide briefing-welcome-cta" data-onboard="location"><span>JOIN THE PIT CREW</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+    </div></section>`;
+    return `<section class="onboard with-masthead setup-page radar-setup-page location-permission-page">${setupHeader}<div class="location-permission-content">
+      <p class="location-permission-kicker">STEP 2 OF 4 · LOCATION</p>
+      <div class="location-permission-progress" aria-label="Onboarding step 2 of 4"><i class="complete"></i><i class="active"></i><i></i><i></i></div>
+      <h1 class="location-permission-title"><span>LET’S FIND</span><span>YOUR POSITION</span><span>ON THE CIRCUIT!</span></h1>
+      <p class="location-permission-description"><span>Enable location so we can track your journey,</span><span>find your next pit stop and unlock challenges</span><span>as you travel around Silverstone.</span></p>
+      <div class="location-permission-benefits" aria-label="Location benefits">
+        <div class="location-permission-benefit"><span class="location-permission-icon"><img src="./assets/location-circuit-official-guide.webp" alt="" aria-hidden="true"></span><span>See how far it is to your next pit stop</span></div>
+        <div class="location-permission-benefit"><span class="location-permission-icon"><img src="./assets/north-pole-flag-brand.webp" alt="" aria-hidden="true"></span><span>Challenges unlock as you drive past</span></div>
+      </div>
+      <div class="location-permission-actions">
+        <button type="button" class="btn primary wide location-permission-cta" data-location="request"><span>ENABLE LOCATION</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="location-permission-demo" data-location="demo">TESTING? USE DEMO MODE</button>
+      </div>
+    </div></section>`;
+  }
+  function renderPitCrewOnboarding(){
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    return `<section class="onboard with-masthead setup-page pitcrew-onboard-page">${topBar()}
+      <div class="pitcrew-onboard-content">
+        <p class="pitcrew-onboard-kicker">STEP 4 OF 4 · PIT CREW</p>
+        <div class="pitcrew-onboard-progress" aria-label="Onboarding step 4 of 4"><i class="complete"></i><i class="complete"></i><i class="complete"></i><i class="active"></i></div>
+        <h1 class="pitcrew-onboard-title"><span>SANTA IS COUNTING</span><span>ON YOU!</span></h1>
+        <div class="pitcrew-players-panel">
+          <div class="pitcrew-players-label">HOW MANY ELVES ARE PLAYING?</div>
+          <div class="pitcrew-players-controls">
+            <button type="button" class="pitcrew-player-adjust" data-pitcrew-players="-1" aria-label="Remove a passenger" ${players<=1?'disabled':''}>−</button>
+            <div class="pitcrew-player-count" aria-live="polite"><strong>${players}</strong></div>
+            <button type="button" class="pitcrew-player-adjust" data-pitcrew-players="1" aria-label="Add a passenger" ${players>=4?'disabled':''}>+</button>
+          </div>
+        </div>
+        <div class="pitcrew-driver-warning"><div><strong>PASSENGERS ONLY</strong><p>Drivers, keep your eyes on the road and enjoy the lights. Leave the phone to your Pit Crew.</p></div></div>
+        <button type="button" class="btn primary wide pitcrew-onboard-cta" data-pitcrew-confirm><span>LET’S GO!</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+      </div>
+    </section>`;
   }
   function renderElfOnboarding(){
-    return `<section class="onboard with-masthead setup-page elf-setup-page">${topBar()}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/radio-setting-icon.svg" alt=""></span></div><h1>ELF FM</h1><div class="support-copy setup-copy-stack"><p>Tune in to ELF FM for the journey.</p><p>Mission audio and radio can be enabled or disabled at any time from the Comms panel.</p></div><div class="setup-actions stack"><button class="btn primary wide" data-elf-onboard="tune">Tune In</button><button class="btn secondary wide" data-elf-onboard="continue">Continue Mission</button></div></div></section>`;
+    return `<section class="onboard with-masthead setup-page elf-setup-page">${topBar()}
+      <div class="elf-onboard-content">
+        <p class="elf-onboard-kicker">STEP 3 OF 4 · RADIO</p>
+        <div class="elf-onboard-progress" aria-label="Onboarding step 3 of 4"><i class="complete"></i><i class="complete"></i><i class="active"></i><i></i></div>
+        <h1 class="elf-onboard-title"><span>TURN UP</span><span>ELF FM!</span></h1>
+        <div class="elf-onboard-art" aria-label="Two elves in racing suits">
+          <div class="elf-onboard-portrait"><img src="./assets/elf-fm-elf-one.webp" alt="Elf in a red racing suit"></div>
+          <div class="elf-onboard-portrait"><img src="./assets/elf-fm-elf-two.webp" alt="Second elf in a red racing suit"></div>
+        </div>
+        <p class="elf-onboard-description"><span>Tune in to <strong>87.7</strong> to listen to <strong>ELF FM</strong>.</span><span>The radio stays off until you turn it on!</span></p>
+        <button type="button" class="btn primary wide elf-onboard-primary" data-elf-onboard="tune"><span>TURN ON ELF FM</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="elf-onboard-secondary" data-elf-onboard="continue">CONTINUE WITHOUT RADIO</button>
+      </div>
+    </section>`;
   }
 
   function renderRadar(){
@@ -187,28 +314,39 @@
   }
   function renderSleigh(){
     const r=recovery();
-    const info=sleighStage();
-    const stage=info.stage;
-    const postStatus=state.completed.includes('northern')
-      ? {name:'Airborne',copy:'Northern Flight is underway. Santa-1 has launched successfully and the rebuilt sleigh is operating as intended.'}
-      : state.completed.includes('lapland')
-        ? {name:'Flight Ready',copy:'Lapland Launch has completed the final systems verification. Every rebuilt system is stable and Santa-1 is fully cleared for launch.'}
-        : {name:info.name,copy:info.copy};
-    // DOM is row-paired so this interleave renders mission order 1–5 down column 1,
-    // then 6–10 down column 2.
-    const systems=[
-      systemStatusEntry('circuitry',state.completed.includes('entry')?'Online':'Offline',state.completed.includes('entry')?'online':'offline'),
-      systemStatusEntry('propulsion',state.completed.includes('escapade')?'Online':'Offline',state.completed.includes('escapade')?'online':'offline'),
-      systemStatusEntry('diagnostic',state.completed.includes('velocity')?'Online':'Offline',state.completed.includes('velocity')?'online':'offline'),
-      systemStatusEntry('guidance',state.completed.includes('jingle')?'Online':'Offline',state.completed.includes('jingle')?'online':'offline'),
-      systemStatusEntry('comms',state.completed.includes('luffield')?'Online':'Offline',state.completed.includes('luffield')?'online':'offline'),
-      systemStatusEntry('control',state.completed.includes('comet')?'Online':'Offline',state.completed.includes('comet')?'online':'offline'),
-      systemStatusEntry('power',state.completed.includes('power')?'Online':'Offline',state.completed.includes('power')?'online':'offline'),
-      systemStatusEntry('response',state.completed.includes('lando')?'Online':'Offline',state.completed.includes('lando')?'online':'offline'),
-      systemStatusEntry('core',state.completed.includes('spirit')?'Online':'Offline',state.completed.includes('spirit')?'online':'offline'),
-      systemStatusEntry('navigation',state.completed.includes('aurora')?'Online':'Offline',state.completed.includes('aurora')?'online':'offline')
+    // The ten approved rebuild systems correspond to checkpoints 01–10.
+    // Their completion state and percentage remain driven by the existing
+    // canonical mission state; this screen changes presentation only.
+    const items=[
+      ['entry','Battery'],
+      ['velocity','Safety Check'],
+      ['luffield','Radio'],
+      ['power','Magic Engine'],
+      ['spirit','Spirit Tank'],
+      ['escapade','Reindeer Power'],
+      ['comet','Steering'],
+      ['jingle','Turbo Boosters'],
+      ['lando','Landing Lights'],
+      ['aurora','Sat-Nav']
     ];
-    return `<div class="sleigh-card panel"><div class="sleigh-title-row"><div><div class="kicker sleigh-pretitle">Sleigh Rebuild</div><h1>Santa-1</h1></div><strong class="sleigh-percent ${r>=100?'is-complete':''}">${r}%</strong></div><div class="sleigh-development-bar ${r>=100?'is-complete':''}" style="--sleigh-progress:${r}%" role="progressbar" aria-label="Santa-1 rebuild progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r}"><div class="sleigh-development-spectrum" aria-hidden="true"></div><div class="sleigh-development-mask" style="left:${r}%" aria-hidden="true"></div><i class="sleigh-development-marker" aria-hidden="true"></i></div><div class="sleigh-visual sleigh-stage-${stage}"><div class="sleigh-glow" aria-hidden="true"></div><img class="sleigh-art" src="${info.asset}" alt="Santa-1 ${postStatus.name} rebuild stage"></div><div class="sleigh-systems panel soft"><div class="kicker sleigh-systems-title">System Status</div>${systemStatusBank(systems,'sleigh-system-bank')}</div></div>`;
+    const firstPending=items.findIndex(([id])=>!state.completed.includes(id));
+    const steps=items.map(([id,label],i)=>{
+      const done=state.completed.includes(id);
+      const next=!done&&i===firstPending;
+      const status=done?'FIXED!':next?'UP NEXT':'NEEDS HELP';
+      const kind=done?'done':next?'next':'pending';
+      return `<div class="sleigh-repair-row ${kind}"><span class="sleigh-repair-dot" aria-hidden="true"></span><span class="sleigh-repair-name">${label}</span><span class="sleigh-repair-status">${status}</span></div>`;
+    }).join('');
+    const bars=items.map(([id],i)=>`<span class="sleigh-progress-segment${state.completed.includes(id)?' filled':''}" aria-hidden="true"></span>`).join('');
+    return `<section class="sleigh-card sleigh-rebuild-redesign" aria-label="Santa's sleigh rebuild">
+      <header class="sleigh-rebuild-heading"><div class="kicker">IN THE GARAGE</div><h1>HOW’S THE<br>SLEIGH?</h1></header>
+      <div class="sleigh-reveal-frame" role="img" aria-label="Santa's sleigh ${r}% restored, with repaired sections revealed in colour">
+        <img class="sleigh-reveal-grey" src="./assets/north-pole-brand-sleigh.webp" alt="" aria-hidden="true">
+        <img class="sleigh-reveal-colour" src="./assets/north-pole-brand-sleigh.webp" alt="" aria-hidden="true" style="clip-path:inset(0 ${100-r}% 0 0)">
+      </div>
+      <div class="sleigh-progress-row"><div class="sleigh-progress-segments" role="progressbar" aria-label="Sleigh rebuild progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r}">${bars}</div><strong class="sleigh-progress-number">${r}%</strong></div>
+      <div class="sleigh-repair-viewport"><div class="sleigh-repair-list" role="region" aria-label="Sleigh systems" tabindex="0"><div class="sleigh-repair-rows">${steps}</div></div><div class="sleigh-scroll-track" aria-hidden="true"><div class="sleigh-scroll-thumb"></div></div></div>
+    </section>`;
   }
 
   function systemStatusBank(systems,extraClass='',dataPrefix=''){
@@ -245,24 +383,43 @@
 
 
   function missionHeader(cp){
-    const label=`${cp.mc} / ${cp.location}`;
+    const pitStopNumber=String(cp.mc||'').replace('MC-','').padStart(2,'0');
+    const label=`PIT STOP ${pitStopNumber} / ${cp.location}`;
+    if(cp.type==='commsrelay'&&cp.id==='luffield'){
+      return `<div class="mission-head luffield-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>BOX, BOX,</span><span>HO, HO, HO!</span></h1><p class="support-copy luffield-subtitle"><span class="luffield-subtitle-first">Santa can’t hear us over the engine noise!</span><span class="luffield-subtitle-next">Connect the radio by tapping the links as the signal hits it,</span><span class="luffield-subtitle-next2">so we can call him into the pits.</span></p></div>`;
+    }
+    if(cp.type==='diagnostics'&&cp.id==='velocity'){
+      return `<div class="mission-head diagnostics-head diagnostics-head--santa"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SANTA’S</span><span>PARC FERMÉ</span></h1><p class="support-copy"><span>All racing cars get checked in parc fermé, and</span><span>Santa’s sleigh is no different! Scan every part.</span></p></div>`;
+    }
     if(cp.type==='diagnostics'){
       return `<div class="mission-head diagnostics-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="diagnostics-brand"><img src="./assets/audi-rings-2026.webp" alt="Audi"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
     }
     if(cp.type==='activation'){
-      return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy"><span>Uh-oh, Santa's sleigh has run out of battery!</span><span>Connect to the circuit and power it back up.</span></p></div>`;
     }
     if(cp.type==='artifacts'){
-      return `<div class="mission-head artifact-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="artifact-sponsor"><img src="./assets/care-bears-logo.png?v=7.38.44" alt="Care Bears"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy">Sparkles of Christmas magic are zooming down the pit lane. Catch them to power up the sleigh!</p></div>`;
     }
     if(cp.type==='spirit'){
-      return `<div class="mission-head spirit-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="spirit-sponsor"><img src="./assets/care-bears-logo.png?v=7.38.44" alt="Care Bears"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit,</span><span>and it’s running low! Fill it back up.</span></p></div>`;
     }
     if(cp.type==='power'&&cp.id==='escapade'){
-      return `<div class="mission-head raceway-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="raceway-sponsor"><img src="./assets/escapade-logo.png?v=1" alt="Escapade" width="1350" height="386" fetchpriority="high"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head raceway-head raceway-head--line"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>REINDEER</span><span>RACING LINE</span></h1><p class="support-copy">How fast can you go following the racing line?</p></div>`;
+    }
+    if(cp.type==='comet'&&cp.id==='comet'){
+      return `<div class="mission-head comet-head comet-head--corner"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>COMET’S</span><span>CORNER</span></h1><p class="support-copy">Comet the reindeer is great at steering, but he needs your help with these twisty corners!</p></div>`;
+    }
+    if(cp.type==='jingle'){
+      return `<div class="mission-head sleigh-speed-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SLEIGH SPEED</span><span>STRAIGHT</span></h1><p class="support-copy"><span>This is the fastest part of the track!</span><span>Score to give Santa a speed boost!</span></p></div>`;
+    }
+    if(cp.type==='lando'){
+      return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
+    }
+    if(cp.type==='northern'){
+      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy">The sleigh is on the grid and ready to fly. Give Santa the green flag!</p></div>`;
     }
     if(cp.type==='lapland'){
-      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="lapland-sponsor"><img src="./assets/las-vegas-logo-white.svg" alt="Las Vegas"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
     }
     return `<div class="mission-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
   }
@@ -271,7 +428,7 @@
       activation:'Establish a link with the circuit and route power to Santa-1.',
       diagnostics:'Capture the racing data needed to rebuild Santa-1.',
       radio:'Tune the receiver to 87.7 ELF FM.',
-      commsrelay:'Establish communications with Santa-1.',
+      commsrelay:'Santa can’t hear us over the engine noise! Connect the radio by tapping the links as the signal hits it, so we can call him into the pits.',
       power:'Test Santa-1’s propulsion system.',
       spirit:'Store the energy signatures.',
       placeholder:'This checkpoint is reserved while the final installation game is developed.',
@@ -279,14 +436,26 @@
       comet:'Calibrate Santa-1’s flight controls.',
       jingle:'Restore Santa-1’s guidance system.',
       lando:'Calibrate Santa-1’s flight response.',
-      aurora:'Lock onto the North Pole navigation signal.',
+      aurora:'Follow the Northern Lights to find the way home to the North Pole.',
       lapland:'Bring Santa-1’s launch systems online.',
       northern:'Authorise Santa-1 for departure.'
     })[type]||'';
   }
   function renderMission(id){
     const cp=id==='elf-radio'?ELF_RADIO_MISSION:CHECKPOINTS.find(c=>c.id===id); if(!cp) return '';
-    return `<div class="mission-shell mission-${cp.type}">${topBar()}${missionHeader(cp)}<div class="mission-content" id="missionContent">${missionBody(cp)}</div></div>`;
+    // Only the twelve circuit activations show the shared multiplayer indicator.
+    const multiplayer=cp.id!=='elf-radio'&&Math.max(1,Number(state.pitCrewPlayers)||1)>1;
+    const turn=state.missionPlayerTurnId===id?Math.max(1,Math.min(Number(state.pitCrewPlayers)||1,Number(state.missionPlayerTurn)||1)):1;
+    const indicator=multiplayer?`<div class="mission-player-turn" aria-label="Player ${turn}"><span class="mission-player-turn-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></span><span>PLAYER ${turn}</span></div>`:'';
+    // Insert the shared capsule as the first child of the existing game box.
+    // Each game's own progress header/markers therefore follow underneath it;
+    // when a completion/changeover replaces missionContent, the capsule leaves
+    // with the game instead of remaining above the popup.
+    const body=missionBody(cp);
+    const gameBox=indicator
+      ? body.replace(/^(<div\b[^>]*\bmission-instrument\b[^>]*>)/, `$1${indicator}`)
+      : body;
+    return `<div class="mission-shell mission-${cp.type}">${topBar()}${missionHeader(cp)}<div class="mission-content" id="missionContent">${gameBox}</div></div>`;
   }
   function missionBody(cp){
     switch(cp.type){
@@ -308,50 +477,54 @@
     }
   }
   function circuitEntryBody(){
-    const cp=CHECKPOINTS.find(c=>c.id==='entry');
-    const node=geoToCircuitPoint(cp?.lat,cp?.lng)||{x:88.88,y:31.11};
-    const nodeX=node.x.toFixed(2),nodeY=node.y.toFixed(2);
-    return `<div class="mission-instrument panel mc01-panel" id="mc01Activation" data-stage="detected">
+    // Use the radar's exact circuit asset and canonical checkpoint positions.
+    const installationMarkers=CHECKPOINTS.filter(cp=>/^MC-(0[1-9]|1[0-2])$/.test(cp.mc)).map((cp,i)=>{
+      const point=geoToCircuitPoint(cp.lat,cp.lng);
+      if(!point) return '';
+      const x=point.x.toFixed(2),y=point.y.toFixed(2);
+      return `<g class="mc01-installation-marker" data-mc01-installation="${i}" aria-hidden="true" transform="translate(${x} ${y})"><circle class="mc01-installation-disc" r="3.1"></circle><circle class="mc01-installation-centre" r=".85"></circle></g>`;
+    }).join('');
+    return `<div class="mission-instrument panel mc01-panel mc01-brand-panel" id="mc01Activation" data-stage="detected">
       <div class="mc01-readout mc01-readout-top">
         <span class="mc01-bolt" aria-hidden="true"><img src="./assets/system-power.svg" alt=""></span>
         <div class="mc01-readout-copy"><span id="mc01StateLabel">Circuit Link</span><strong id="mc01State">Signal Detected</strong></div>
         <div class="mc01-signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       </div>
-      <div class="mc01-track-stage" aria-hidden="true">
-        <div class="mc01-track-shadow"></div>
-        <div class="mc01-track-outline"></div>
-        <div class="mc01-track-energy"></div>
-        <svg class="mc01-node-map" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <circle class="mc01-energy-ripple ripple-a" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
-          <circle class="mc01-energy-ripple ripple-b" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
-          <circle class="mc01-energy-node" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
+      <div class="mc01-track-stage" aria-label="Silverstone circuit with installation markers appearing as energy transfers">
+        <div class="mc01-restored-track-energy" aria-hidden="true"></div>
+        <svg class="mc01-branded-circuit" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <image href="./assets/f1-circuit-red-keyline.svg" width="210" height="126" preserveAspectRatio="xMidYMid meet"></image>
+        </svg>
+        <svg class="mc01-marker-overlay" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          ${installationMarkers}
         </svg>
       </div>
       <div class="mc01-transfer mc01-transfer-bottom" aria-label="Circuit Link energy transfer progress">
         <div class="mc01-transfer-meta"><span>Energy Transfer</span><strong id="mc01TransferValue">0%</strong></div>
         <div class="mc01-transfer-track"><i id="mc01TransferFill"></i></div>
+        <button type="button" class="btn primary wide mc01-charge-cta" id="mc01ChargeButton"><span>TAP TO CHARGE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
       </div>
     </div>`;
   }
 
   function diagnosticsBody(){
     const sensors=[
-      {name:'Aero',key:'aero',viz:`<div class="mc02-icon mc02-icon-aero"><svg class="mc02-svg mc02-aero-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-aero-frame-path" d="M27.16,11.07V120.66h6V17.08h6V120.64h6V17.08H164.74V120.64h6V17.08h6V120.66h6V11.07ZM49.7,34H160.2V28H49.7Z"/><path class="mc02-aero-ring-path" d="M105,41.51a39.27,39.27,0,1,0,39.27,39.26A39.3,39.3,0,0,0,105,41.51Zm0,72.88a33.62,33.62,0,1,1,33.62-33.62A33.66,33.66,0,0,1,105,114.39Z"/><g class="mc02-aero-fan-group"><path class="mc02-aero-blades-path" d="M105,114.39m14.35-27.73c-1.41.32-4.52.71-6.84-1.35a8.56,8.56,0,0,0,1-2.37c4.32-1.43,10.41-4.22,11.17-12,.86-8.82-8-15.09-14.52-16.73-3.49-.87-6.91.35-8.5,3.05-1.5,2.55-1,5.67,1.27,8.12,1,1.06,2.87,3.56,2.26,6.6H105a8.88,8.88,0,0,0-2.38.33c-3.4-3-8.85-6.9-16-3.68-8.07,3.67-9.09,14.46-7.23,21,1,3.45,3.76,5.8,6.89,5.83h.06c2.94,0,5.36-2,6.34-5.16.42-1.38,1.64-4.26,4.58-5.25a9.18,9.18,0,0,0,1.56,2c-.92,4.45-1.55,11.12,4.79,15.65A12.39,12.39,0,0,0,111,105c5.55,0,11.2-3.17,14.41-6.5,2.5-2.58,3.15-6.15,1.61-8.88S122.62,85.9,119.35,86.66Zm-23-7.24c-4.87,1.25-7.82,5.32-9,9.19-.08.27-.4,1.16-.94,1.16h0c-.41,0-1.15-.47-1.51-1.74-1.1-3.81-1-11.91,4.13-14.25,3.39-1.54,6.13-.29,8.85,1.91A8.6,8.6,0,0,0,96.33,79.42Zm10.19-19.27c.2-.35,1-.76,2.26-.44,3.85,1,10.82,5.09,10.27,10.7-.36,3.71-2.81,5.45-6.07,6.71a8.86,8.86,0,0,0-2.47-3.18c1.35-4.85-.7-9.43-3.46-12.39C106.85,61.34,106.24,60.62,106.52,60.15Zm-5.37,20.62A3.85,3.85,0,1,1,105,84.62,3.85,3.85,0,0,1,101.15,80.77Zm20.2,13.81c-2.76,2.85-9.82,6.82-14.41,3.54-3-2.16-3.31-5.16-2.77-8.6.27,0,.55,0,.83,0a8.71,8.71,0,0,0,3.16-.6c3.52,3.6,8.52,4.1,12.46,3.2.28-.07,1.21-.24,1.48.24S122.27,93.63,121.35,94.58Z"/></g></svg></div>`},
-      {name:'Stability',key:'stability',viz:`<div class="mc02-icon mc02-icon-stability"><span class="mc02-layer mc02-stability-car"></span><span class="mc02-layer mc02-stability-headlights"></span></div>`},
-      {name:'Power',key:'power',viz:`<div class="mc02-icon mc02-icon-power"><svg class="mc02-svg mc02-power-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-power-gauge-path" d="M105,15.05A72.14,72.14,0,0,0,32.93,87.11a73,73,0,0,0,.77,10.57l.44,3,21.67-3.09-.84-6L39.28,93.82c-.22-2.22-.34-4.47-.34-6.71a65.69,65.69,0,0,1,13.47-39.9L64.67,57.39l3.85-4.63L56.26,42.58a65.89,65.89,0,0,1,45.86-21.44v16h6v-16a65.93,65.93,0,0,1,45.6,21.43L139.11,54.7,141.05,57a47.1,47.1,0,0,1,10.41,36.91l-.64,3.16,25,3.59.44-3a73.21,73.21,0,0,0,.77-10.58A72.15,72.15,0,0,0,105,15.05Z"/><g class="mc02-power-needle-group"><path class="mc02-power-needle-path" d="M171.32,117.08l-64-35.21.06,0-.12,0A5.77,5.77,0,0,0,99.39,89a5.89,5.89,0,0,0,3.16,3.34L170.41,119a1.08,1.08,0,0,0,.91-2Z"/></g></svg></div>`},
-      {name:'Control',key:'control',viz:`<div class="mc02-icon mc02-icon-control"><span class="mc02-layer mc02-control-wheel"></span><span class="mc02-layer mc02-control-ring"></span></div>`},
-      {name:'Traction',key:'traction',viz:`<div class="mc02-icon mc02-icon-traction"><span class="mc02-layer mc02-traction-car"></span><span class="mc02-layer mc02-traction-skids"></span><span class="mc02-layer mc02-traction-shine"></span></div>`},
-      {name:'Response',key:'response',viz:`<div class="mc02-icon mc02-icon-response"><span class="mc02-layer mc02-response-cones"></span><span class="mc02-layer mc02-response-arrow"></span><span class="mc02-layer mc02-response-shine"></span></div>`}
+      {name:'AERO',key:'aero',icon:'./assets/parc-ferme-aero.webp',viz:`<div class="mc02-icon mc02-icon-aero"><svg class="mc02-svg mc02-aero-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-aero-frame-path" d="M27.16,11.07V120.66h6V17.08h6V120.64h6V17.08H164.74V120.64h6V17.08h6V120.66h6V11.07ZM49.7,34H160.2V28H49.7Z"/><path class="mc02-aero-ring-path" d="M105,41.51a39.27,39.27,0,1,0,39.27,39.26A39.3,39.3,0,0,0,105,41.51Zm0,72.88a33.62,33.62,0,1,1,33.62-33.62A33.66,33.66,0,0,1,105,114.39Z"/><g class="mc02-aero-fan-group"><path class="mc02-aero-blades-path" d="M105,114.39m14.35-27.73c-1.41.32-4.52.71-6.84-1.35a8.56,8.56,0,0,0,1-2.37c4.32-1.43,10.41-4.22,11.17-12,.86-8.82-8-15.09-14.52-16.73-3.49-.87-6.91.35-8.5,3.05-1.5,2.55-1,5.67,1.27,8.12,1,1.06,2.87,3.56,2.26,6.6H105a8.88,8.88,0,0,0-2.38.33c-3.4-3-8.85-6.9-16-3.68-8.07,3.67-9.09,14.46-7.23,21,1,3.45,3.76,5.8,6.89,5.83h.06c2.94,0,5.36-2,6.34-5.16.42-1.38,1.64-4.26,4.58-5.25a9.18,9.18,0,0,0,1.56,2c-.92,4.45-1.55,11.12,4.79,15.65A12.39,12.39,0,0,0,111,105c5.55,0,11.2-3.17,14.41-6.5,2.5-2.58,3.15-6.15,1.61-8.88S122.62,85.9,119.35,86.66Zm-23-7.24c-4.87,1.25-7.82,5.32-9,9.19-.08.27-.4,1.16-.94,1.16h0c-.41,0-1.15-.47-1.51-1.74-1.1-3.81-1-11.91,4.13-14.25,3.39-1.54,6.13-.29,8.85,1.91A8.6,8.6,0,0,0,96.33,79.42Zm10.19-19.27c.2-.35,1-.76,2.26-.44,3.85,1,10.82,5.09,10.27,10.7-.36,3.71-2.81,5.45-6.07,6.71a8.86,8.86,0,0,0-2.47-3.18c1.35-4.85-.7-9.43-3.46-12.39C106.85,61.34,106.24,60.62,106.52,60.15Zm-5.37,20.62A3.85,3.85,0,1,1,105,84.62,3.85,3.85,0,0,1,101.15,80.77Zm20.2,13.81c-2.76,2.85-9.82,6.82-14.41,3.54-3-2.16-3.31-5.16-2.77-8.6.27,0,.55,0,.83,0a8.71,8.71,0,0,0,3.16-.6c3.52,3.6,8.52,4.1,12.46,3.2.28-.07,1.21-.24,1.48.24S122.27,93.63,121.35,94.58Z"/></g></svg></div>`},
+      {name:'STABILITY',key:'stability',icon:'./assets/parc-ferme-stability.webp',viz:`<div class="mc02-icon mc02-icon-stability"><span class="mc02-layer mc02-stability-car"></span><span class="mc02-layer mc02-stability-headlights"></span></div>`},
+      {name:'POWER',key:'power',icon:'./assets/parc-ferme-power.webp',viz:`<div class="mc02-icon mc02-icon-power"><svg class="mc02-svg mc02-power-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-power-gauge-path" d="M105,15.05A72.14,72.14,0,0,0,32.93,87.11a73,73,0,0,0,.77,10.57l.44,3,21.67-3.09-.84-6L39.28,93.82c-.22-2.22-.34-4.47-.34-6.71a65.69,65.69,0,0,1,13.47-39.9L64.67,57.39l3.85-4.63L56.26,42.58a65.89,65.89,0,0,1,45.86-21.44v16h6v-16a65.93,65.93,0,0,1,45.6,21.43L139.11,54.7,141.05,57a47.1,47.1,0,0,1,10.41,36.91l-.64,3.16,25,3.59.44-3a73.21,73.21,0,0,0,.77-10.58A72.15,72.15,0,0,0,105,15.05Z"/><g class="mc02-power-needle-group"><path class="mc02-power-needle-path" d="M171.32,117.08l-64-35.21.06,0-.12,0A5.77,5.77,0,0,0,99.39,89a5.89,5.89,0,0,0,3.16,3.34L170.41,119a1.08,1.08,0,0,0,.91-2Z"/></g></svg></div>`},
+      {name:'CONTROL',key:'control',icon:'./assets/parc-ferme-control.webp',viz:`<div class="mc02-icon mc02-icon-control"><span class="mc02-layer mc02-control-wheel"></span><span class="mc02-layer mc02-control-ring"></span></div>`},
+      {name:'TRACTION',key:'traction',icon:'./assets/parc-ferme-traction.webp',viz:`<div class="mc02-icon mc02-icon-traction"><span class="mc02-layer mc02-traction-car"></span><span class="mc02-layer mc02-traction-skids"></span><span class="mc02-layer mc02-traction-shine"></span></div>`},
+      {name:'RESPONSE',key:'response',icon:'./assets/parc-ferme-response.webp',viz:`<div class="mc02-icon mc02-icon-response"><span class="mc02-layer mc02-response-cones"></span><span class="mc02-layer mc02-response-arrow"></span><span class="mc02-layer mc02-response-shine"></span></div>`}
     ];
-    return `<div class="mission-instrument panel diagnostics-panel"><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><div class="sensor-head"><span class="num">0${i+1}</span><span class="name">${x.name}</span></div><div class="sensor-viz viz-${x.key}" aria-hidden="true">${x.viz}</div><div class="state">Tap to scan</div></button>`).join('')}</div></div><button class="btn primary wide" id="diagComplete" disabled>Complete Scan</button>`;
+    return `<div class="mission-instrument panel diagnostics-panel"><section class="diag-progress-card"><div class="diag-progress-copy"><div class="diag-progress-label">PARTS CHECKED</div><div class="diag-progress-value" id="diagProgressValue">0/6</div></div><div class="diag-progress-track" aria-label="Parts checked progress">${Array.from({length:6},(_,i)=>`<i data-diag-progress="${i}"></i>`).join('')}</div></section><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor parc-scan-card sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><strong class="parc-card-title">${x.name}</strong><span class="sensor-viz-shell"><img class="parc-icon-art" src="${x.icon}" alt="" aria-hidden="true"></span><span class="state">Tap to scan</span></button>`).join('')}</div><button class="btn primary wide parc-complete-cta" id="diagComplete" disabled><span>COMPLETE SCAN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
   }
 
-  function radioBody(){return `<div class="mission-instrument panel"><div class="wave" id="radioWave">${'<i></i>'.repeat(28)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled>Lock Signal</button></div>`}
+  function radioBody(){return `<div class="mission-instrument panel"><div class="wave transmission-wave" id="radioWave">${'<b></b>'.repeat(24)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled><span>LOCK SIGNAL</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`}
   function commsRelayBody(){
     return `<div class="mission-instrument panel comms-relay-panel">
-      <div class="relay-progress-head"><span>RELAYS LOCKED</span><strong id="relayLockedCount">0 / 4</strong></div>
-      <div class="relay-progress-track" aria-label="Relay lock progress">${Array.from({length:4},(_,i)=>`<i data-relay-progress="${i}"></i>`).join('')}</div>
-      <div class="relay-network" id="relayNetwork" aria-label="Signal relay network">
+      <div class="relay-progress-head"><span>RADIO LINKS</span><strong id="relayLockedCount">0/4</strong></div>
+      <div class="relay-progress-track" aria-label="Radio links checked progress">${Array.from({length:4},(_,i)=>`<i data-relay-progress="${i}"></i>`).join('')}</div>
+      <div class="relay-network" id="relayNetwork" aria-label="Radio signal linking North Pole to Santa">
         <svg class="relay-route" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true">
           <line class="relay-hop-line" data-hop="0" x1="25" y1="25" x2="75" y2="25"></line>
           <line class="relay-hop-line" data-hop="1" x1="75" y1="25" x2="25" y2="75"></line>
@@ -360,9 +533,9 @@
           <line class="relay-hop-line" data-hop="4" x1="25" y1="125" x2="75" y2="125"></line>
         </svg>
         ${Array.from({length:5},(_,i)=>`<span class="relay-carrier-packet" data-carrier="${i}" aria-hidden="true"></span>`).join('')}
-        <div class="relay-cell relay-endpoint relay-origin"><span class="relay-radio-icon"><img src="./assets/relay-transmitter-icon.svg" alt="" aria-hidden="true"></span><small>TRANSMITTER</small></div>
-        ${[0,1,2,3].map(i=>`<div class="relay-cell relay-capture"><button class="relay-node ${i===0?'active':''}" data-relay="${i}" aria-label="Relay ${i+1}"><span class="relay-target"></span><span class="relay-pulse"></span><span class="relay-core">0${i+1}</span></button><small>RELAY 0${i+1}</small></div>`).join('')}
-        <div class="relay-cell relay-endpoint relay-destination"><span class="relay-receiver-icon"><img src="./assets/relay-receiver-hi-spec.svg" alt="" aria-hidden="true"></span><small>RECEIVER</small></div>
+        <div class="relay-cell relay-endpoint relay-origin"><span class="relay-radio-icon"><img src="./assets/relay-transmitter-icon.svg" alt="" aria-hidden="true"><b>TX</b></span><small>NORTH POLE</small></div>
+        ${[0,1,2,3].map(i=>`<div class="relay-cell relay-capture"><button class="relay-node ${i===0?'active':''}" data-relay="${i}" aria-label="Link ${i+1}"><span class="relay-target"></span><span class="relay-pulse"></span><span class="relay-core">${i+1}</span></button><small>LINK 0${i+1}</small></div>`).join('')}
+        <div class="relay-cell relay-endpoint relay-destination"><span class="relay-receiver-icon"><img src="./assets/relay-receiver-hi-spec.svg" alt="" aria-hidden="true"><b>RADIO</b></span><small>SANTA</small></div>
       </div>
       <div class="visually-hidden" id="relayState" aria-live="polite">Relay 01 armed</div>
     </div>`;
@@ -374,11 +547,12 @@
         <div class="power-scanlines" aria-hidden="true"></div>
         <div class="power-hud">
           <div class="power-time-hud"><span>Time</span><strong id="powerRunState">00:00</strong></div>
-          <div class="power-speed-hud"><span>Speed</span><strong><b id="powerSpeed">0</b><small>MPH</small></strong></div>
-          <div class="power-propulsion-hud"><span>Propulsion</span><strong id="powerOutput">0%</strong></div>
+          <div class="power-speed-hud"><span>MPH</span><strong><b id="powerSpeed">0</b><small>MPH</small></strong></div>
+          <div class="power-propulsion-hud"><span>POWER</span><strong id="powerOutput">0%</strong></div>
         </div>
         <div class="power-rev-wrap"><div class="power-rev" id="powerRev">${revSegments}</div></div>
         <div class="power-road-scene" id="powerRoad">
+          <div class="power-road-markers" aria-hidden="true"></div>
           <div class="power-sky-sprite" aria-hidden="true"></div>
           <div class="power-ground" aria-hidden="true">
             <div class="power-grass-plane"></div>
@@ -387,7 +561,7 @@
           <div class="power-horizon-seam" aria-hidden="true"></div>
           <div class="power-speed-lines" aria-hidden="true">${Array.from({length:12},()=>'<i></i>').join('')}</div>
           <div class="power-car" id="powerCar">
-            <img class="power-car-sprite" src="./assets/power-car.webp" alt="Blue retro pixel racing car seen from behind">
+            <img class="power-car-sprite" src="./assets/reindeer-racing-line-f1-up.webp" alt="Top-down Silverstone F1 racing car facing forwards">
             <span class="power-exhaust power-exhaust-left"></span><span class="power-exhaust power-exhaust-right"></span>
           </div>
           <div class="power-burst" id="powerBurst" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -395,7 +569,7 @@
         <div class="power-max-hold"><span>SPEED LOCK</span><div><i id="powerMaxFill"></i></div><strong id="powerMaxState">STANDBY</strong></div>
       </div>
       <div class="visually-hidden" id="powerState" aria-live="polite">Ready</div>
-      <button class="btn primary wide power-accelerator" id="powerAccelerator">ACCELERATE</button>
+      <button class="btn primary wide power-accelerator" id="powerAccelerator" aria-label="Press and hold to accelerate">GO, GO GO!</button>
     </div>`;
   }
   function spiritBody(){
@@ -409,18 +583,14 @@
       {side:'right',index:2,key:'white',rgb:'247,250,255',color:'#f7faff',name:'White energy'},
       {side:'right',index:3,key:'orange',rgb:'255,122,28',color:'#ff7a1c',name:'Orange energy'}
     ];
-    const bhpIcon=`<svg class="spirit-bhp-icon" viewBox="66 0 66 126" focusable="false" aria-hidden="true"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg>`;
+    const bhpIcon=`<svg class="spirit-bhp-icon" viewBox="66 0 78 126" focusable="false" aria-hidden="true"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg>`;
     const tankCells=side=>tankDefs.filter(tank=>tank.side===side).map(tank=>`<div class="spirit-tank-cell spirit-tank-${tank.key}" data-spirit-tank="${tank.side}-${tank.index}" data-spirit-color="${tank.key}" data-spirit-rgb="${tank.rgb}" data-spirit-hex="${tank.color}" style="--tank-rgb:${tank.rgb};--tank-color:${tank.color};" aria-label="${tank.name} storage tank">
       <span class="spirit-tank-energy"></span>
-      <span class="spirit-tank-shimmer"></span>
-      <span class="spirit-tank-grid" aria-hidden="true"></span>
-      <span class="spirit-tank-plate" aria-hidden="true"><span class="spirit-tank-plate-face">${bhpIcon}</span></span>
-      <span class="spirit-tank-vent" aria-hidden="true"><i></i><i></i><i></i></span>
-      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true"><svg viewBox="66 0 78 126" focusable="false"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg></span></button>
+      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true">${bhpIcon}</span><span class="spirit-cell-state" aria-hidden="true">TAP TO FILL!</span></button>
     </div>`).join('');
     const stageDots=Array.from({length:8},(_,i)=>`<i data-spirit-stage-dot="${i}"></i>`).join('');
-    return `<div class="mission-instrument panel spirit-panel" id="spiritRig" data-stage="0">
-      <div class="spirit-score"><span>CORE CHARGE</span><strong><b id="spiritStageNumber">0</b> / 8</strong></div>
+    return `<div class="mission-instrument panel spirit-panel spirit-panel--charging" id="spiritRig" data-stage="0">
+      <div class="spirit-score"><span>CHRISTMAS SPIRIT</span><strong><b id="spiritStageNumber">0</b>/8</strong></div>
       <div class="spirit-stage-progress" id="spiritStageProgress" aria-hidden="true">${stageDots}</div>
       <div class="spirit-apparatus" aria-label="Spirit energy storage tanks">
         <div class="spirit-meter spirit-meter-left" aria-hidden="true"><span class="spirit-meter-fill"></span><b class="spirit-meter-marker"></b></div>
@@ -432,11 +602,10 @@
   }
   function placeholderBody(cp){const location=cp?.location||'Checkpoint';return `<div class="mission-instrument panel" style="text-align:center;padding:30px 18px"><div class="onboard-icon">?</div><div class="kicker">${location} / Creative Hold</div><h2 style="font-family:var(--display);text-transform:uppercase;font-size:28px;margin:8px 0">Mission TBC</h2><p class="sub">This checkpoint is reserved while the final installation game is developed. GPS activation, route progression and completion behaviour remain active for testing.</p><button class="btn primary wide" style="margin-top:16px" id="completePlaceholder">Complete Demo Step</button></div>`}
   function artifactBody(){
-    return `<div class="mission-instrument panel artifact-panel">
-      <div class="artifact-score"><span>SIGNATURE CAPTURE</span><strong id="artifactProgress">0 / 10</strong></div>
-      <div class="artifact-progress-track" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i data-artifact-step="${i}"></i>`).join('')}</div>
-      <div class="artifact-instruction" aria-hidden="true">Collect the energy signatures.</div>
-      <div class="artifact-field" id="artifactField" data-intensity="1" aria-label="Power Pulse energy signature field">
+    return `<div class="mission-instrument panel artifact-panel pit-lane-powerup-panel">
+      <div class="artifact-score"><span>SPARKLES CAUGHT</span><strong id="artifactProgress">0/8</strong></div>
+      <div class="artifact-progress-track" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i data-artifact-step="${i}"></i>`).join('')}</div>
+      <div class="artifact-field" id="artifactField" data-intensity="1" aria-label="Pit Lane Power-Up sparkle playfield">
         <canvas class="starstream-canvas" id="starstreamCanvas" aria-hidden="true"></canvas>
         <div class="starstream-nebula" aria-hidden="true"></div>
         <div class="starstream-vignette" aria-hidden="true"></div>
@@ -468,16 +637,16 @@
   }
   function jingleBody(){
     return `<div class="mission-instrument panel jingle-panel" id="jinglePanel">
-      <div class="jingle-progress-head"><span>GUIDANCE LOCK</span><strong id="jingleLockCount">0 / 3</strong></div>
-      <div class="jingle-lock-track" aria-label="Guidance lock progress">${[1,2,3].map(i=>`<i class="${i===1?'is-next':''}" data-jingle-beam="${i}"></i>`).join('')}</div>
-      <div class="jingle-arena is-awaiting-start" id="jingleArena" tabindex="0" role="application" aria-label="Jingle Beams guidance game. Start the puck, then tap or slide horizontally to steer the paddle and direct the charge into each receiver.">
+      <div class="jingle-progress-head"><span>SPEED BOOSTS</span><strong id="jingleLockCount">0 / 3</strong></div>
+      <div class="jingle-lock-track" aria-label="Speed boosts progress">${[1,2,3].map(i=>`<i class="${i===1?'is-next':''}" data-jingle-beam="${i}"></i>`).join('')}</div>
+      <div class="jingle-arena is-awaiting-start" id="jingleArena" tabindex="0" role="application" aria-label="Sleigh Speed Straight game. Start the puck, then tap or slide horizontally to steer the paddle and direct the puck into each target.">
         <div class="jingle-grid" aria-hidden="true"><img class="jingle-centre-mark" src="./assets/silverstone-s-mark.webp" alt=""></div>
         <div class="jingle-energy-rail rail-left" aria-hidden="true"><i></i></div>
         <div class="jingle-energy-rail rail-right" aria-hidden="true"><i></i></div>
         <div class="jingle-receiver" id="jingleReceiver" aria-hidden="true"><span></span><i></i></div>
         <div class="jingle-goal-flare" id="jingleGoalFlare" aria-hidden="true"></div>
         <div class="jingle-puck-trail" id="jinglePuckTrail" aria-hidden="true"></div>
-        <button type="button" class="jingle-puck is-ready" id="jinglePuck" aria-label="Start Jingle Beams"><i></i><img class="jingle-play-icon" src="./assets/video-play.svg" alt="" aria-hidden="true"><strong class="jingle-puck-countdown" id="jingleCountdown"></strong></button>
+        <button type="button" class="jingle-puck is-ready" id="jinglePuck" aria-label="Start Sleigh Speed Straight"><i></i><img class="jingle-play-icon" src="./assets/video-play.svg" alt="" aria-hidden="true"><strong class="jingle-puck-countdown" id="jingleCountdown"></strong></button>
         <div class="jingle-paddle" id="jinglePaddle" aria-hidden="true"><i></i></div>
         <div class="jingle-drag-prompt" id="jinglePrompt"><strong>TAP TO STEER</strong></div>
       </div>
@@ -486,15 +655,18 @@
   }
   function landoBody(){
     return `<div class="mission-instrument panel lando-panel">
-      <div class="lando-round-head"><span>REACTION TEST</span><strong id="landoRound">1 / 4</strong></div>
-      <div class="lando-results" aria-label="Reaction test results">
-        ${[1,2,3,4].map(i=>`<div class="lando-result ${i===1?'active':''}" data-lando-result="${i}"><strong>${i}</strong></div>`).join('')}
+      <div class="lando-round-head"><span>REACTION TESTS</span><strong id="landoRound">1 / 4</strong></div>
+      <div class="lando-progress-track" aria-label="Reaction test progress">
+        ${[1,2,3,4].map(i=>`<span class="lando-progress-segment ${i===1?'active':''}" data-lando-progress="${i}"></span>`).join('')}
       </div>
       <div class="lando-gantry-art" id="landoGantry" aria-label="Five column start light gantry with four stacked lamps">
         <img src="./assets/lando-gantry.webp" alt="" aria-hidden="true">
         <div class="lando-light-overlay" aria-hidden="true">
           ${[0,1,2,3,4].map(col=>[0,1,2,3].map(row=>`<span class="lando-lamp" data-col="${col}" data-row="${row}"></span>`).join('')).join('')}
         </div>
+      </div>
+      <div class="lando-score-grid" aria-label="Recorded reaction times">
+        ${[1,2,3,4].map(i=>`<div class="lando-result ${i===1?'active':''}" data-lando-result="${i}"><span class="lando-score-label">GO ${i}</span><strong class="lando-score-placeholder">—</strong></div>`).join('')}
       </div>
       <button class="btn primary wide lando-react-btn" id="reactionBtn">Start Test</button>
     </div>`;
@@ -505,16 +677,18 @@
       <div class="aurora-atmosphere" aria-hidden="true"></div>
       <div class="aurora-progress-head"><span>Navigation Lock</span><strong id="auroraLockCount">0 / 3</strong></div>
       <div class="aurora-lock-track" id="auroraLockTrack" aria-label="Navigation lock progress">${Array.from({length:3},()=>'<i></i>').join('')}</div>
-      <div class="aurora-north" aria-hidden="true"><span class="aurora-north-star">✦</span><i></i></div>
-      <div class="aurora-dial" id="auroraDial" role="group" aria-label="Aurora Apex navigation alignment instrument">
+      <div class="aurora-north" aria-hidden="true"><i></i></div>
+      <div class="aurora-dial" id="auroraDial" data-active-ring="outer" role="group" aria-label="Aurora Apex navigation alignment instrument">
         <div class="aurora-field" aria-hidden="true"></div>
         <div class="aurora-target-line" aria-hidden="true"></div>
         <div class="aurora-capture-gate" aria-hidden="true"><i></i></div>
+        <div class="aurora-lock-pointer" aria-hidden="true"></div>
         ${rings.map(key=>`<button type="button" class="aurora-ring aurora-ring-${key}" data-aurora-ring="${key}" aria-label="Lock ${key} navigation ring"><img src="./assets/aurora-ring-${key}.webp" alt="" aria-hidden="true"><span class="aurora-lock-notch" aria-hidden="true"></span></button>`).join('')}
         <div class="aurora-charge-pulse" aria-hidden="true"></div>
         <div class="aurora-final-wave" aria-hidden="true"></div>
-        <div class="aurora-compass" aria-hidden="true"><span><img class="aurora-compass-mark" src="./assets/silverstone-s-mark.webp" alt=""></span></div>
+        <div class="aurora-compass" aria-hidden="true"><span><img class="aurora-compass-mark" src="./assets/north-star-brand-guide.webp" alt=""></span></div>
       </div>
+      <button class="btn primary wide aurora-align-btn" type="button" id="auroraAlignBtn">TAP TO ALIGN</button>
       <div class="visually-hidden" id="auroraState" aria-live="polite">Align the active navigation ring with the North Pole axis.</div>
     </div>`;
   }
@@ -523,35 +697,28 @@
     // Existing system names remain unchanged; MC01/MC02 add CIRCUITRY + DIAGNOSTIC.
     // Row-paired markup is interleaved so the visible columns read in mission order:
     // column 1 = 1–5, column 2 = 6–10.
+    const partNames=['BATTERY','SAFETY CHECK','RADIO','MAGIC ENGINE','SPIRIT TANK',
+      'REINDEER HARNESS','STEERING','TURBO BOOSTERS','LANDING LIGHTS','SAT-NAV'];
     const systems=[
-      systemStatusEntry('circuitry'),
-      systemStatusEntry('propulsion'),
-      systemStatusEntry('diagnostic'),
-      systemStatusEntry('guidance'),
-      systemStatusEntry('comms'),
-      systemStatusEntry('control'),
-      systemStatusEntry('power'),
-      systemStatusEntry('response'),
-      systemStatusEntry('core'),
-      systemStatusEntry('navigation')
-    ];
+      'circuitry','propulsion','diagnostic','guidance','comms',
+      'control','power','response','core','navigation'
+    ].map((key,i)=>({...systemStatusEntry(key),label:partNames[i]}));
     return `<div class="mission-instrument panel lapland-panel" id="laplandPanel" style="--lapland-charge:0">
       <section class="lapland-stage lapland-verification-stage" id="laplandVerificationStage">
         <div class="lapland-online-progress" id="laplandOnlineProgress">
-          <div class="lapland-online-head"><span>SYSTEMS ONLINE</span><strong id="laplandOnlineCount">0 / 10</strong></div>
-          <div class="lapland-online-track" aria-label="Launch system verification progress">${Array.from({length:10},(_,i)=>`<i data-lapland-progress="${i}"></i>`).join('')}</div>
+          <div class="lapland-online-head"><span>PARTS AWAKE</span><strong id="laplandOnlineCount">0 / 10</strong></div>
+          <div class="lapland-online-track" aria-label="Launch system wake progress">${Array.from({length:10},(_,i)=>`<i data-lapland-progress="${i}"></i>`).join('')}</div>
         </div>
-        ${systemStatusBank(systems,'lapland-system-bank','verify')}
-        <div class="lapland-launch-slot">
-          <button class="btn primary wide lapland-test-btn" id="initiateTest">Initialise Launch</button>
+        <div class="lapland-system-bank lapland-card-bank" aria-label="Tap each launch system to wake it for launch">
+          ${systems.map(system=>`<button type="button" class="lapland-system-card is-${system.state}" data-verify-system="${system.key}" data-lapland-system="${system.key}" aria-label="Wake ${system.label}"><span class="lapland-card-name">${system.label}</span><span class="lapland-card-state" data-verify-status="${system.key}">TAP</span></button>`).join('')}
         </div>
       </section>
       <section class="lapland-stage lapland-transmission-stage" id="laplandTransmissionStage" hidden>
-        <div class="incoming-transmission lapland-incoming">
-          <div class="transmission-wave">${'<b></b>'.repeat(24)}</div>
-          <div class="kicker">Incoming Transmission</div>
+        <div class="incoming-transmission lapland-incoming lapland-elf-transmission" role="status" aria-label="Incoming ELF Engineering transmission">
+          <div class="transmission-wave" aria-hidden="true">${'<b></b>'.repeat(24)}</div>
+          <div class="kicker">INCOMING TRANSMISSION</div>
           <h2>ELF ENGINEERING</h2>
-          <div class="signal-state lock">Signal locked</div>
+          <div class="signal-state lock">SIGNAL LOCKED</div>
         </div>
       </section>
       <section class="lapland-stage lapland-party-stage" id="laplandPartyStage" hidden aria-label="Las Vegas launch celebration">
@@ -568,103 +735,16 @@
       </section>
     </div>`;
   }
-  function northernBody(){return `<div class="mission-instrument panel northern-panel northern-hud-panel" id="northernPanel">
-      <div class="northern-santa-label" aria-hidden="true"><i></i><span>SANTA-1</span><i></i></div>
-      <div class="northern-hud-window" aria-hidden="true">
-        <svg class="northern-hud-svg" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet" role="presentation">
-          <defs>
-            <radialGradient id="nfHudBg" cx="50%" cy="48%" r="66%">
-              <stop offset="0" stop-color="#0a3146" stop-opacity=".48"/>
-              <stop offset=".52" stop-color="#061f31" stop-opacity=".18"/>
-              <stop offset="1" stop-color="#020d17" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="nfSoftGlow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="6" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="nfCoreGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="10" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-
-          <rect width="1000" height="650" fill="url(#nfHudBg)"/>
-
-          <g class="nf-stars" fill="#b8f4ff">
-            <circle cx="74" cy="88" r="2.2" opacity=".72"/><circle cx="122" cy="170" r="1.4" opacity=".45"/><circle cx="180" cy="108" r="1.8" opacity=".62"/>
-            <circle cx="238" cy="202" r="1.6" opacity=".5"/><circle cx="294" cy="76" r="1.2" opacity=".55"/><circle cx="350" cy="144" r="2" opacity=".72"/>
-            <circle cx="420" cy="94" r="1.3" opacity=".45"/><circle cx="470" cy="188" r="1.5" opacity=".58"/><circle cx="560" cy="112" r="1.5" opacity=".5"/>
-            <circle cx="642" cy="76" r="1.8" opacity=".68"/><circle cx="704" cy="170" r="1.2" opacity=".48"/><circle cx="770" cy="108" r="2" opacity=".66"/>
-            <circle cx="834" cy="196" r="1.5" opacity=".5"/><circle cx="906" cy="92" r="1.8" opacity=".68"/><circle cx="942" cy="228" r="1.3" opacity=".46"/>
-            <circle cx="96" cy="334" r="1.5" opacity=".5"/><circle cx="154" cy="444" r="2" opacity=".68"/><circle cx="220" cy="352" r="1.3" opacity=".48"/>
-            <circle cx="284" cy="528" r="1.8" opacity=".58"/><circle cx="344" cy="418" r="1.4" opacity=".48"/><circle cx="400" cy="566" r="2" opacity=".7"/>
-            <circle cx="606" cy="548" r="1.5" opacity=".52"/><circle cx="668" cy="438" r="1.4" opacity=".46"/><circle cx="724" cy="568" r="2" opacity=".68"/>
-            <circle cx="790" cy="420" r="1.3" opacity=".52"/><circle cx="848" cy="522" r="1.8" opacity=".62"/><circle cx="912" cy="390" r="1.5" opacity=".5"/>
-            <circle cx="952" cy="548" r="2.1" opacity=".7"/>
-          </g>
-
-          <g class="nf-hud-static" fill="none" stroke="#58ddfb" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="nf-faint-ring nf-ring-drift-a" cx="500" cy="325" r="246" opacity=".14" stroke-width="1.4"/>
-            <circle class="nf-faint-ring nf-ring-drift-b" cx="500" cy="325" r="184" opacity=".12" stroke-width="1.3" stroke-dasharray="3 12"/>
-            <circle class="nf-dotted-ring nf-ring-drift-a" cx="500" cy="325" r="138" opacity=".78" stroke-width="2" stroke-dasharray="2 11"/>
-
-            <path class="nf-outer-arc" d="M178 112 A350 350 0 0 0 178 538" stroke-width="5" opacity=".92"/>
-            <path class="nf-outer-arc" d="M822 112 A350 350 0 0 1 822 538" stroke-width="5" opacity=".92"/>
-            <path d="M250 166 A270 270 0 0 0 250 484" stroke-width="3" opacity=".68"/>
-            <path d="M750 166 A270 270 0 0 1 750 484" stroke-width="3" opacity=".68"/>
-
-            <path class="nf-mid-arc" d="M320 188 A205 205 0 0 0 320 462" stroke-width="10" opacity=".95" filter="url(#nfSoftGlow)"/>
-            <path class="nf-mid-arc" d="M680 188 A205 205 0 0 1 680 462" stroke-width="10" opacity=".95" filter="url(#nfSoftGlow)"/>
-            <path d="M395 248 A114 114 0 0 0 395 402" stroke-width="5" opacity=".9"/>
-            <path d="M605 248 A114 114 0 0 1 605 402" stroke-width="5" opacity=".9"/>
-
-            <path d="M402 92 L430 120 H570 L598 92" stroke-width="3" opacity=".82"/>
-            <path d="M402 558 L430 530 H570 L598 558" stroke-width="3" opacity=".82"/>
-            <path d="M443 111 H557" stroke-width="6" stroke-dasharray="7 9" opacity=".76"/>
-            <path d="M443 539 H557" stroke-width="6" stroke-dasharray="7 9" opacity=".76"/>
-
-            <path d="M56 325 H258" stroke-width="2" opacity=".56"/><path d="M742 325 H944" stroke-width="2" opacity=".56"/>
-            <path d="M500 66 V150" stroke-width="2" opacity=".58"/><path d="M500 500 V584" stroke-width="2" opacity=".58"/>
-            <path d="M348 325 l-20 -14 v28 z" stroke-width="3" opacity=".9"/>
-            <path d="M652 325 l20 -14 v28 z" stroke-width="3" opacity=".9"/>
-
-            <g class="nf-side-ticks" opacity=".72" stroke-width="3">
-              <path d="M214 218 h18"/><path d="M202 240 h15"/><path d="M194 264 h13"/><path d="M188 290 h12"/>
-              <path d="M188 360 h12"/><path d="M194 386 h13"/><path d="M202 410 h15"/><path d="M214 432 h18"/>
-              <path d="M786 218 h-18"/><path d="M798 240 h-15"/><path d="M806 264 h-13"/><path d="M812 290 h-12"/>
-              <path d="M812 360 h-12"/><path d="M806 386 h-13"/><path d="M798 410 h-15"/><path d="M786 432 h-18"/>
-            </g>
-          </g>
-
-          <g class="nf-reticle" fill="none" stroke="#9becff" stroke-linecap="round">
-            <path d="M430 325 H570" stroke-width="2.5" opacity=".9"/>
-            <path d="M500 255 V395" stroke-width="2.5" opacity=".9"/>
-            <circle cx="500" cy="325" r="31" stroke="#5eddf9" stroke-width="4" opacity=".78" filter="url(#nfSoftGlow)"/>
-            <circle cx="500" cy="325" r="17" stroke="#9becff" stroke-width="3" opacity=".88"/>
-          </g>
-
-          <g class="nf-flight-progress">
-            <line class="nf-progress-line-svg" x1="500" y1="445" x2="500" y2="205" stroke="#70e6ff" stroke-width="3" opacity=".62"/>
-            <circle class="nf-progress-node-svg nf-node-ready" cx="500" cy="445" r="11"/>
-            <circle class="nf-progress-node-svg nf-node-authorising" cx="500" cy="325" r="11"/>
-            <circle class="nf-progress-node-svg nf-node-airborne" cx="500" cy="205" r="11"/>
-            <g class="nf-progress-marker-anchor" transform="translate(500 445)">
-              <g class="nf-progress-marker-svg">
-                <circle class="nf-marker-halo" r="31" fill="#57dffb" opacity=".10"/>
-                <circle class="nf-marker-ring" r="22" fill="#071b2b" stroke="#77e9ff" stroke-width="4" filter="url(#nfCoreGlow)"/>
-                <circle class="nf-marker-core" r="10" fill="#e9fbff"/>
-              </g>
-            </g>
-          </g>
-        </svg>
-      </div>
+  function northernBody(){return `<div class="mission-instrument panel northern-panel northern-brand-panel" id="northernPanel">
+      <div class="northern-brand-sleigh-frame"><img src="./assets/north-pole-brand-sleigh.webp" alt="Santa's sleigh carrying presents, illustrated in the official Christmas at Silverstone brand style"></div>
       <div class="northern-conditions" aria-label="Final flight conditions">
-        <div class="northern-condition" data-flight-check="0"><span>Flight Path</span><strong>Checking</strong></div>
-        <div class="northern-condition" data-flight-check="1"><span>Airspace</span><strong>Checking</strong></div>
-        <div class="northern-condition" data-flight-check="2"><span>Launch Window</span><strong>Checking</strong></div>
+        <div class="northern-condition" data-flight-check="0"><span>ROUTE</span><strong>WAIT</strong></div>
+        <div class="northern-condition" data-flight-check="1"><span>SKIES</span><strong>WAIT</strong></div>
+        <div class="northern-condition" data-flight-check="2"><span>REINDEER</span><strong>WAIT</strong></div>
       </div>
       <button class="btn primary wide northern-authorise-btn" id="authoriseFlight" disabled>
-        <span class="northern-authorise-label">Authorise Flight</span>
+        <span class="northern-authorise-label">WAVE THE FLAG!</span>
+        <span class="northern-flag-icon" aria-hidden="true"><img src="./assets/north-pole-flag-brand.webp" alt=""></span>
       </button>
       <div class="visually-hidden" id="northernHint" aria-live="polite">Final flight checks in progress.</div>
     </div>`}

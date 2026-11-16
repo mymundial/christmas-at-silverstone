@@ -5,6 +5,7 @@
   let laplandMusicSource=null;
   let laplandMusicGain=null;
   let laplandTimers=[];
+  let laplandPreserveMusicForHandover=false;
 
   function clearLaplandTimers(){
     laplandTimers.forEach(id=>clearTimeout(id));
@@ -185,7 +186,6 @@
   }
 
   function bindLapland(){
-    const btn=document.getElementById('initiateTest');
     const panel=document.getElementById('laplandPanel');
     const verificationStage=document.getElementById('laplandVerificationStage');
     const transmissionStage=document.getElementById('laplandTransmissionStage');
@@ -193,12 +193,10 @@
     const discoVisual=document.getElementById('laplandDiscoVisual');
     const onlineCount=document.getElementById('laplandOnlineCount');
     const onlineSegments=[...document.querySelectorAll('[data-lapland-progress]')];
+    const cards=[...document.querySelectorAll('[data-lapland-system]')];
     const head=document.querySelector('.lapland-head');
-    if(!btn||!panel||!verificationStage||!transmissionStage||!partyStage) return;
+    if(!panel||!verificationStage||!transmissionStage||!partyStage||!cards.length) return;
 
-    // Render the disco ball from the existing 8x5 sprite sheet onto a canvas.
-    // Canvas cropping is much more reliable on mobile Safari than animating a
-    // very large transparent WebP as a CSS background.
     let discoRaf=0;
     let discoStartedAt=0;
     let discoLastFrame=-1;
@@ -218,11 +216,7 @@
       ctx.clearRect(0,0,discoVisual.width,discoVisual.height);
       ctx.drawImage(discoSprite,sx,sy,sw,sh,0,0,discoVisual.width,discoVisual.height);
     };
-    const stopDisco=()=>{
-      cancelAnimationFrame(discoRaf);
-      discoRaf=0;
-      discoLastFrame=-1;
-    };
+    const stopDisco=()=>{cancelAnimationFrame(discoRaf);discoRaf=0;discoLastFrame=-1;};
     const startDisco=()=>{
       if(!(discoVisual instanceof HTMLCanvasElement))return;
       stopDisco();
@@ -230,7 +224,7 @@
       const render=now=>{
         if(state.missionOpen!=='lapland'||partyStage.hidden){stopDisco();return;}
         const frame=Math.floor((now-discoStartedAt)/100)%40;
-        if(frame!==discoLastFrame){discoLastFrame=frame;drawDiscoFrame(frame);}
+        if(frame!==discoLastFrame){discoLastFrame=frame;drawDiscoFrame(frame);}        
         discoRaf=requestAnimationFrame(render);
       };
       drawDiscoFrame(0);
@@ -238,12 +232,10 @@
     };
     discoSprite.addEventListener('load',()=>drawDiscoFrame(0),{once:true});
 
+    // Calling play() on an already playing HTMLAudioElement does not seek it.
+    // The same music instance runs throughout passenger handovers.
     startLaplandMusic();
 
-    // MC01–MC10 each restore one named system. Checks run down column 1 first,
-    // then column 2, matching the visible mission-order layout.
-    const checks=['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora'];
-    const systemKeys=['circuitry','diagnostic','comms','power','core','propulsion','guidance','control','response','navigation'];
     const setCharge=value=>panel.style.setProperty('--lapland-charge',String(Math.max(0,Math.min(1,value))));
     const setOnlineProgress=(onlineSystems,complete=false)=>{
       const ticks=Math.max(0,Math.min(10,onlineSystems));
@@ -256,32 +248,17 @@
         segment.classList.toggle('complete',complete&&ticks===10);
       });
     };
-    const setRowState=(key,nextState,label)=>{
+    const setRowState=(key,nextState)=>{
       const row=document.querySelector(`[data-verify-system="${key}"]`);
       const status=document.querySelector(`[data-verify-status="${key}"]`);
       if(!row||!status) return;
       row.classList.remove('is-standby','is-online','is-offline','is-checking');
       row.classList.add(`is-${nextState}`);
-      status.textContent=label;
-    };
-    const setButtonState=mode=>{
-      btn.classList.remove('is-initialising','is-complete');
-      delete btn.dataset.review;
-      if(mode==='initialising'){
-        btn.disabled=true;
-        btn.textContent='SYSTEM VERIFICATION';
-        btn.classList.add('is-initialising');
-      }else if(mode==='complete'){
-        btn.disabled=true;
-        btn.textContent='COMPLETE';
-        btn.classList.add('is-complete');
-      }else{
-        btn.disabled=false;
-        btn.textContent='INITIALISE LAUNCH';
-      }
+      status.textContent=nextState==='online'?'AWAKE':nextState==='checking'?'WAKING…':'TAP';
+      row.setAttribute('aria-pressed',nextState==='online'?'true':'false');
+      if(nextState==='online') row.setAttribute('disabled','disabled');
     };
     const setLaunchComplete=()=>{
-      setButtonState('complete');
       panel.classList.add('is-complete');
       head?.classList.add('is-launch-clear');
       ping(820,.08,.026);
@@ -289,13 +266,12 @@
       haptic([20,24,62]);
     };
     let stopTransmission=()=>{};
-
     const showTransmission=()=>{
       if(state.missionOpen!=='lapland') return;
       verificationStage.hidden=true;
       partyStage.hidden=true;
       transmissionStage.hidden=false;
-      panel.classList.remove('is-verifying','is-celebrating','is-party');
+      panel.classList.remove('is-celebrating','is-party');
       panel.classList.add('is-transmission');
       head?.classList.remove('is-celebrating');
       if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.018,360);
@@ -321,79 +297,52 @@
         }
       },10000);
     };
-    const showParty=()=>{
-      if(state.missionOpen!=='lapland')return;
-      revealParty();
-    };
+    const showParty=()=>{if(state.missionOpen!=='lapland')return;revealParty();};
 
-    setButtonState('idle');
+    primeLaplandVoiceSilently();
+    setCharge(0);
     setOnlineProgress(0,false);
-
-    btn.onclick=()=>{
-      if(btn.dataset.review==='true'){stopLaplandAudio();set({missionOpen:null,nav:'missions'});return;}
-
-      primeLaplandVoiceSilently();
-
-      setButtonState('initialising');
-      clearLaplandTimers();
-      panel.querySelector('.final-check-note')?.remove();
-      panel.classList.remove('is-complete','is-celebrating','is-party','is-transmission','has-attention');
-      head?.classList.remove('is-launch-clear','is-celebrating');
-      panel.classList.add('is-verifying');
-      transmissionStage.hidden=true;
-      partyStage.hidden=true;
-      verificationStage.hidden=false;
-      setCharge(0);
-      setOnlineProgress(0,false);
-      let onlineSystems=0;
-      const missing=[];
-
-      startLaplandMusic();
-      if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.34,220);
-      systemKeys.forEach(key=>setRowState(key,'standby','Standby'));
-
-      checks.forEach((checkpointId,i)=>laplandLater(()=>{
-        const key=systemKeys[i];
-        setRowState(key,'checking','Checking');
-        ping(430+i*34,.04,.012);
-
+    let onlineSystems=0;
+    const awakened=new Set();
+    cards.forEach(card=>{
+      const key=card.dataset.laplandSystem;
+      setRowState(key,'standby');
+      card.addEventListener('click',()=>{
+        if(state.missionOpen!=='lapland' || verificationStage.hidden || awakened.has(key)) return;
+        awakened.add(key);
+        card.disabled=true;
+        setRowState(key,'checking');
+        panel.classList.add('has-attention');
+        panel.classList.remove('is-complete','is-transmission','is-party','is-celebrating');
+        ping(430+(onlineSystems*18),.04,.012);
+        haptic(10);
         laplandLater(()=>{
-          const ready=state.completed.includes(checkpointId);
-          setRowState(key,ready?'online':'offline',ready?'Online':'Offline');
-          if(!ready) missing.push(checkpointId);
-          if(ready) onlineSystems++;
-          setCharge((i+1)/checks.length);
-          setOnlineProgress(onlineSystems,false);
-          ping(ready?540+i*38:220,.05,.016);
-
-          if(i===checks.length-1){
-            laplandLater(()=>{
-              const clear=!missing.length;
-              setCharge(1);
-              panel.classList.remove('is-verifying');
-
-              if(clear){
-                setOnlineProgress(10,true);
-                setLaunchComplete();
-                // Let COMPLETE register before the narrative hand-off.
-                laplandLater(showTransmission,1550);
-              }else{
-                if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.34,350);
-                panel.classList.add('has-attention');
-                btn.disabled=false;btn.dataset.review='true';btn.textContent='View Missions';btn.classList.remove('is-initialising','is-complete');
-                const note=document.createElement('div'); note.className='final-check-note';
-                note.innerHTML=`<div class="kicker">Systems Require Attention</div><p>${missing.length} ${missing.length===1?'system':'systems'} must be restored before launch systems can come online.</p>`;
-                verificationStage.appendChild(note);haptic([20,35,20]);
-              }
-            },620);
+          setRowState(key,'online');
+          onlineSystems++;
+          setCharge(onlineSystems/10);
+          setOnlineProgress(onlineSystems,onlineSystems===10);
+          ping(540+(onlineSystems*20),.05,.016);
+          if(onlineSystems===10){
+            setCharge(1);
+            setLaunchComplete();
+            cards.forEach(el=>el.disabled=true);
+            // Intermediate players go straight to handover: no transmission,
+            // disco ball, or mission-complete celebration until the final turn.
+            const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+            const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+            laplandLater(turn<passengers?()=>showCompletion('Launch Systems Online',''):showTransmission,1550);
           }
-        },220);
-      },220+i*360));
-    };
+        },120);
+      });
+    });
 
     cleanupMission=()=>{
       stopTransmission();
       stopDisco();
-      stopLaplandAudio();
+      if(laplandPreserveMusicForHandover){
+        laplandPreserveMusicForHandover=false;
+        clearLaplandTimers();
+        // Preserve the active soundtrack and radio override during turn reset.
+      }else stopLaplandAudio();
     };
   }

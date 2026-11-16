@@ -21,6 +21,7 @@
       {id:'white',name:'White',rgb:'247,250,255'}
     ];
 
+    const TARGET_CAPTURES=8;
     let cleared=0;
     let finished=false;
     let raf=0;
@@ -71,9 +72,18 @@
     function rand(min,max){return min+Math.random()*(max-min);}
     function intensity(){return cleared<3?1:cleared<7?2:3;}
     function stageConfig(){
-      if(cleared<3) return {maxConcurrent:1,spawnMin:520,spawnMax:700,lifetimeMin:900,lifetimeMax:1100,armDelay:120};
-      if(cleared<7) return {maxConcurrent:2,spawnMin:340,spawnMax:520,lifetimeMin:650,lifetimeMax:830,armDelay:105};
-      return {maxConcurrent:3,spawnMin:230,spawnMax:380,lifetimeMin:460,lifetimeMax:620,armDelay:95};
+      // Gradually increase difficulty with each capture. No abrupt speed-up at
+      // capture 3 or easier final stage at capture 7. Retain the original
+      // maximum of two concurrent sparkles once the opening stage is cleared.
+      const level=Math.min(cleared,TARGET_CAPTURES-1);
+      return {
+        maxConcurrent:level<3?1:2,
+        spawnMin:520-level*13,
+        spawnMax:700-level*17,
+        lifetimeMin:1000-level*30,
+        lifetimeMax:1200-level*30,
+        armDelay:120-level*2
+      };
     }
     function refillSignatureBag(){
       signatureBag=[...ENERGY_SIGNATURES];
@@ -106,7 +116,7 @@
     }
 
     function renderStability(){
-      progress.textContent=`${cleared} / 10`;
+      progress.textContent=`${cleared}/${TARGET_CAPTURES}`;
       steps.forEach((step,i)=>{
         const isOn=i<cleared;
         const rgb=capturedSignatures[i]||'98,239,157';
@@ -253,21 +263,21 @@
     function expireSignature(item){
       if(finished||!liveItems.has(item)||item.locked) return;
       removeSignature(item,'passed',180);
-      if(stateEl) stateEl.textContent=cleared>=10?'Power stabilised':'';
+      if(stateEl) stateEl.textContent=cleared>=TARGET_CAPTURES?'Power stabilised':'';
     }
 
     function captureSignature(item){
       if(finished||!liveItems.has(item)||item.locked||!item.armed) return;
       const c=signatureCentre(item);
-      spawnBurst(c.x,c.y,item.signature.rgb);
+      spawnBurst(c.x,c.y,'255,0,54');
       removeSignature(item,'popped',210);
-      cleared=Math.min(10,cleared+1);
+      cleared=Math.min(TARGET_CAPTURES,cleared+1);
       capturedSignatures[cleared-1]=item.signature.rgb;
       renderStability();
       playEnergyHit();
       haptic(18);
-      if(stateEl) stateEl.textContent=cleared===10?'Power stabilised':'';
-      if(cleared>=10){finish();return;}
+      if(stateEl) stateEl.textContent=cleared===TARGET_CAPTURES?'Power stabilised':'';
+      if(cleared>=TARGET_CAPTURES){finish();return;}
       later(()=>{
         const cfg=stageConfig();
         if(!finished&&liveItems.size<cfg.maxConcurrent) createSignature();
@@ -286,12 +296,10 @@
       el.style.left=pos.x+'%';
       el.style.top=pos.y+'%';
       el.style.setProperty('--emotion-rgb',signature.rgb);
-      el.setAttribute('aria-label',`Capture ${signature.name.toLowerCase()} energy signature`);
+      el.setAttribute('aria-label','Catch Christmas sparkle');
       el.innerHTML=`
         <span class="signature-core power-pulse-energy-core" aria-hidden="true">
-          <svg class="power-pulse-energy-icon" viewBox="66 0 66 126" focusable="false" aria-hidden="true">
-            <path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path>
-          </svg>
+          <img class="powerup-snowflake-art" src="./assets/silverstone-snowflake-white.webp" alt="" draggable="false">
         </span>
         <span class="signature-scan" aria-hidden="true"></span>`;
       layer.appendChild(el);
@@ -339,7 +347,7 @@
       field.classList.remove('is-hit');
       field.classList.add('stabilised');
       beam.classList.add('active');
-      progress.textContent='10 / 10';
+      progress.textContent=`${TARGET_CAPTURES}/${TARGET_CAPTURES}`;
       haptic([28,24,58]);
       // Let the final capture hit land, then resolve into the dedicated Power Pulse boost.
       later(playEnergyBoost,140);
@@ -353,7 +361,7 @@
     field.addEventListener('gesturestart',blockFieldGesture,{passive:false});
 
     renderStability();
-    startStarstream();
+    // The old starscape is no longer part of this game; no background canvas RAF is needed.
     if(stateEl) stateEl.textContent='';
     createSignature();
     scheduleSpawn();

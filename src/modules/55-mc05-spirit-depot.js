@@ -70,6 +70,8 @@
         button.setAttribute('aria-disabled',String(completed||isFull));
         button.classList.toggle('is-charging',!completed&&!isFull);
         button.classList.toggle('is-full',isFull);
+        const caption=button.querySelector('.spirit-cell-state');
+        if(caption) caption.textContent=isFull?'FULL':hits>0?'CHARGING':'TAP TO FILL!';
       }
     }
 

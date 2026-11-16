@@ -67,11 +67,11 @@
   function showNorthernTransmission(){
     const mc=document.getElementById('missionContent'); if(!mc)return;
     if(state.audio) beginMissionAudioRadioOverride('northern-transmission');
-    mc.innerHTML=`<div class="mission-instrument panel incoming-transmission">
-      <div class="transmission-wave">${'<b></b>'.repeat(24)}</div>
-      <div class="kicker">Incoming Transmission</div>
+    mc.innerHTML=`<div class="mission-instrument panel incoming-transmission northern-final-transmission" role="status" aria-label="Incoming SANTA-1 transmission">
+      <div class="transmission-wave" aria-hidden="true">${'<b></b>'.repeat(24)}</div>
+      <div class="kicker">INCOMING TRANSMISSION</div>
       <h2>SANTA-1</h2>
-      <div class="signal-state lock">Signal locked</div>
+      <div class="signal-state lock">SIGNAL LOCKED</div>
     </div>`;
 
     let finished=false;
@@ -136,14 +136,22 @@
     playNorthernAirborneMagic();
     ping(980,.18,.05);haptic([35,30,85,35,110]);
     const el=document.createElement('div');
-    el.className='mc01-energy-bloom';
+    el.className='mc01-energy-bloom northern-airborne-brand';
     el.setAttribute('role','status');
     el.setAttribute('aria-live','polite');
-    el.innerHTML=`<div class="mc01-bloom-field" aria-hidden="true"><i></i><i></i><i></i></div><div class="mc01-bloom-copy"><img class="mc01-bloom-mark" src="./assets/silverstone-s-mark.webp" alt=""><div class="kicker">SANTA-1</div><h1>AIRBORNE</h1></div>`;
+    el.innerHTML=`<div class="mc01-bloom-field" aria-hidden="true"><i></i><i></i><i></i></div><div class="mc01-bloom-copy northern-airborne-copy"><img class="mc01-bloom-mark northern-airborne-mark" src="./assets/silverstone-s-mark.webp" alt=""><div class="kicker">SANTA-1</div><h1>AIRBORNE</h1></div>`;
     document.body.appendChild(el);northernTakeoverEl=el;
     // Put the transmission behind the takeover before its fade begins so
     // the authorisation screen never flashes back between states.
-    northernLater(()=>showNorthernTransmission(),3500);
+    const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+    northernLater(()=>{
+      if(turn<passengers){
+        showNorthernMissionComplete();
+      }else{
+        showNorthernTransmission();
+      }
+    },3500);
     northernLater(()=>el.classList.add('is-exiting'),3820);
     northernLater(()=>{
       if(el.isConnected)el.remove();
@@ -163,15 +171,15 @@
     cleanupMission=stopNorthernSequence;
     [getNorthernFlybyAudio(),getNorthernSantaAudio(),getNorthernMagicAudio()].forEach(audio=>{try{audio.load();}catch{}});
 
-    label.textContent='Authorise Flight';
+    label.textContent='WAVE THE FLAG!';
     button.disabled=true;
     button.classList.remove('success','is-authorising','is-authorised');
     panel.classList.remove('is-ready','is-authorising','is-authorised','is-airborne');
 
-    const checkValues=['Locked','Clear','Open'];
+    const checkValues=['SET','CLEAR','READY'];
     checks.forEach((check,i)=>{
       check.classList.remove('ready');
-      const value=check.querySelector('strong'); if(value)value.textContent='Checking';
+      const value=check.querySelector('strong'); if(value)value.textContent='WAIT';
       northernLater(()=>{
         check.classList.add('ready');
         if(value)value.textContent=checkValues[i];
@@ -194,7 +202,7 @@
       button.classList.add('is-authorising');
       panel.classList.remove('is-ready');
       panel.classList.add('is-authorising');
-      label.textContent='Authorising';
+      label.textContent='WAVING FLAG…';
       hint.textContent='Final flight authorisation in progress.';
       ping(690,.08,.025);haptic(22);
 
@@ -203,7 +211,7 @@
         panel.classList.remove('is-authorising');
         button.classList.add('success','is-authorised');
         panel.classList.add('is-authorised');
-        label.textContent='Authorised';
+        label.textContent='FLAG WAVED!';
         hint.textContent='Santa-1 cleared for departure.';
         ping(920,.16,.05);haptic([30,30,85]);
         northernLater(()=>panel.classList.add('is-airborne'),220);

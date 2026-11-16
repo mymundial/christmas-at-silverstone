@@ -17,6 +17,13 @@
         set({missionOpen:'elf-radio',missionReturnNav:'radar'});
       }else render();
     }));
+    document.querySelectorAll('[data-pitcrew-players]').forEach(b=>b.addEventListener('click',()=>{
+      const next=Math.max(1,Math.min(4,(Number(state.pitCrewPlayers)||1)+Number(b.dataset.pitcrewPlayers)));
+      if(next!==state.pitCrewPlayers){state.pitCrewPlayers=next;save();render();}
+    }));
+    document.querySelectorAll('[data-pitcrew-confirm]').forEach(b=>b.addEventListener('click',()=>{
+      state.pitCrewConfirmed=true;save();render();
+    }));
     document.querySelectorAll('[data-elf-audio]').forEach(b=>b.addEventListener('click',toggleElfAudio));
     document.querySelectorAll('[data-mission-audio-setting]').forEach(b=>b.addEventListener('click',toggleMissionAudioSetting));
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
@@ -39,6 +46,11 @@
     document.querySelectorAll('[data-location]').forEach(b=>b.addEventListener('click',()=>{
       if(b.dataset.location==='demo'){startDemoExperience();return;}
       startLiveExperience();
+    }));
+    document.querySelectorAll('[data-gps-status]').forEach(b=>b.addEventListener('click',()=>{
+      if(b.dataset.gpsStatus==='retry'){startLiveExperience();return;}
+      if(b.dataset.gpsStatus==='demo'){locationOnboardingAttempt++;startDemoExperience();return;}
+      if(b.dataset.gpsStatus==='continue'){completeConnectedLocationOnboarding();return;}
     }));
     document.querySelectorAll('[data-start-mission]').forEach(b=>b.addEventListener('click',()=>openMission(b.dataset.startMission)));
     document.querySelectorAll('[data-open-mission]').forEach(row=>{
@@ -65,6 +77,13 @@
     const idx=checkpointIndex(id);
     const allowed=state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange);
     if(!allowed){toast('Mission is not available yet.');return;}
+    // Retain an in-progress turn if the passenger temporarily exited a mission.
+    // Starting a different checkpoint begins again with Player 1.
+    if(state.missionPlayerTurnId!==id){
+      state.missionPlayerTurnId=id;
+      state.missionPlayerTurn=1;
+      save();
+    }
     // MC-01 is a cinematic activation. The Circuit Entry screen begins
     // immediately when opened; there is no second Start Activation control.
     if(id==='entry'&&!state.completed.includes('entry')){
@@ -81,8 +100,17 @@
   }
   function showCompletion(title,copy){
     const mc=document.getElementById('missionContent'); if(!mc) return;
-    const outcome=copy||title||'';
-    mc.innerHTML=`<div class="completion panel"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2>${outcome?`<p>${outcome}</p>`:''}<button class="btn primary wide" id="returnRadar">Continue</button></div>`;
+    // Intermediate passengers hand directly to the next player once the
+    // activation's own end animation has finished. Only the last passenger
+    // sees the original Mission Complete / Continue screen.
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const currentTurn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+    if(state.missionOpen!=='elf-radio'&&currentTurn<players){
+      completeCurrent();
+      return;
+    }
+    mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2><button class="btn primary wide mission-complete-cta" id="returnRadar"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
     const continueBtn=document.getElementById('returnRadar');
     let continueCommitted=false;
     const commitContinue=event=>{
@@ -104,7 +132,8 @@
   function showRadioCompletion(){
     const mc=document.getElementById('missionContent'); if(!mc) return;
     const returnNav=state.missionReturnNav==='comms'?'comms':'radar';
-    mc.innerHTML=`<div class="completion panel"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><div class="kicker">Signal Locked</div><h2>ELF FM Locked</h2><p>Signal acquired at 87.7. ELF FM is now available from Communications.</p><button class="btn primary wide" id="returnElf">Continue</button></div>`;
+    mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>SIGNAL LOCKED</h2><button class="btn primary wide mission-complete-cta" id="returnElf"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
     document.getElementById('returnElf').onclick=()=>{
       state={...state,elfUnlocked:true,elfPromptSeen:true,missionOpen:null,missionReturnNav:returnNav,nav:returnNav};
       save();render();
@@ -113,6 +142,34 @@
   }
   function completeCurrent(){
     const id=state.missionOpen; const idx=checkpointIndex(id); if(idx<0) return;
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const turn=state.missionPlayerTurnId===id?Math.max(1,Math.min(players,Number(state.missionPlayerTurn)||1)):1;
+    if(turn<players){
+      // Show a consistent handover after the completed player's existing
+      // Mission Complete screen, but do not advance checkpoints yet.
+      if(id==='lapland'){
+        // Keep the current music position and radio override between players.
+        // The track is stopped only on mission exit/final completion.
+        laplandPreserveMusicForHandover=false;
+      }
+      state.missionPlayerTurnId=id;
+      state.missionPlayerTurn=turn+1;
+      save();
+      const mc=document.getElementById('missionContent');
+      if(!mc)return;
+      mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+      mc.innerHTML=`<div class="mission-player-changeover panel" role="dialog" aria-modal="true" aria-labelledby="playerChangeTitle"><div class="mission-player-changeover-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></div><h2 id="playerChangeTitle"><span>YOUR TURN</span><span>PLAYER ${turn+1}</span></h2><button type="button" class="btn primary wide mission-player-changeover-cta" id="playerChangeContinue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+      const next=document.getElementById('playerChangeContinue');
+      next?.addEventListener('click',()=>{
+        if(state.missionOpen!==id||state.missionPlayerTurnId!==id)return;
+        next.disabled=true;
+        // Re-rendering resets the ten tiles, but must not restart the music.
+        if(id==='lapland')laplandPreserveMusicForHandover=true;
+        render();
+      },{once:true});
+      next?.focus();
+      return;
+    }
     if(id==='lapland'){
       // Keep ELF FM suppressed through the exit sting, then restore it with a
       // fade only after all Lapland mission audio has finished.
@@ -125,7 +182,7 @@
     if(idx===routeIndex) routeIndex=nextRouteIndex(routeIndex);
     const returnNav=state.missionReturnNav||'radar';
     resetGeofenceRuntime();
-    state={...state,completed:done,available,missionOpen:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
+    state={...state,completed:done,available,missionOpen:null,missionPlayerTurn:1,missionPlayerTurnId:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
     if(state.mode==='demo'){
       clearDemo();
       demoHoldUntil=0;
@@ -168,13 +225,55 @@
     if(state.mode==='demo') clearDemo();
     if(state.missionOpen==='entry') return;
     resetGeofenceRuntime();
+    if(state.missionPlayerTurnId!=='entry'){
+      state.missionPlayerTurnId='entry';
+      state.missionPlayerTurn=1;
+    }
     state={...state,missionOpen:'entry',missionReturnNav:state.nav||'radar',targetVisible:true,targetInRange:true,lastMessage:'CIRCUIT LINK SIGNAL DETECTED'};
     save();render();
   }
 
+  // The search animation is theatrical; the outcome is always determined by real GPS.
+  // A hard 10-second deadline limits prolonged searching even if permission is stalled.
+  let locationOnboardingAttempt=0;
+  let locationOnboardingOutcome=null;
+  const LOCATION_SEARCH_MIN_MS=2500;
+  const LOCATION_SEARCH_TIMEOUT_MS=10000;
   function startLiveExperience(){
-    if(!navigator.geolocation){toast('Location services are unavailable on this device.');return;}
-    navigator.geolocation.getCurrentPosition(pos=>{
-      state={...state,onboarded:true,mode:'live',gpsEnabled:true,nav:'radar',routeIndex:normaliseRouteIndex(state.routeIndex||ROUTE_START_INDEX),gpsAccuracy:pos.coords.accuracy,gpsCondition:gpsCondition(pos.coords.accuracy)};save();ensureOpeningMessage();render();startGpsWatch();processGps(normalisePosition(pos),true);
-    },()=>toast('Location permission is required for Live Radar.'),{enableHighAccuracy:true,timeout:10000,maximumAge:0});
+    const attempt=++locationOnboardingAttempt;
+    locationOnboardingOutcome=null;
+    const started=Date.now();
+    let settled=false;
+    state.bootDone='location-finding';save();render();
+    const hardDeadline=setTimeout(()=>finish({status:'failed',reason:'timeout'}),LOCATION_SEARCH_TIMEOUT_MS);
+    function finish(outcome){
+      if(settled||attempt!==locationOnboardingAttempt)return;
+      settled=true;clearTimeout(hardDeadline);
+      const minWait=Math.max(0,LOCATION_SEARCH_MIN_MS-(Date.now()-started));
+      setTimeout(()=>{
+        if(attempt!==locationOnboardingAttempt||state.onboarded||state.bootDone!=='location-finding')return;
+        locationOnboardingOutcome=outcome;
+        state.bootDone='location-result';save();render();
+      },minWait);
+    }
+    if(!navigator.geolocation){finish({status:'failed',reason:'unavailable'});return;}
+    try{
+      navigator.geolocation.getCurrentPosition(pos=>{
+        if(!Number.isFinite(pos.coords.latitude)||!Number.isFinite(pos.coords.longitude)){
+          finish({status:'failed',reason:'unavailable'});return;
+        }
+        finish({status:'connected',position:pos});
+      },err=>{
+        finish({status:'failed',reason:err.code===1?'denied':err.code===3?'timeout':'unavailable'});
+      },{enableHighAccuracy:true,timeout:LOCATION_SEARCH_TIMEOUT_MS,maximumAge:0});
+    }catch{finish({status:'failed',reason:'unavailable'});}
+  }
+  function completeConnectedLocationOnboarding(){
+    const outcome=locationOnboardingOutcome;
+    if(state.bootDone!=='location-result'||outcome?.status!=='connected'||!outcome.position)return;
+    locationOnboardingAttempt++;
+    const pos=outcome.position;
+    locationOnboardingOutcome=null;
+    state={...state,onboarded:true,bootDone:true,mode:'live',gpsEnabled:true,nav:'radar',routeIndex:normaliseRouteIndex(state.routeIndex||ROUTE_START_INDEX),gpsAccuracy:pos.coords.accuracy,gpsCondition:gpsCondition(pos.coords.accuracy)};
+    save();ensureOpeningMessage();render();startGpsWatch();processGps(normalisePosition(pos),true);
   }

@@ -26,7 +26,7 @@
     powerWinAudio.preload='auto';
     powerWinAudio.volume=.92;
     const audioFadeMap=new WeakMap();
-    let speed=0,holding=false,sustain=0,last=performance.now(),roadPhase=0,grassPhase=0,raf=0,finished=false;
+    let speed=0,holding=false,sustain=0,last=performance.now(),roadPhase=0,grassPhase=0,streakPhase=0,raf=0,finished=false;
     let thresholdStep=0;
     let runStarted=false, elapsed=0;
 
@@ -129,7 +129,9 @@
     function updateRoad(dt,norm,now){
       // Scroll the road and grass textures together so they share one ground plane
       // and meet the sky on exactly the same horizon line.
-      const travel=(dt*.00205)*speed;
+      // Slightly faster scenery scroll restores the sensation of speed lost
+      // when the original perspective track was replaced with the flat road.
+      const travel=(dt*.0026)*speed;
       // Keep the perspective planes geometrically fixed. Speed is communicated by
       // texture travel, speed lines and car motion instead of scaling the 3D planes,
       // which prevents iOS Safari from clipping/flickering them at high velocity.
@@ -139,10 +141,15 @@
       road.style.setProperty('--grass-scroll',`${grassPhase.toFixed(2)}px`);
       const jitter=Math.sin(now*.026)*(norm*1.35)+Math.sin(now*.051)*(norm*.45);
       car.style.transform=`translateX(-50%) translateX(${jitter.toFixed(2)}px) translateY(${(norm*-1.8).toFixed(2)}px) scale(${(1+norm*.025).toFixed(3)})`;
+      // Visual-only speed streaks: traverse the full height of the flat road,
+      // gradually appearing above cruising speed. No gameplay thresholds change.
+      const streakSpan=Math.max(180,road.clientHeight+150);
+      streakPhase=(streakPhase+travel*1.45)%streakSpan;
       speedLines.forEach((line,i)=>{
-        const alpha=Math.max(0,(norm-.55)*1.8)*(.25+((i%4)/5));
-        line.style.opacity=String(Math.min(.72,alpha));
-        line.style.transform=`translateY(${(((now*.085*Math.max(.2,norm))+i*19)%150).toFixed(1)}px) scaleY(${(1+norm*.9).toFixed(2)})`;
+        const alpha=Math.min(.56,Math.max(0,(norm-.40)*1.05))*(.72+(i%4)*.09);
+        line.style.opacity=alpha.toFixed(3);
+        const y=(streakPhase+i*streakSpan/speedLines.length)%streakSpan;
+        line.style.transform=`translateY(${y.toFixed(1)}px) scaleY(${(1.05+norm*1.3).toFixed(2)})`;
       });
     }
 

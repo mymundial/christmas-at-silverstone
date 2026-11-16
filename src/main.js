@@ -16,17 +16,17 @@
   const CHECKPOINTS = [
     {id:'gantry', mc:'MC-00', location:'Entrance Gantry', name:'Scan QR', type:'qr', playable:false, core:false, geofence:false, routeEnabled:false, lat:52.0735668895174, lng:-1.0234212294205571},
     {id:'entry', mc:'MC-01', location:'National Link Road', name:'Circuit Link', type:'activation', playable:true, core:false, mission:'Circuit Link', geofence:true, lat:52.07317077672548, lng:-1.0116046670979981, detectionRadius:80, activationRadius:30},
-    {id:'velocity', mc:'MC-02', location:'Wellington Straight', name:'Velocity Vault', type:'diagnostics', playable:true, core:true, mission:'Velocity Vault', lat:52.07672858114103, lng:-1.0179463765923242, detectionRadius:150, activationRadius:35},
-    {id:'luffield', mc:'MC-03', location:'Luffield', name:'Comms Relay', type:'commsrelay', playable:true, core:false, mission:'Comms Relay', routeEnabled:true, geofence:true, lat:52.07588935484336, lng:-1.0202073683140254, detectionRadius:120, activationRadius:30},
-    {id:'power', mc:'MC-04', location:'National Pit Straight', name:'Power Pulse', type:'artifacts', playable:true, core:true, mission:'Power Pulse', lat:52.07867166248026, lng:-1.0177768332976036, detectionRadius:150, activationRadius:35},
-    {id:'spirit', mc:'MC-05', location:'Copse', name:'Spirit Depot', type:'spirit', playable:true, core:true, mission:'Spirit Depot', lat:52.07895798720806, lng:-1.0124059222979016, detectionRadius:120, activationRadius:30},
-    {id:'escapade', mc:'MC-06', location:'Escapade', name:'Reindeer Raceway', type:'power', playable:true, core:true, mission:'Reindeer Raceway', lat:52.07480005189975, lng:-1.0102119794664433, detectionRadius:120, activationRadius:30},
-    {id:'comet', mc:'MC-07', location:'Becketts', name:'Comet Curve', type:'comet', playable:true, core:true, mission:'Comet Curve', lat:52.07247136741095, lng:-1.0099658493552224, detectionRadius:140, activationRadius:30},
-    {id:'jingle', mc:'MC-08', location:'Hangar Straight', name:'Jingle Beams', type:'jingle', playable:true, core:true, mission:'Jingle Beams', lat:52.067475902465475, lng:-1.0132842109045421, detectionRadius:150, activationRadius:35},
-    {id:'lando', mc:'MC-09', location:'Stowe', name:'Lightspeed Lando', type:'lando', playable:true, core:true, mission:'Lightspeed Lando', lat:52.06363909240851, lng:-1.017077251994755, detectionRadius:120, activationRadius:30},
+    {id:'velocity', mc:'MC-02', location:'Wellington Straight', name:"Santa's Parc Fermé", type:'diagnostics', playable:true, core:true, mission:"Santa's Parc Fermé", lat:52.07672858114103, lng:-1.0179463765923242, detectionRadius:150, activationRadius:35},
+    {id:'luffield', mc:'MC-03', location:'Luffield', name:'Box, Box, Ho, Ho, Ho!', type:'commsrelay', playable:true, core:false, mission:'Box, Box, Ho, Ho, Ho!', routeEnabled:true, geofence:true, lat:52.07588935484336, lng:-1.0202073683140254, detectionRadius:120, activationRadius:30},
+    {id:'power', mc:'MC-04', location:'National Pit Straight', name:'Pit Lane Power-Up', type:'artifacts', playable:true, core:true, mission:'Pit Lane Power-Up', lat:52.07867166248026, lng:-1.0177768332976036, detectionRadius:150, activationRadius:35},
+    {id:'spirit', mc:'MC-05', location:'Copse', name:'Christmas Spirit Charging Station', type:'spirit', playable:true, core:true, mission:'Christmas Spirit Charging Station', lat:52.07895798720806, lng:-1.0124059222979016, detectionRadius:120, activationRadius:30},
+    {id:'escapade', mc:'MC-06', location:'Escapade', name:'Reindeer Racing Line', type:'power', playable:true, core:true, mission:'Reindeer Racing Line', lat:52.07480005189975, lng:-1.0102119794664433, detectionRadius:120, activationRadius:30},
+    {id:'comet', mc:'MC-07', location:'Becketts', name:"Comet's Corner", type:'comet', playable:true, core:true, mission:"Comet's Corner", lat:52.07247136741095, lng:-1.0099658493552224, detectionRadius:140, activationRadius:30},
+    {id:'jingle', mc:'MC-08', location:'Hangar Straight', name:'Sleigh Speed Straight', type:'jingle', playable:true, core:true, mission:'Jingle Beams', lat:52.067475902465475, lng:-1.0132842109045421, detectionRadius:150, activationRadius:35},
+    {id:'lando', mc:'MC-09', location:'Stowe', name:"Lando's Landing Lights", type:'lando', playable:true, core:true, mission:"Lando's Landing Lights", lat:52.06363909240851, lng:-1.017077251994755, detectionRadius:120, activationRadius:30},
     {id:'aurora', mc:'MC-10', location:'Vale', name:'Aurora Apex', type:'aurora', playable:true, core:true, mission:'Aurora Apex', lat:52.065488708771205, lng:-1.0204674536551839, detectionRadius:120, activationRadius:30},
-    {id:'lapland', mc:'MC-11', location:'Hamilton Straight', name:'Lapland Launch', type:'lapland', playable:true, core:true, mission:'Lapland Launch', lat:52.06828247188286, lng:-1.0234649670014986, detectionRadius:150, activationRadius:35},
-    {id:'northern', mc:'MC-12', location:'Farm Curve', name:'Northern Flight', type:'northern', playable:true, core:true, mission:'Northern Flight', lat:52.07236283289121, lng:-1.0138972673152702, detectionRadius:120, activationRadius:30}
+    {id:'lapland', mc:'MC-11', location:'Hamilton Straight', name:'Lights Out & Sleigh Away', type:'lapland', playable:true, core:true, mission:'Lights Out & Sleigh Away', lat:52.06828247188286, lng:-1.0234649670014986, detectionRadius:150, activationRadius:35},
+    {id:'northern', mc:'MC-12', location:'Farm Curve', name:'North Pole Position', type:'northern', playable:true, core:true, mission:'North Pole Position', lat:52.07236283289121, lng:-1.0138972673152702, detectionRadius:120, activationRadius:30}
   ];
 
   const ELF_RADIO_MISSION = {id:'elf-radio', mc:'COMMS', location:'RADIO', name:'ELF FM', type:'radio', playable:true, core:false, mission:'Tune In'};
@@ -136,8 +136,12 @@
     elfUnlocked:false,
     elfAudioOn:false,
     elfPromptSeen:false,
+    pitCrewConfirmed:false,
+    pitCrewPlayers:1,
+    missionPlayerTurn:1,
+    missionPlayerTurnId:null,
     lastMessage:'SEARCHING FOR RECOVERY SIGNALS',
-    bootDone:false,
+    bootDone:'brief',
     messages:[],
     messageSeq:0,
     messageAlert:false,
@@ -197,6 +201,8 @@
       return {
         ...defaults,
         ...parsed,
+        // Retire the old splash/scan entry for incomplete onboarding only.
+        bootDone:(!parsed.onboarded && (parsed.bootDone==='location-finding'||parsed.bootDone==='location-result'))?'location':(!parsed.onboarded && (parsed.bootDone===false || parsed.bootDone==='mc00-live' || parsed.bootDone==null))?'brief':(parsed.bootDone??defaults.bootDone),
         completed,
         available,
         messages,
@@ -206,6 +212,11 @@
         elfUnlocked:Boolean(parsed.elfUnlocked),
         elfAudioOn:false,
         elfPromptSeen:Boolean(parsed.elfPromptSeen),
+        // Existing completed sessions stay completed; new onboarding reaches Step 4.
+        pitCrewConfirmed:parsed.pitCrewConfirmed===undefined?Boolean(parsed.elfPromptSeen):Boolean(parsed.pitCrewConfirmed),
+        pitCrewPlayers:Number.isInteger(parsed.pitCrewPlayers)?Math.max(1,Math.min(4,parsed.pitCrewPlayers)):1,
+        missionPlayerTurn:Number.isInteger(parsed.missionPlayerTurn)?Math.max(1,Math.min(4,parsed.missionPlayerTurn)):1,
+        missionPlayerTurnId:typeof parsed.missionPlayerTurnId==='string'?parsed.missionPlayerTurnId:null,
         // Never trust a persisted in-range lock after a refresh. Live GPS must
         // revalidate the checkpoint before a mission can be opened again.
         targetInRange:liveMode?false:Boolean(parsed.targetInRange),
@@ -746,36 +757,77 @@
       view.dataset.view=state.nav;
       view.innerHTML=navPageContent();
       syncNavChrome();
+      initSleighRepairScroll();
       return;
     }
     app.innerHTML=navShell();
+    initSleighRepairScroll();
   }
-  function brand(){return `<div class="brand"><img src="./assets/silverstone-logo-landscape-cropped.webp" alt="Silverstone"></div>`}
+  // A persistent visual scrollbar is needed because mobile Safari hides native
+  // scrollbars even when overflow-y is set to scroll.
+  function initSleighRepairScroll(){
+    const list=document.querySelector('.nav-view[data-view="sleigh"] .sleigh-repair-list');
+    const viewport=document.querySelector('.nav-view[data-view="sleigh"] .sleigh-repair-viewport');
+    if(!list||!viewport) return;
+    const thumb=viewport.querySelector('.sleigh-scroll-thumb');
+    const update=()=>{
+      const viewHeight=list.clientHeight;
+      const fullHeight=list.scrollHeight;
+      const overflowing=fullHeight>viewHeight+2;
+      viewport.classList.toggle('can-scroll',overflowing);
+      viewport.classList.toggle('at-bottom',!overflowing||list.scrollTop>=fullHeight-viewHeight-2);
+      if(!thumb) return;
+      const trackHeight=viewport.querySelector('.sleigh-scroll-track')?.clientHeight||0;
+      const thumbHeight=overflowing&&fullHeight>0?Math.max(28,trackHeight*viewHeight/fullHeight):trackHeight;
+      const travel=Math.max(0,trackHeight-thumbHeight);
+      const progress=overflowing?(list.scrollTop/Math.max(1,fullHeight-viewHeight)):0;
+      thumb.style.height=`${thumbHeight}px`;
+      thumb.style.transform=`translateY(${travel*progress}px)`;
+    };
+    let scrollRestTimer;
+    list.addEventListener('scroll',()=>{
+      update();
+      viewport.classList.add('is-scrolling');
+      clearTimeout(scrollRestTimer);
+      scrollRestTimer=setTimeout(()=>viewport.classList.remove('is-scrolling'),750);
+    },{passive:true});
+    if(typeof ResizeObserver!=='undefined'){
+      const observer=new ResizeObserver(update);
+      observer.observe(list);
+      const content=list.querySelector('.sleigh-repair-rows');
+      if(content) observer.observe(content);
+    }
+    update();
+  }
+  function brand(){return `<div class="brand brand-christmas"><img class="brand-lockup brand-lockup--master" src="./assets/brand/christmas-at-silverstone-master-light.svg" alt="Christmas at Silverstone"></div>`}
   function settingAudioIcon(){
     return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
   }
   function navSleighIcon(){
-    return `<span class="nav-sleigh-icon-wrap" aria-hidden="true"><img class="nav-sleigh-icon nav-sleigh-off" src="./assets/nav-sleigh-unselected.webp?v=7.39.3" alt=""><img class="nav-sleigh-icon nav-sleigh-on" src="./assets/nav-sleigh-selected.webp?v=7.39.3" alt=""></span>`;
+    return `<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M4 15.5h17.4c3.2 0 5.5-1.3 6.9-4"/><path d="M3 17c1.5 3 4 4.5 7.5 4.5H25"/><path d="M9 15.5c.7-4.8 3.7-7.8 8.7-7.8 3.5 0 6.1 1.2 9 4"/><path d="M14.5 9.2h4.7"/><path d="M17.2 7.6 15.4 4.7"/></svg>`;
   }
   function navIcon(id){
     const icons={
-      radar:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 60.5c-11.8 0-23.1 4.9-31.2 13.6l4.4 4.1c13.7-14.8 36.8-15.7 51.6-1.9.6.6 1.2 1.2 1.8 1.8l4.4-4.1C128 65.3 116.7 60.5 105 60.5Zm0 30c-7 0-12.7 5.6-12.7 12.6S98 115.8 105 115.8s12.7-5.6 12.7-12.6c0-3.3-1.2-6.4-3.5-8.8-2.4-2.5-5.8-3.9-9.2-3.9Zm0 19.3c-3.7 0-6.6-3-6.6-6.6s3-6.6 6.6-6.6c3.6 0 6.6 3 6.6 6.6s-2.9 6.5-6.6 6.6ZM105 9.2C79 9.2 54.1 20 36.4 39l4.4 4.1c33.1-35.4 88.6-37.4 124.1-4.3 1.4 1.3 2.8 2.7 4.1 4.1l4.4-4.1C155.7 19.9 130.9 9.2 105 9.2Zm0 25.6c-18.9 0-37 7.8-49.9 21.7l4.4 4.1c23.4-25.1 62.7-26.5 87.9-3.1 1 .9 2 1.9 3 2.9l4.4-4.1c-13.1-13.7-31-21.5-49.8-21.5Z"/></svg>`,
-      missions:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M142 62.7H86.9v6H142v-6Zm0 15.4H86.9v6H142v-6Zm0-30.9H86.9v6H142v-6Zm-61.1-15.4H68.1v6h12.8v-6Zm61.1 0H86.9v6H142v-6Zm2.2-26.5H65.8l-12.3 6v102l12.3 6h78.5l12.3-6v-102l-12.4-6Zm6.3 108H59.5v-102h91.1v102ZM80.9 78.1H68.1v6h12.8v-6Zm0-30.9H68.1v6h12.8v-6Zm0 15.5H68.1v6h12.8v-6Z"/></svg>`,
-      comms:`<svg viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M105 8.62a46.17 46.17 0 0 1 46.12 46.12h6a52.14 52.14 0 0 0-104.27 0h6A46.17 46.17 0 0 1 105 8.62Zm41.18 50.67c-7.73 0-13.12 5.49-13.12 13.36V86c0 7.89 4.87 13.18 12.11 13.18a12.52 12.52 0 0 0 4.41-.77c-2.54 7.83-8.27 11.22-18.1 11.22H119a9 9 0 0 0-8.45-6H99.32a8.95 8.95 0 1 0 0 17.89h11.25a9 9 0 0 0 8.39-5.86h12.51c17.54 0 25.7-9.42 25.7-29.64V59.29Zm-35.6 56.2H99.32a2.93 2.93 0 0 1 0-5.86h11.25a2.93 2.93 0 1 1 0 5.86ZM151.16 86c0 4.49-2.24 7.17-6 7.17s-6.1-2.61-6.1-7.17V72.65c0-3.55 1.87-7.34 7.11-7.34h5Zm-14-44.19A3 3 0 0 0 140 43.69a3.17 3.17 0 0 0 1.12-.21 3 3 0 0 0 1.67-3.92 40.73 40.73 0 0 0-75.58 0 3 3 0 1 0 5.58 2.25 34.71 34.71 0 0 1 64.42 0ZM63.85 59.29h-11V86c0 7.89 4.82 13.18 12 13.18S77 93.89 77 86V72.65C77 64.78 71.58 59.29 63.85 59.29ZM71 86c0 4.56-2.23 7.17-6.11 7.17s-6-2.68-6-7.17V65.31h5c5.24 0 7.11 3.79 7.11 7.34Z"/></svg>`,
+      radar:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M5 10.5a15.6 15.6 0 0 1 22 0"/><path d="M8.7 14.2a10.4 10.4 0 0 1 14.6 0"/><path d="M12.5 18a5 5 0 0 1 7 0"/><circle cx="16" cy="21" r="1.25" fill="#ffffff" stroke="none"/></svg>`,
+      missions:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M9 3v18"/><path d="M10 4.5h12l-2.7 4 2.7 4H10"/><path d="M9 20.5h15"/></svg>`,
+      comms:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M6 13v-2a10 10 0 0 1 20 0v2"/><path d="M6 12.5h3.5v7H7.8c-1 0-1.8-.8-1.8-1.8z"/><path d="M26 12.5h-3.5v7h1.7c1 0 1.8-.8 1.8-1.8z"/><path d="M22.5 19.5c-1 1.3-2.5 2-4.5 2h-2"/></svg>`,
       sleigh:navSleighIcon()
     };
     return icons[id]||'';
   }
-  function navBar(){ return `<nav class="nav" aria-label="Mission Control">${navButton('radar','Radar')}${navButton('missions','Missions')}${navButton('sleigh','Sleigh')}${navButton('comms','Comms')}</nav>`; }
+  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Team<br>Radio')}</nav>`; }
   function navButton(id,label){
     const unread=id==='comms'?unreadCount():0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
   }
-  function topBar(){ return `<header class="topbar">${brand()}<img class="mission-control-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"></header>`; }
+  function topBar(){
+    const progress=Math.max(0,Math.min(100,Number(recovery())||0));
+    return `<header class="topbar"><div class="masthead-row">${brand()}<div class="pitcrew-status"><strong>SANTA'S<br>PIT CREW</strong><span>SLEIGH ${progress}% FIXED</span></div></div><div class="masthead-progress" aria-hidden="true"><span style="width:${progress}%"></span></div></header>`;
+  }
   function statusStrip(){
     const cp=current();
     const activationDistance=distanceToActivation(cp,state.distance);
-    const distanceValue=!cp?'GARAGES':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
+    const distanceValue=!cp?'–':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
     const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
@@ -789,8 +841,7 @@
       return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
-      const demoRestart=state.mode==='demo'?`<button class="btn small primary" type="button" data-demo-restart>Restart</button>`:'';
-      return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div>${demoRestart}</div>`;
+      return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
     }
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
@@ -822,6 +873,7 @@
     }
     if(state.missionOpen){ app.innerHTML=shell(renderMission(state.missionOpen),false); bindGlobal(); bindMission(state.missionOpen); return; }
     if(state.nav==='radar'&&!state.elfPromptSeen&&!state.elfUnlocked){ app.innerHTML=shell(renderElfOnboarding(),false); bindGlobal(); return; }
+    if(state.nav==='radar'&&state.elfPromptSeen&&!state.pitCrewConfirmed){ app.innerHTML=shell(renderPitCrewOnboarding(),false); bindGlobal(); return; }
     if(state.nav==='comms') markAllMessagesRead();
     renderNavShell();
     bindGlobal();
@@ -837,11 +889,44 @@
     }
   }
   function renderLaunch(){
-    if(state.bootDone===false) return `<section class="hero"><div class="hero-content"><img class="hero-logo hero-logo-stacked" src="./assets/silverstone-logo-landing.webp" alt="Silverstone"><img class="hero-mission-logo" src="./assets/mission-control-logo.webp" alt="Mission Control"><div class="hero-actions"><button class="btn primary" data-onboard="mc00-live">Start Mission</button></div></div></section>`;
-    return renderOnboardStep(state.bootDone);
+    // The Mission Briefing is the app entry screen; there is no splash/Start Mission gate.
+    return renderOnboardStep(state.bootDone===false?'brief':state.bootDone);
   }
   function renderOnboardStep(step){
     const setupHeader=topBar();
+    if(step==='location-finding'||step==='location-result'){
+      const finding=step==='location-finding';
+      const result=locationOnboardingOutcome;
+      const connected=!finding&&result?.status==='connected';
+      const failed=!finding&&!connected;
+      const accuracy=connected&&Number.isFinite(result.position?.coords?.accuracy)?Math.max(1,Math.round(result.position.coords.accuracy)):null;
+      const resultTitle=connected?'<span>LOCATION</span><span>CONNECTED!</span>':'<span>LOCATION</span><span>NOT CONNECTED</span>';
+      const detail=connected
+        ? `<span>Accurate to about ${accuracy===null?'—':`<strong>${accuracy} m</strong>`}.</span><span>We’ll tell you when a pit stop is close.</span>`
+        : 'We couldn’t establish your location.<br>Check your signal and location settings,<br>then try again.';
+      const controls=failed?`<button type="button" class="gps-status-demo-link" data-gps-status="demo"><span>CONTINUE WITHOUT LOCATION</span><small>You’ll tap to unlock each pit stop when you see it</small></button>`:'';
+      const retryControl=failed?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="retry"><span>TRY AGAIN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
+      const continueControl=connected?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="continue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
+      const findingSpinner=finding?'<div class="gps-finding-spinner" aria-hidden="true"></div>':'';
+      const findingTitle=finding?'<h1 class="gps-finding-title"><span>FINDING</span><span>YOU…</span></h1>':'';
+      const resultVisual=!finding&&failed?'<div class="gps-error-symbol" aria-hidden="true">!</div>':connected?'<div class="gps-error-symbol gps-success-symbol" aria-hidden="true"><span class="checkmark-icon"></span></div>':'';
+      const bodyTitle=!finding?`<h1 class="gps-status-compact-title">${resultTitle}</h1>`:'';
+      const bodyCopy=finding
+        ? '<span>Your phone may ask for permission.</span><span>Tap <strong>Allow</strong> so we can find you.</span>'
+        : detail;
+      return `<section class="onboard with-masthead setup-page gps-status-page ${finding?'gps-finding-page':connected?'gps-connected-page':'gps-failed-page'}">${setupHeader}
+        <div class="gps-status-content">
+          <p class="gps-status-kicker">STEP 2 OF 4 · LOCATION</p>
+          <div class="gps-status-progress" aria-label="Onboarding step 2 of 4"><i class="complete"></i><i class="active"></i><i></i><i></i></div>
+          <div class="gps-status-main" role="${finding?'status':'group'}" ${finding?'aria-live="polite"':''}>
+            ${findingSpinner}${findingTitle}${resultVisual}${bodyTitle}
+            <p class="${finding?'gps-finding-description':connected?'gps-connected-description':''}">${bodyCopy}</p>
+            ${retryControl}${continueControl}
+          </div>
+          <div class="gps-status-actions">${controls}</div>
+        </div>
+      </section>`;
+    }
     if(step==='mc00-live'){
       const systems=[
         systemStatusEntry('circuitry'),
@@ -857,11 +942,64 @@
       ];
       return `<section class="onboard with-masthead setup-page mc00-page">${setupHeader}<div class="onboard-card panel mc00-card" data-mc00-mode="${step}"><div class="mc00-copy"><h1>System Diagnostics</h1><p class="support-copy">Santa-1 Sleigh Recovery</p></div><div class="mc00-visual-wrap"><div class="mc00-sleigh-frame"><div class="sleigh-visual sleigh-stage-1 mc00-sleigh-visual" role="img" aria-label="Santa-1 sleigh system diagnostics visual"><div class="sleigh-glow" aria-hidden="true"></div><img class="sleigh-art" src="./assets/sleigh-stage-1.webp" alt="" aria-hidden="true" fetchpriority="high"><div class="mc00-scan-beam" aria-hidden="true"></div></div></div></div>${systemStatusBank(systems,'mc00-system-bank','mc00')}<div class="mc00-progress-row"><div class="mc00-progress" role="progressbar" aria-label="System diagnostics progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="mc00ProgressFill"></span></div><strong id="mc00ProgressValue">0%</strong></div><div class="mc00-complete-popup panel" id="mc00CompleteBlock" hidden><div class="mc00-complete-icon" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Scan Complete</h2><button class="btn primary wide" id="mc00Continue" data-mc00-continue="${step}">Continue</button></div></div></section>`;
     }
-    if(step==='brief') return `<section class="onboard with-masthead setup-page briefing-page">${setupHeader}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/mission-briefing-icon.svg" alt=""></span></div><h1>Mission Briefing</h1><div class="support-copy briefing-copy"><p><strong>Santa needs your help.</strong></p><p>Santa-1 has made an emergency landing at Silverstone and the recovery is underway.</p><p>Follow the signals around the circuit and help bring each system back online to get the sleigh race-ready again.</p></div><div class="setup-actions"><button class="btn primary wide" data-onboard="location">Continue</button></div></div></section>`;
-    return `<section class="onboard with-masthead setup-page radar-setup-page">${setupHeader}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/radar-setup-icon.svg" alt=""></span></div><h1>Mission Radar</h1><div class="support-copy setup-copy-stack"><p>Mission Control uses your location to detect each installation as you move around the circuit.</p><p>The radar will identify your next checkpoint as its signal comes into range.</p></div><div class="setup-actions stack"><button class="btn primary wide" data-location="request">Enable GPS Location</button><button class="btn secondary wide" data-location="demo">Demo Mode</button></div></div></section>`;
+    if(step==='brief') return `<section class="onboard with-masthead setup-page briefing-page">${setupHeader}<div class="briefing-welcome">
+      <p class="briefing-welcome-kicker">CALLING ALL ELVES!</p>
+      <div class="briefing-welcome-progress" aria-label="Onboarding step 1 of 4"><i class="active"></i><i></i><i></i><i></i></div>
+      <div class="briefing-welcome-intro"><h1><span class="line-1">UH OH!</span><span class="line-2">SANTA'S SLEIGH</span><span class="line-3">HAS BROKEN DOWN!</span></h1></div>
+      <div class="briefing-welcome-art"><img src="./assets/mission-briefing-santa.webp" alt="Santa waving with his sack of presents"></div>
+      <p class="briefing-welcome-description"><span>It’s stuck at Silverstone,</span><span>and Christmas is just around the corner.</span><span>Join Santa’s pit crew,</span><span>take on 12 pit stop challenges and</span><span>help get him back to the North Pole in time!</span></p>
+      <button type="button" class="btn primary wide briefing-welcome-cta" data-onboard="location"><span>JOIN THE PIT CREW</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+    </div></section>`;
+    return `<section class="onboard with-masthead setup-page radar-setup-page location-permission-page">${setupHeader}<div class="location-permission-content">
+      <p class="location-permission-kicker">STEP 2 OF 4 · LOCATION</p>
+      <div class="location-permission-progress" aria-label="Onboarding step 2 of 4"><i class="complete"></i><i class="active"></i><i></i><i></i></div>
+      <h1 class="location-permission-title"><span>LET’S FIND</span><span>YOUR POSITION</span><span>ON THE CIRCUIT!</span></h1>
+      <p class="location-permission-description"><span>Enable location so we can track your journey,</span><span>find your next pit stop and unlock challenges</span><span>as you travel around Silverstone.</span></p>
+      <div class="location-permission-benefits" aria-label="Location benefits">
+        <div class="location-permission-benefit"><span class="location-permission-icon"><img src="./assets/location-circuit-official-guide.webp" alt="" aria-hidden="true"></span><span>See how far it is to your next pit stop</span></div>
+        <div class="location-permission-benefit"><span class="location-permission-icon"><img src="./assets/north-pole-flag-brand.webp" alt="" aria-hidden="true"></span><span>Challenges unlock as you drive past</span></div>
+      </div>
+      <div class="location-permission-actions">
+        <button type="button" class="btn primary wide location-permission-cta" data-location="request"><span>ENABLE LOCATION</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="location-permission-demo" data-location="demo">TESTING? USE DEMO MODE</button>
+      </div>
+    </div></section>`;
+  }
+  function renderPitCrewOnboarding(){
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    return `<section class="onboard with-masthead setup-page pitcrew-onboard-page">${topBar()}
+      <div class="pitcrew-onboard-content">
+        <p class="pitcrew-onboard-kicker">STEP 4 OF 4 · PIT CREW</p>
+        <div class="pitcrew-onboard-progress" aria-label="Onboarding step 4 of 4"><i class="complete"></i><i class="complete"></i><i class="complete"></i><i class="active"></i></div>
+        <h1 class="pitcrew-onboard-title"><span>SANTA IS COUNTING</span><span>ON YOU!</span></h1>
+        <div class="pitcrew-players-panel">
+          <div class="pitcrew-players-label">HOW MANY ELVES ARE PLAYING?</div>
+          <div class="pitcrew-players-controls">
+            <button type="button" class="pitcrew-player-adjust" data-pitcrew-players="-1" aria-label="Remove a passenger" ${players<=1?'disabled':''}>−</button>
+            <div class="pitcrew-player-count" aria-live="polite"><strong>${players}</strong></div>
+            <button type="button" class="pitcrew-player-adjust" data-pitcrew-players="1" aria-label="Add a passenger" ${players>=4?'disabled':''}>+</button>
+          </div>
+        </div>
+        <div class="pitcrew-driver-warning"><div><strong>PASSENGERS ONLY</strong><p>Drivers, keep your eyes on the road and enjoy the lights. Leave the phone to your Pit Crew.</p></div></div>
+        <button type="button" class="btn primary wide pitcrew-onboard-cta" data-pitcrew-confirm><span>LET’S GO!</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+      </div>
+    </section>`;
   }
   function renderElfOnboarding(){
-    return `<section class="onboard with-masthead setup-page elf-setup-page">${topBar()}<div class="onboard-card panel setup-card"><div class="onboard-icon setup-icon"><span class="setup-icon-glyph"><img src="./assets/radio-setting-icon.svg" alt=""></span></div><h1>ELF FM</h1><div class="support-copy setup-copy-stack"><p>Tune in to ELF FM for the journey.</p><p>Mission audio and radio can be enabled or disabled at any time from the Comms panel.</p></div><div class="setup-actions stack"><button class="btn primary wide" data-elf-onboard="tune">Tune In</button><button class="btn secondary wide" data-elf-onboard="continue">Continue Mission</button></div></div></section>`;
+    return `<section class="onboard with-masthead setup-page elf-setup-page">${topBar()}
+      <div class="elf-onboard-content">
+        <p class="elf-onboard-kicker">STEP 3 OF 4 · RADIO</p>
+        <div class="elf-onboard-progress" aria-label="Onboarding step 3 of 4"><i class="complete"></i><i class="complete"></i><i class="active"></i><i></i></div>
+        <h1 class="elf-onboard-title"><span>TURN UP</span><span>ELF FM!</span></h1>
+        <div class="elf-onboard-art" aria-label="Two elves in racing suits">
+          <div class="elf-onboard-portrait"><img src="./assets/elf-fm-elf-one.webp" alt="Elf in a red racing suit"></div>
+          <div class="elf-onboard-portrait"><img src="./assets/elf-fm-elf-two.webp" alt="Second elf in a red racing suit"></div>
+        </div>
+        <p class="elf-onboard-description"><span>Tune in to <strong>87.7</strong> to listen to <strong>ELF FM</strong>.</span><span>The radio stays off until you turn it on!</span></p>
+        <button type="button" class="btn primary wide elf-onboard-primary" data-elf-onboard="tune"><span>TURN ON ELF FM</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="elf-onboard-secondary" data-elf-onboard="continue">CONTINUE WITHOUT RADIO</button>
+      </div>
+    </section>`;
   }
 
   function renderRadar(){
@@ -898,28 +1036,39 @@
   }
   function renderSleigh(){
     const r=recovery();
-    const info=sleighStage();
-    const stage=info.stage;
-    const postStatus=state.completed.includes('northern')
-      ? {name:'Airborne',copy:'Northern Flight is underway. Santa-1 has launched successfully and the rebuilt sleigh is operating as intended.'}
-      : state.completed.includes('lapland')
-        ? {name:'Flight Ready',copy:'Lapland Launch has completed the final systems verification. Every rebuilt system is stable and Santa-1 is fully cleared for launch.'}
-        : {name:info.name,copy:info.copy};
-    // DOM is row-paired so this interleave renders mission order 1–5 down column 1,
-    // then 6–10 down column 2.
-    const systems=[
-      systemStatusEntry('circuitry',state.completed.includes('entry')?'Online':'Offline',state.completed.includes('entry')?'online':'offline'),
-      systemStatusEntry('propulsion',state.completed.includes('escapade')?'Online':'Offline',state.completed.includes('escapade')?'online':'offline'),
-      systemStatusEntry('diagnostic',state.completed.includes('velocity')?'Online':'Offline',state.completed.includes('velocity')?'online':'offline'),
-      systemStatusEntry('guidance',state.completed.includes('jingle')?'Online':'Offline',state.completed.includes('jingle')?'online':'offline'),
-      systemStatusEntry('comms',state.completed.includes('luffield')?'Online':'Offline',state.completed.includes('luffield')?'online':'offline'),
-      systemStatusEntry('control',state.completed.includes('comet')?'Online':'Offline',state.completed.includes('comet')?'online':'offline'),
-      systemStatusEntry('power',state.completed.includes('power')?'Online':'Offline',state.completed.includes('power')?'online':'offline'),
-      systemStatusEntry('response',state.completed.includes('lando')?'Online':'Offline',state.completed.includes('lando')?'online':'offline'),
-      systemStatusEntry('core',state.completed.includes('spirit')?'Online':'Offline',state.completed.includes('spirit')?'online':'offline'),
-      systemStatusEntry('navigation',state.completed.includes('aurora')?'Online':'Offline',state.completed.includes('aurora')?'online':'offline')
+    // The ten approved rebuild systems correspond to checkpoints 01–10.
+    // Their completion state and percentage remain driven by the existing
+    // canonical mission state; this screen changes presentation only.
+    const items=[
+      ['entry','Battery'],
+      ['velocity','Safety Check'],
+      ['luffield','Radio'],
+      ['power','Magic Engine'],
+      ['spirit','Spirit Tank'],
+      ['escapade','Reindeer Power'],
+      ['comet','Steering'],
+      ['jingle','Turbo Boosters'],
+      ['lando','Landing Lights'],
+      ['aurora','Sat-Nav']
     ];
-    return `<div class="sleigh-card panel"><div class="sleigh-title-row"><div><div class="kicker sleigh-pretitle">Sleigh Rebuild</div><h1>Santa-1</h1></div><strong class="sleigh-percent ${r>=100?'is-complete':''}">${r}%</strong></div><div class="sleigh-development-bar ${r>=100?'is-complete':''}" style="--sleigh-progress:${r}%" role="progressbar" aria-label="Santa-1 rebuild progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r}"><div class="sleigh-development-spectrum" aria-hidden="true"></div><div class="sleigh-development-mask" style="left:${r}%" aria-hidden="true"></div><i class="sleigh-development-marker" aria-hidden="true"></i></div><div class="sleigh-visual sleigh-stage-${stage}"><div class="sleigh-glow" aria-hidden="true"></div><img class="sleigh-art" src="${info.asset}" alt="Santa-1 ${postStatus.name} rebuild stage"></div><div class="sleigh-systems panel soft"><div class="kicker sleigh-systems-title">System Status</div>${systemStatusBank(systems,'sleigh-system-bank')}</div></div>`;
+    const firstPending=items.findIndex(([id])=>!state.completed.includes(id));
+    const steps=items.map(([id,label],i)=>{
+      const done=state.completed.includes(id);
+      const next=!done&&i===firstPending;
+      const status=done?'FIXED!':next?'UP NEXT':'NEEDS HELP';
+      const kind=done?'done':next?'next':'pending';
+      return `<div class="sleigh-repair-row ${kind}"><span class="sleigh-repair-dot" aria-hidden="true"></span><span class="sleigh-repair-name">${label}</span><span class="sleigh-repair-status">${status}</span></div>`;
+    }).join('');
+    const bars=items.map(([id],i)=>`<span class="sleigh-progress-segment${state.completed.includes(id)?' filled':''}" aria-hidden="true"></span>`).join('');
+    return `<section class="sleigh-card sleigh-rebuild-redesign" aria-label="Santa's sleigh rebuild">
+      <header class="sleigh-rebuild-heading"><div class="kicker">IN THE GARAGE</div><h1>HOW’S THE<br>SLEIGH?</h1></header>
+      <div class="sleigh-reveal-frame" role="img" aria-label="Santa's sleigh ${r}% restored, with repaired sections revealed in colour">
+        <img class="sleigh-reveal-grey" src="./assets/north-pole-brand-sleigh.webp" alt="" aria-hidden="true">
+        <img class="sleigh-reveal-colour" src="./assets/north-pole-brand-sleigh.webp" alt="" aria-hidden="true" style="clip-path:inset(0 ${100-r}% 0 0)">
+      </div>
+      <div class="sleigh-progress-row"><div class="sleigh-progress-segments" role="progressbar" aria-label="Sleigh rebuild progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r}">${bars}</div><strong class="sleigh-progress-number">${r}%</strong></div>
+      <div class="sleigh-repair-viewport"><div class="sleigh-repair-list" role="region" aria-label="Sleigh systems" tabindex="0"><div class="sleigh-repair-rows">${steps}</div></div><div class="sleigh-scroll-track" aria-hidden="true"><div class="sleigh-scroll-thumb"></div></div></div>
+    </section>`;
   }
 
   function systemStatusBank(systems,extraClass='',dataPrefix=''){
@@ -956,24 +1105,43 @@
 
 
   function missionHeader(cp){
-    const label=`${cp.mc} / ${cp.location}`;
+    const pitStopNumber=String(cp.mc||'').replace('MC-','').padStart(2,'0');
+    const label=`PIT STOP ${pitStopNumber} / ${cp.location}`;
+    if(cp.type==='commsrelay'&&cp.id==='luffield'){
+      return `<div class="mission-head luffield-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>BOX, BOX,</span><span>HO, HO, HO!</span></h1><p class="support-copy luffield-subtitle"><span class="luffield-subtitle-first">Santa can’t hear us over the engine noise!</span><span class="luffield-subtitle-next">Connect the radio by tapping the links as the signal hits it,</span><span class="luffield-subtitle-next2">so we can call him into the pits.</span></p></div>`;
+    }
+    if(cp.type==='diagnostics'&&cp.id==='velocity'){
+      return `<div class="mission-head diagnostics-head diagnostics-head--santa"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SANTA’S</span><span>PARC FERMÉ</span></h1><p class="support-copy"><span>All racing cars get checked in parc fermé, and</span><span>Santa’s sleigh is no different! Scan every part.</span></p></div>`;
+    }
     if(cp.type==='diagnostics'){
       return `<div class="mission-head diagnostics-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="diagnostics-brand"><img src="./assets/audi-rings-2026.webp" alt="Audi"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
     }
     if(cp.type==='activation'){
-      return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy"><span>Uh-oh, Santa's sleigh has run out of battery!</span><span>Connect to the circuit and power it back up.</span></p></div>`;
     }
     if(cp.type==='artifacts'){
-      return `<div class="mission-head artifact-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="artifact-sponsor"><img src="./assets/care-bears-logo.png?v=7.38.44" alt="Care Bears"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy">Sparkles of Christmas magic are zooming down the pit lane. Catch them to power up the sleigh!</p></div>`;
     }
     if(cp.type==='spirit'){
-      return `<div class="mission-head spirit-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="spirit-sponsor"><img src="./assets/care-bears-logo.png?v=7.38.44" alt="Care Bears"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit,</span><span>and it’s running low! Fill it back up.</span></p></div>`;
     }
     if(cp.type==='power'&&cp.id==='escapade'){
-      return `<div class="mission-head raceway-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="raceway-sponsor"><img src="./assets/escapade-logo.png?v=1" alt="Escapade" width="1350" height="386" fetchpriority="high"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head raceway-head raceway-head--line"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>REINDEER</span><span>RACING LINE</span></h1><p class="support-copy">How fast can you go following the racing line?</p></div>`;
+    }
+    if(cp.type==='comet'&&cp.id==='comet'){
+      return `<div class="mission-head comet-head comet-head--corner"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>COMET’S</span><span>CORNER</span></h1><p class="support-copy">Comet the reindeer is great at steering, but he needs your help with these twisty corners!</p></div>`;
+    }
+    if(cp.type==='jingle'){
+      return `<div class="mission-head sleigh-speed-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SLEIGH SPEED</span><span>STRAIGHT</span></h1><p class="support-copy"><span>This is the fastest part of the track!</span><span>Score to give Santa a speed boost!</span></p></div>`;
+    }
+    if(cp.type==='lando'){
+      return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
+    }
+    if(cp.type==='northern'){
+      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy">The sleigh is on the grid and ready to fly. Give Santa the green flag!</p></div>`;
     }
     if(cp.type==='lapland'){
-      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="lapland-sponsor"><img src="./assets/las-vegas-logo-white.svg" alt="Las Vegas"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
+      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
     }
     return `<div class="mission-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
   }
@@ -982,7 +1150,7 @@
       activation:'Establish a link with the circuit and route power to Santa-1.',
       diagnostics:'Capture the racing data needed to rebuild Santa-1.',
       radio:'Tune the receiver to 87.7 ELF FM.',
-      commsrelay:'Establish communications with Santa-1.',
+      commsrelay:'Santa can’t hear us over the engine noise! Connect the radio by tapping the links as the signal hits it, so we can call him into the pits.',
       power:'Test Santa-1’s propulsion system.',
       spirit:'Store the energy signatures.',
       placeholder:'This checkpoint is reserved while the final installation game is developed.',
@@ -990,14 +1158,26 @@
       comet:'Calibrate Santa-1’s flight controls.',
       jingle:'Restore Santa-1’s guidance system.',
       lando:'Calibrate Santa-1’s flight response.',
-      aurora:'Lock onto the North Pole navigation signal.',
+      aurora:'Follow the Northern Lights to find the way home to the North Pole.',
       lapland:'Bring Santa-1’s launch systems online.',
       northern:'Authorise Santa-1 for departure.'
     })[type]||'';
   }
   function renderMission(id){
     const cp=id==='elf-radio'?ELF_RADIO_MISSION:CHECKPOINTS.find(c=>c.id===id); if(!cp) return '';
-    return `<div class="mission-shell mission-${cp.type}">${topBar()}${missionHeader(cp)}<div class="mission-content" id="missionContent">${missionBody(cp)}</div></div>`;
+    // Only the twelve circuit activations show the shared multiplayer indicator.
+    const multiplayer=cp.id!=='elf-radio'&&Math.max(1,Number(state.pitCrewPlayers)||1)>1;
+    const turn=state.missionPlayerTurnId===id?Math.max(1,Math.min(Number(state.pitCrewPlayers)||1,Number(state.missionPlayerTurn)||1)):1;
+    const indicator=multiplayer?`<div class="mission-player-turn" aria-label="Player ${turn}"><span class="mission-player-turn-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></span><span>PLAYER ${turn}</span></div>`:'';
+    // Insert the shared capsule as the first child of the existing game box.
+    // Each game's own progress header/markers therefore follow underneath it;
+    // when a completion/changeover replaces missionContent, the capsule leaves
+    // with the game instead of remaining above the popup.
+    const body=missionBody(cp);
+    const gameBox=indicator
+      ? body.replace(/^(<div\b[^>]*\bmission-instrument\b[^>]*>)/, `$1${indicator}`)
+      : body;
+    return `<div class="mission-shell mission-${cp.type}">${topBar()}${missionHeader(cp)}<div class="mission-content" id="missionContent">${gameBox}</div></div>`;
   }
   function missionBody(cp){
     switch(cp.type){
@@ -1019,50 +1199,54 @@
     }
   }
   function circuitEntryBody(){
-    const cp=CHECKPOINTS.find(c=>c.id==='entry');
-    const node=geoToCircuitPoint(cp?.lat,cp?.lng)||{x:88.88,y:31.11};
-    const nodeX=node.x.toFixed(2),nodeY=node.y.toFixed(2);
-    return `<div class="mission-instrument panel mc01-panel" id="mc01Activation" data-stage="detected">
+    // Use the radar's exact circuit asset and canonical checkpoint positions.
+    const installationMarkers=CHECKPOINTS.filter(cp=>/^MC-(0[1-9]|1[0-2])$/.test(cp.mc)).map((cp,i)=>{
+      const point=geoToCircuitPoint(cp.lat,cp.lng);
+      if(!point) return '';
+      const x=point.x.toFixed(2),y=point.y.toFixed(2);
+      return `<g class="mc01-installation-marker" data-mc01-installation="${i}" aria-hidden="true" transform="translate(${x} ${y})"><circle class="mc01-installation-disc" r="3.1"></circle><circle class="mc01-installation-centre" r=".85"></circle></g>`;
+    }).join('');
+    return `<div class="mission-instrument panel mc01-panel mc01-brand-panel" id="mc01Activation" data-stage="detected">
       <div class="mc01-readout mc01-readout-top">
         <span class="mc01-bolt" aria-hidden="true"><img src="./assets/system-power.svg" alt=""></span>
         <div class="mc01-readout-copy"><span id="mc01StateLabel">Circuit Link</span><strong id="mc01State">Signal Detected</strong></div>
         <div class="mc01-signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       </div>
-      <div class="mc01-track-stage" aria-hidden="true">
-        <div class="mc01-track-shadow"></div>
-        <div class="mc01-track-outline"></div>
-        <div class="mc01-track-energy"></div>
-        <svg class="mc01-node-map" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <circle class="mc01-energy-ripple ripple-a" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
-          <circle class="mc01-energy-ripple ripple-b" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
-          <circle class="mc01-energy-node" cx="${nodeX}" cy="${nodeY}" r="3.5"></circle>
+      <div class="mc01-track-stage" aria-label="Silverstone circuit with installation markers appearing as energy transfers">
+        <div class="mc01-restored-track-energy" aria-hidden="true"></div>
+        <svg class="mc01-branded-circuit" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <image href="./assets/f1-circuit-red-keyline.svg" width="210" height="126" preserveAspectRatio="xMidYMid meet"></image>
+        </svg>
+        <svg class="mc01-marker-overlay" viewBox="0 0 210 126" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          ${installationMarkers}
         </svg>
       </div>
       <div class="mc01-transfer mc01-transfer-bottom" aria-label="Circuit Link energy transfer progress">
         <div class="mc01-transfer-meta"><span>Energy Transfer</span><strong id="mc01TransferValue">0%</strong></div>
         <div class="mc01-transfer-track"><i id="mc01TransferFill"></i></div>
+        <button type="button" class="btn primary wide mc01-charge-cta" id="mc01ChargeButton"><span>TAP TO CHARGE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
       </div>
     </div>`;
   }
 
   function diagnosticsBody(){
     const sensors=[
-      {name:'Aero',key:'aero',viz:`<div class="mc02-icon mc02-icon-aero"><svg class="mc02-svg mc02-aero-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-aero-frame-path" d="M27.16,11.07V120.66h6V17.08h6V120.64h6V17.08H164.74V120.64h6V17.08h6V120.66h6V11.07ZM49.7,34H160.2V28H49.7Z"/><path class="mc02-aero-ring-path" d="M105,41.51a39.27,39.27,0,1,0,39.27,39.26A39.3,39.3,0,0,0,105,41.51Zm0,72.88a33.62,33.62,0,1,1,33.62-33.62A33.66,33.66,0,0,1,105,114.39Z"/><g class="mc02-aero-fan-group"><path class="mc02-aero-blades-path" d="M105,114.39m14.35-27.73c-1.41.32-4.52.71-6.84-1.35a8.56,8.56,0,0,0,1-2.37c4.32-1.43,10.41-4.22,11.17-12,.86-8.82-8-15.09-14.52-16.73-3.49-.87-6.91.35-8.5,3.05-1.5,2.55-1,5.67,1.27,8.12,1,1.06,2.87,3.56,2.26,6.6H105a8.88,8.88,0,0,0-2.38.33c-3.4-3-8.85-6.9-16-3.68-8.07,3.67-9.09,14.46-7.23,21,1,3.45,3.76,5.8,6.89,5.83h.06c2.94,0,5.36-2,6.34-5.16.42-1.38,1.64-4.26,4.58-5.25a9.18,9.18,0,0,0,1.56,2c-.92,4.45-1.55,11.12,4.79,15.65A12.39,12.39,0,0,0,111,105c5.55,0,11.2-3.17,14.41-6.5,2.5-2.58,3.15-6.15,1.61-8.88S122.62,85.9,119.35,86.66Zm-23-7.24c-4.87,1.25-7.82,5.32-9,9.19-.08.27-.4,1.16-.94,1.16h0c-.41,0-1.15-.47-1.51-1.74-1.1-3.81-1-11.91,4.13-14.25,3.39-1.54,6.13-.29,8.85,1.91A8.6,8.6,0,0,0,96.33,79.42Zm10.19-19.27c.2-.35,1-.76,2.26-.44,3.85,1,10.82,5.09,10.27,10.7-.36,3.71-2.81,5.45-6.07,6.71a8.86,8.86,0,0,0-2.47-3.18c1.35-4.85-.7-9.43-3.46-12.39C106.85,61.34,106.24,60.62,106.52,60.15Zm-5.37,20.62A3.85,3.85,0,1,1,105,84.62,3.85,3.85,0,0,1,101.15,80.77Zm20.2,13.81c-2.76,2.85-9.82,6.82-14.41,3.54-3-2.16-3.31-5.16-2.77-8.6.27,0,.55,0,.83,0a8.71,8.71,0,0,0,3.16-.6c3.52,3.6,8.52,4.1,12.46,3.2.28-.07,1.21-.24,1.48.24S122.27,93.63,121.35,94.58Z"/></g></svg></div>`},
-      {name:'Stability',key:'stability',viz:`<div class="mc02-icon mc02-icon-stability"><span class="mc02-layer mc02-stability-car"></span><span class="mc02-layer mc02-stability-headlights"></span></div>`},
-      {name:'Power',key:'power',viz:`<div class="mc02-icon mc02-icon-power"><svg class="mc02-svg mc02-power-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-power-gauge-path" d="M105,15.05A72.14,72.14,0,0,0,32.93,87.11a73,73,0,0,0,.77,10.57l.44,3,21.67-3.09-.84-6L39.28,93.82c-.22-2.22-.34-4.47-.34-6.71a65.69,65.69,0,0,1,13.47-39.9L64.67,57.39l3.85-4.63L56.26,42.58a65.89,65.89,0,0,1,45.86-21.44v16h6v-16a65.93,65.93,0,0,1,45.6,21.43L139.11,54.7,141.05,57a47.1,47.1,0,0,1,10.41,36.91l-.64,3.16,25,3.59.44-3a73.21,73.21,0,0,0,.77-10.58A72.15,72.15,0,0,0,105,15.05Z"/><g class="mc02-power-needle-group"><path class="mc02-power-needle-path" d="M171.32,117.08l-64-35.21.06,0-.12,0A5.77,5.77,0,0,0,99.39,89a5.89,5.89,0,0,0,3.16,3.34L170.41,119a1.08,1.08,0,0,0,.91-2Z"/></g></svg></div>`},
-      {name:'Control',key:'control',viz:`<div class="mc02-icon mc02-icon-control"><span class="mc02-layer mc02-control-wheel"></span><span class="mc02-layer mc02-control-ring"></span></div>`},
-      {name:'Traction',key:'traction',viz:`<div class="mc02-icon mc02-icon-traction"><span class="mc02-layer mc02-traction-car"></span><span class="mc02-layer mc02-traction-skids"></span><span class="mc02-layer mc02-traction-shine"></span></div>`},
-      {name:'Response',key:'response',viz:`<div class="mc02-icon mc02-icon-response"><span class="mc02-layer mc02-response-cones"></span><span class="mc02-layer mc02-response-arrow"></span><span class="mc02-layer mc02-response-shine"></span></div>`}
+      {name:'AERO',key:'aero',icon:'./assets/parc-ferme-aero.webp',viz:`<div class="mc02-icon mc02-icon-aero"><svg class="mc02-svg mc02-aero-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-aero-frame-path" d="M27.16,11.07V120.66h6V17.08h6V120.64h6V17.08H164.74V120.64h6V17.08h6V120.66h6V11.07ZM49.7,34H160.2V28H49.7Z"/><path class="mc02-aero-ring-path" d="M105,41.51a39.27,39.27,0,1,0,39.27,39.26A39.3,39.3,0,0,0,105,41.51Zm0,72.88a33.62,33.62,0,1,1,33.62-33.62A33.66,33.66,0,0,1,105,114.39Z"/><g class="mc02-aero-fan-group"><path class="mc02-aero-blades-path" d="M105,114.39m14.35-27.73c-1.41.32-4.52.71-6.84-1.35a8.56,8.56,0,0,0,1-2.37c4.32-1.43,10.41-4.22,11.17-12,.86-8.82-8-15.09-14.52-16.73-3.49-.87-6.91.35-8.5,3.05-1.5,2.55-1,5.67,1.27,8.12,1,1.06,2.87,3.56,2.26,6.6H105a8.88,8.88,0,0,0-2.38.33c-3.4-3-8.85-6.9-16-3.68-8.07,3.67-9.09,14.46-7.23,21,1,3.45,3.76,5.8,6.89,5.83h.06c2.94,0,5.36-2,6.34-5.16.42-1.38,1.64-4.26,4.58-5.25a9.18,9.18,0,0,0,1.56,2c-.92,4.45-1.55,11.12,4.79,15.65A12.39,12.39,0,0,0,111,105c5.55,0,11.2-3.17,14.41-6.5,2.5-2.58,3.15-6.15,1.61-8.88S122.62,85.9,119.35,86.66Zm-23-7.24c-4.87,1.25-7.82,5.32-9,9.19-.08.27-.4,1.16-.94,1.16h0c-.41,0-1.15-.47-1.51-1.74-1.1-3.81-1-11.91,4.13-14.25,3.39-1.54,6.13-.29,8.85,1.91A8.6,8.6,0,0,0,96.33,79.42Zm10.19-19.27c.2-.35,1-.76,2.26-.44,3.85,1,10.82,5.09,10.27,10.7-.36,3.71-2.81,5.45-6.07,6.71a8.86,8.86,0,0,0-2.47-3.18c1.35-4.85-.7-9.43-3.46-12.39C106.85,61.34,106.24,60.62,106.52,60.15Zm-5.37,20.62A3.85,3.85,0,1,1,105,84.62,3.85,3.85,0,0,1,101.15,80.77Zm20.2,13.81c-2.76,2.85-9.82,6.82-14.41,3.54-3-2.16-3.31-5.16-2.77-8.6.27,0,.55,0,.83,0a8.71,8.71,0,0,0,3.16-.6c3.52,3.6,8.52,4.1,12.46,3.2.28-.07,1.21-.24,1.48.24S122.27,93.63,121.35,94.58Z"/></g></svg></div>`},
+      {name:'STABILITY',key:'stability',icon:'./assets/parc-ferme-stability.webp',viz:`<div class="mc02-icon mc02-icon-stability"><span class="mc02-layer mc02-stability-car"></span><span class="mc02-layer mc02-stability-headlights"></span></div>`},
+      {name:'POWER',key:'power',icon:'./assets/parc-ferme-power.webp',viz:`<div class="mc02-icon mc02-icon-power"><svg class="mc02-svg mc02-power-svg" viewBox="0 0 210 126" aria-hidden="true"><path class="mc02-power-gauge-path" d="M105,15.05A72.14,72.14,0,0,0,32.93,87.11a73,73,0,0,0,.77,10.57l.44,3,21.67-3.09-.84-6L39.28,93.82c-.22-2.22-.34-4.47-.34-6.71a65.69,65.69,0,0,1,13.47-39.9L64.67,57.39l3.85-4.63L56.26,42.58a65.89,65.89,0,0,1,45.86-21.44v16h6v-16a65.93,65.93,0,0,1,45.6,21.43L139.11,54.7,141.05,57a47.1,47.1,0,0,1,10.41,36.91l-.64,3.16,25,3.59.44-3a73.21,73.21,0,0,0,.77-10.58A72.15,72.15,0,0,0,105,15.05Z"/><g class="mc02-power-needle-group"><path class="mc02-power-needle-path" d="M171.32,117.08l-64-35.21.06,0-.12,0A5.77,5.77,0,0,0,99.39,89a5.89,5.89,0,0,0,3.16,3.34L170.41,119a1.08,1.08,0,0,0,.91-2Z"/></g></svg></div>`},
+      {name:'CONTROL',key:'control',icon:'./assets/parc-ferme-control.webp',viz:`<div class="mc02-icon mc02-icon-control"><span class="mc02-layer mc02-control-wheel"></span><span class="mc02-layer mc02-control-ring"></span></div>`},
+      {name:'TRACTION',key:'traction',icon:'./assets/parc-ferme-traction.webp',viz:`<div class="mc02-icon mc02-icon-traction"><span class="mc02-layer mc02-traction-car"></span><span class="mc02-layer mc02-traction-skids"></span><span class="mc02-layer mc02-traction-shine"></span></div>`},
+      {name:'RESPONSE',key:'response',icon:'./assets/parc-ferme-response.webp',viz:`<div class="mc02-icon mc02-icon-response"><span class="mc02-layer mc02-response-cones"></span><span class="mc02-layer mc02-response-arrow"></span><span class="mc02-layer mc02-response-shine"></span></div>`}
     ];
-    return `<div class="mission-instrument panel diagnostics-panel"><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><div class="sensor-head"><span class="num">0${i+1}</span><span class="name">${x.name}</span></div><div class="sensor-viz viz-${x.key}" aria-hidden="true">${x.viz}</div><div class="state">Tap to scan</div></button>`).join('')}</div></div><button class="btn primary wide" id="diagComplete" disabled>Complete Scan</button>`;
+    return `<div class="mission-instrument panel diagnostics-panel"><section class="diag-progress-card"><div class="diag-progress-copy"><div class="diag-progress-label">PARTS CHECKED</div><div class="diag-progress-value" id="diagProgressValue">0/6</div></div><div class="diag-progress-track" aria-label="Parts checked progress">${Array.from({length:6},(_,i)=>`<i data-diag-progress="${i}"></i>`).join('')}</div></section><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor parc-scan-card sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><strong class="parc-card-title">${x.name}</strong><span class="sensor-viz-shell"><img class="parc-icon-art" src="${x.icon}" alt="" aria-hidden="true"></span><span class="state">Tap to scan</span></button>`).join('')}</div><button class="btn primary wide parc-complete-cta" id="diagComplete" disabled><span>COMPLETE SCAN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
   }
 
-  function radioBody(){return `<div class="mission-instrument panel"><div class="wave" id="radioWave">${'<i></i>'.repeat(28)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled>Lock Signal</button></div>`}
+  function radioBody(){return `<div class="mission-instrument panel"><div class="wave transmission-wave" id="radioWave">${'<b></b>'.repeat(24)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled><span>LOCK SIGNAL</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`}
   function commsRelayBody(){
     return `<div class="mission-instrument panel comms-relay-panel">
-      <div class="relay-progress-head"><span>RELAYS LOCKED</span><strong id="relayLockedCount">0 / 4</strong></div>
-      <div class="relay-progress-track" aria-label="Relay lock progress">${Array.from({length:4},(_,i)=>`<i data-relay-progress="${i}"></i>`).join('')}</div>
-      <div class="relay-network" id="relayNetwork" aria-label="Signal relay network">
+      <div class="relay-progress-head"><span>RADIO LINKS</span><strong id="relayLockedCount">0/4</strong></div>
+      <div class="relay-progress-track" aria-label="Radio links checked progress">${Array.from({length:4},(_,i)=>`<i data-relay-progress="${i}"></i>`).join('')}</div>
+      <div class="relay-network" id="relayNetwork" aria-label="Radio signal linking North Pole to Santa">
         <svg class="relay-route" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true">
           <line class="relay-hop-line" data-hop="0" x1="25" y1="25" x2="75" y2="25"></line>
           <line class="relay-hop-line" data-hop="1" x1="75" y1="25" x2="25" y2="75"></line>
@@ -1071,9 +1255,9 @@
           <line class="relay-hop-line" data-hop="4" x1="25" y1="125" x2="75" y2="125"></line>
         </svg>
         ${Array.from({length:5},(_,i)=>`<span class="relay-carrier-packet" data-carrier="${i}" aria-hidden="true"></span>`).join('')}
-        <div class="relay-cell relay-endpoint relay-origin"><span class="relay-radio-icon"><img src="./assets/relay-transmitter-icon.svg" alt="" aria-hidden="true"></span><small>TRANSMITTER</small></div>
-        ${[0,1,2,3].map(i=>`<div class="relay-cell relay-capture"><button class="relay-node ${i===0?'active':''}" data-relay="${i}" aria-label="Relay ${i+1}"><span class="relay-target"></span><span class="relay-pulse"></span><span class="relay-core">0${i+1}</span></button><small>RELAY 0${i+1}</small></div>`).join('')}
-        <div class="relay-cell relay-endpoint relay-destination"><span class="relay-receiver-icon"><img src="./assets/relay-receiver-hi-spec.svg" alt="" aria-hidden="true"></span><small>RECEIVER</small></div>
+        <div class="relay-cell relay-endpoint relay-origin"><span class="relay-radio-icon"><img src="./assets/relay-transmitter-icon.svg" alt="" aria-hidden="true"><b>TX</b></span><small>NORTH POLE</small></div>
+        ${[0,1,2,3].map(i=>`<div class="relay-cell relay-capture"><button class="relay-node ${i===0?'active':''}" data-relay="${i}" aria-label="Link ${i+1}"><span class="relay-target"></span><span class="relay-pulse"></span><span class="relay-core">${i+1}</span></button><small>LINK 0${i+1}</small></div>`).join('')}
+        <div class="relay-cell relay-endpoint relay-destination"><span class="relay-receiver-icon"><img src="./assets/relay-receiver-hi-spec.svg" alt="" aria-hidden="true"><b>RADIO</b></span><small>SANTA</small></div>
       </div>
       <div class="visually-hidden" id="relayState" aria-live="polite">Relay 01 armed</div>
     </div>`;
@@ -1085,11 +1269,12 @@
         <div class="power-scanlines" aria-hidden="true"></div>
         <div class="power-hud">
           <div class="power-time-hud"><span>Time</span><strong id="powerRunState">00:00</strong></div>
-          <div class="power-speed-hud"><span>Speed</span><strong><b id="powerSpeed">0</b><small>MPH</small></strong></div>
-          <div class="power-propulsion-hud"><span>Propulsion</span><strong id="powerOutput">0%</strong></div>
+          <div class="power-speed-hud"><span>MPH</span><strong><b id="powerSpeed">0</b><small>MPH</small></strong></div>
+          <div class="power-propulsion-hud"><span>POWER</span><strong id="powerOutput">0%</strong></div>
         </div>
         <div class="power-rev-wrap"><div class="power-rev" id="powerRev">${revSegments}</div></div>
         <div class="power-road-scene" id="powerRoad">
+          <div class="power-road-markers" aria-hidden="true"></div>
           <div class="power-sky-sprite" aria-hidden="true"></div>
           <div class="power-ground" aria-hidden="true">
             <div class="power-grass-plane"></div>
@@ -1098,7 +1283,7 @@
           <div class="power-horizon-seam" aria-hidden="true"></div>
           <div class="power-speed-lines" aria-hidden="true">${Array.from({length:12},()=>'<i></i>').join('')}</div>
           <div class="power-car" id="powerCar">
-            <img class="power-car-sprite" src="./assets/power-car.webp" alt="Blue retro pixel racing car seen from behind">
+            <img class="power-car-sprite" src="./assets/reindeer-racing-line-f1-up.webp" alt="Top-down Silverstone F1 racing car facing forwards">
             <span class="power-exhaust power-exhaust-left"></span><span class="power-exhaust power-exhaust-right"></span>
           </div>
           <div class="power-burst" id="powerBurst" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -1106,7 +1291,7 @@
         <div class="power-max-hold"><span>SPEED LOCK</span><div><i id="powerMaxFill"></i></div><strong id="powerMaxState">STANDBY</strong></div>
       </div>
       <div class="visually-hidden" id="powerState" aria-live="polite">Ready</div>
-      <button class="btn primary wide power-accelerator" id="powerAccelerator">ACCELERATE</button>
+      <button class="btn primary wide power-accelerator" id="powerAccelerator" aria-label="Press and hold to accelerate">GO, GO GO!</button>
     </div>`;
   }
   function spiritBody(){
@@ -1120,18 +1305,14 @@
       {side:'right',index:2,key:'white',rgb:'247,250,255',color:'#f7faff',name:'White energy'},
       {side:'right',index:3,key:'orange',rgb:'255,122,28',color:'#ff7a1c',name:'Orange energy'}
     ];
-    const bhpIcon=`<svg class="spirit-bhp-icon" viewBox="66 0 66 126" focusable="false" aria-hidden="true"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg>`;
+    const bhpIcon=`<svg class="spirit-bhp-icon" viewBox="66 0 78 126" focusable="false" aria-hidden="true"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg>`;
     const tankCells=side=>tankDefs.filter(tank=>tank.side===side).map(tank=>`<div class="spirit-tank-cell spirit-tank-${tank.key}" data-spirit-tank="${tank.side}-${tank.index}" data-spirit-color="${tank.key}" data-spirit-rgb="${tank.rgb}" data-spirit-hex="${tank.color}" style="--tank-rgb:${tank.rgb};--tank-color:${tank.color};" aria-label="${tank.name} storage tank">
       <span class="spirit-tank-energy"></span>
-      <span class="spirit-tank-shimmer"></span>
-      <span class="spirit-tank-grid" aria-hidden="true"></span>
-      <span class="spirit-tank-plate" aria-hidden="true"><span class="spirit-tank-plate-face">${bhpIcon}</span></span>
-      <span class="spirit-tank-vent" aria-hidden="true"><i></i><i></i><i></i></span>
-      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true"><svg viewBox="66 0 78 126" focusable="false"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg></span></button>
+      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true">${bhpIcon}</span><span class="spirit-cell-state" aria-hidden="true">TAP TO FILL!</span></button>
     </div>`).join('');
     const stageDots=Array.from({length:8},(_,i)=>`<i data-spirit-stage-dot="${i}"></i>`).join('');
-    return `<div class="mission-instrument panel spirit-panel" id="spiritRig" data-stage="0">
-      <div class="spirit-score"><span>CORE CHARGE</span><strong><b id="spiritStageNumber">0</b> / 8</strong></div>
+    return `<div class="mission-instrument panel spirit-panel spirit-panel--charging" id="spiritRig" data-stage="0">
+      <div class="spirit-score"><span>CHRISTMAS SPIRIT</span><strong><b id="spiritStageNumber">0</b>/8</strong></div>
       <div class="spirit-stage-progress" id="spiritStageProgress" aria-hidden="true">${stageDots}</div>
       <div class="spirit-apparatus" aria-label="Spirit energy storage tanks">
         <div class="spirit-meter spirit-meter-left" aria-hidden="true"><span class="spirit-meter-fill"></span><b class="spirit-meter-marker"></b></div>
@@ -1143,11 +1324,10 @@
   }
   function placeholderBody(cp){const location=cp?.location||'Checkpoint';return `<div class="mission-instrument panel" style="text-align:center;padding:30px 18px"><div class="onboard-icon">?</div><div class="kicker">${location} / Creative Hold</div><h2 style="font-family:var(--display);text-transform:uppercase;font-size:28px;margin:8px 0">Mission TBC</h2><p class="sub">This checkpoint is reserved while the final installation game is developed. GPS activation, route progression and completion behaviour remain active for testing.</p><button class="btn primary wide" style="margin-top:16px" id="completePlaceholder">Complete Demo Step</button></div>`}
   function artifactBody(){
-    return `<div class="mission-instrument panel artifact-panel">
-      <div class="artifact-score"><span>SIGNATURE CAPTURE</span><strong id="artifactProgress">0 / 10</strong></div>
-      <div class="artifact-progress-track" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i data-artifact-step="${i}"></i>`).join('')}</div>
-      <div class="artifact-instruction" aria-hidden="true">Collect the energy signatures.</div>
-      <div class="artifact-field" id="artifactField" data-intensity="1" aria-label="Power Pulse energy signature field">
+    return `<div class="mission-instrument panel artifact-panel pit-lane-powerup-panel">
+      <div class="artifact-score"><span>SPARKLES CAUGHT</span><strong id="artifactProgress">0/8</strong></div>
+      <div class="artifact-progress-track" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i data-artifact-step="${i}"></i>`).join('')}</div>
+      <div class="artifact-field" id="artifactField" data-intensity="1" aria-label="Pit Lane Power-Up sparkle playfield">
         <canvas class="starstream-canvas" id="starstreamCanvas" aria-hidden="true"></canvas>
         <div class="starstream-nebula" aria-hidden="true"></div>
         <div class="starstream-vignette" aria-hidden="true"></div>
@@ -1179,16 +1359,16 @@
   }
   function jingleBody(){
     return `<div class="mission-instrument panel jingle-panel" id="jinglePanel">
-      <div class="jingle-progress-head"><span>GUIDANCE LOCK</span><strong id="jingleLockCount">0 / 3</strong></div>
-      <div class="jingle-lock-track" aria-label="Guidance lock progress">${[1,2,3].map(i=>`<i class="${i===1?'is-next':''}" data-jingle-beam="${i}"></i>`).join('')}</div>
-      <div class="jingle-arena is-awaiting-start" id="jingleArena" tabindex="0" role="application" aria-label="Jingle Beams guidance game. Start the puck, then tap or slide horizontally to steer the paddle and direct the charge into each receiver.">
+      <div class="jingle-progress-head"><span>SPEED BOOSTS</span><strong id="jingleLockCount">0 / 3</strong></div>
+      <div class="jingle-lock-track" aria-label="Speed boosts progress">${[1,2,3].map(i=>`<i class="${i===1?'is-next':''}" data-jingle-beam="${i}"></i>`).join('')}</div>
+      <div class="jingle-arena is-awaiting-start" id="jingleArena" tabindex="0" role="application" aria-label="Sleigh Speed Straight game. Start the puck, then tap or slide horizontally to steer the paddle and direct the puck into each target.">
         <div class="jingle-grid" aria-hidden="true"><img class="jingle-centre-mark" src="./assets/silverstone-s-mark.webp" alt=""></div>
         <div class="jingle-energy-rail rail-left" aria-hidden="true"><i></i></div>
         <div class="jingle-energy-rail rail-right" aria-hidden="true"><i></i></div>
         <div class="jingle-receiver" id="jingleReceiver" aria-hidden="true"><span></span><i></i></div>
         <div class="jingle-goal-flare" id="jingleGoalFlare" aria-hidden="true"></div>
         <div class="jingle-puck-trail" id="jinglePuckTrail" aria-hidden="true"></div>
-        <button type="button" class="jingle-puck is-ready" id="jinglePuck" aria-label="Start Jingle Beams"><i></i><img class="jingle-play-icon" src="./assets/video-play.svg" alt="" aria-hidden="true"><strong class="jingle-puck-countdown" id="jingleCountdown"></strong></button>
+        <button type="button" class="jingle-puck is-ready" id="jinglePuck" aria-label="Start Sleigh Speed Straight"><i></i><img class="jingle-play-icon" src="./assets/video-play.svg" alt="" aria-hidden="true"><strong class="jingle-puck-countdown" id="jingleCountdown"></strong></button>
         <div class="jingle-paddle" id="jinglePaddle" aria-hidden="true"><i></i></div>
         <div class="jingle-drag-prompt" id="jinglePrompt"><strong>TAP TO STEER</strong></div>
       </div>
@@ -1197,15 +1377,18 @@
   }
   function landoBody(){
     return `<div class="mission-instrument panel lando-panel">
-      <div class="lando-round-head"><span>REACTION TEST</span><strong id="landoRound">1 / 4</strong></div>
-      <div class="lando-results" aria-label="Reaction test results">
-        ${[1,2,3,4].map(i=>`<div class="lando-result ${i===1?'active':''}" data-lando-result="${i}"><strong>${i}</strong></div>`).join('')}
+      <div class="lando-round-head"><span>REACTION TESTS</span><strong id="landoRound">1 / 4</strong></div>
+      <div class="lando-progress-track" aria-label="Reaction test progress">
+        ${[1,2,3,4].map(i=>`<span class="lando-progress-segment ${i===1?'active':''}" data-lando-progress="${i}"></span>`).join('')}
       </div>
       <div class="lando-gantry-art" id="landoGantry" aria-label="Five column start light gantry with four stacked lamps">
         <img src="./assets/lando-gantry.webp" alt="" aria-hidden="true">
         <div class="lando-light-overlay" aria-hidden="true">
           ${[0,1,2,3,4].map(col=>[0,1,2,3].map(row=>`<span class="lando-lamp" data-col="${col}" data-row="${row}"></span>`).join('')).join('')}
         </div>
+      </div>
+      <div class="lando-score-grid" aria-label="Recorded reaction times">
+        ${[1,2,3,4].map(i=>`<div class="lando-result ${i===1?'active':''}" data-lando-result="${i}"><span class="lando-score-label">GO ${i}</span><strong class="lando-score-placeholder">—</strong></div>`).join('')}
       </div>
       <button class="btn primary wide lando-react-btn" id="reactionBtn">Start Test</button>
     </div>`;
@@ -1216,16 +1399,18 @@
       <div class="aurora-atmosphere" aria-hidden="true"></div>
       <div class="aurora-progress-head"><span>Navigation Lock</span><strong id="auroraLockCount">0 / 3</strong></div>
       <div class="aurora-lock-track" id="auroraLockTrack" aria-label="Navigation lock progress">${Array.from({length:3},()=>'<i></i>').join('')}</div>
-      <div class="aurora-north" aria-hidden="true"><span class="aurora-north-star">✦</span><i></i></div>
-      <div class="aurora-dial" id="auroraDial" role="group" aria-label="Aurora Apex navigation alignment instrument">
+      <div class="aurora-north" aria-hidden="true"><i></i></div>
+      <div class="aurora-dial" id="auroraDial" data-active-ring="outer" role="group" aria-label="Aurora Apex navigation alignment instrument">
         <div class="aurora-field" aria-hidden="true"></div>
         <div class="aurora-target-line" aria-hidden="true"></div>
         <div class="aurora-capture-gate" aria-hidden="true"><i></i></div>
+        <div class="aurora-lock-pointer" aria-hidden="true"></div>
         ${rings.map(key=>`<button type="button" class="aurora-ring aurora-ring-${key}" data-aurora-ring="${key}" aria-label="Lock ${key} navigation ring"><img src="./assets/aurora-ring-${key}.webp" alt="" aria-hidden="true"><span class="aurora-lock-notch" aria-hidden="true"></span></button>`).join('')}
         <div class="aurora-charge-pulse" aria-hidden="true"></div>
         <div class="aurora-final-wave" aria-hidden="true"></div>
-        <div class="aurora-compass" aria-hidden="true"><span><img class="aurora-compass-mark" src="./assets/silverstone-s-mark.webp" alt=""></span></div>
+        <div class="aurora-compass" aria-hidden="true"><span><img class="aurora-compass-mark" src="./assets/north-star-brand-guide.webp" alt=""></span></div>
       </div>
+      <button class="btn primary wide aurora-align-btn" type="button" id="auroraAlignBtn">TAP TO ALIGN</button>
       <div class="visually-hidden" id="auroraState" aria-live="polite">Align the active navigation ring with the North Pole axis.</div>
     </div>`;
   }
@@ -1234,35 +1419,28 @@
     // Existing system names remain unchanged; MC01/MC02 add CIRCUITRY + DIAGNOSTIC.
     // Row-paired markup is interleaved so the visible columns read in mission order:
     // column 1 = 1–5, column 2 = 6–10.
+    const partNames=['BATTERY','SAFETY CHECK','RADIO','MAGIC ENGINE','SPIRIT TANK',
+      'REINDEER HARNESS','STEERING','TURBO BOOSTERS','LANDING LIGHTS','SAT-NAV'];
     const systems=[
-      systemStatusEntry('circuitry'),
-      systemStatusEntry('propulsion'),
-      systemStatusEntry('diagnostic'),
-      systemStatusEntry('guidance'),
-      systemStatusEntry('comms'),
-      systemStatusEntry('control'),
-      systemStatusEntry('power'),
-      systemStatusEntry('response'),
-      systemStatusEntry('core'),
-      systemStatusEntry('navigation')
-    ];
+      'circuitry','propulsion','diagnostic','guidance','comms',
+      'control','power','response','core','navigation'
+    ].map((key,i)=>({...systemStatusEntry(key),label:partNames[i]}));
     return `<div class="mission-instrument panel lapland-panel" id="laplandPanel" style="--lapland-charge:0">
       <section class="lapland-stage lapland-verification-stage" id="laplandVerificationStage">
         <div class="lapland-online-progress" id="laplandOnlineProgress">
-          <div class="lapland-online-head"><span>SYSTEMS ONLINE</span><strong id="laplandOnlineCount">0 / 10</strong></div>
-          <div class="lapland-online-track" aria-label="Launch system verification progress">${Array.from({length:10},(_,i)=>`<i data-lapland-progress="${i}"></i>`).join('')}</div>
+          <div class="lapland-online-head"><span>PARTS AWAKE</span><strong id="laplandOnlineCount">0 / 10</strong></div>
+          <div class="lapland-online-track" aria-label="Launch system wake progress">${Array.from({length:10},(_,i)=>`<i data-lapland-progress="${i}"></i>`).join('')}</div>
         </div>
-        ${systemStatusBank(systems,'lapland-system-bank','verify')}
-        <div class="lapland-launch-slot">
-          <button class="btn primary wide lapland-test-btn" id="initiateTest">Initialise Launch</button>
+        <div class="lapland-system-bank lapland-card-bank" aria-label="Tap each launch system to wake it for launch">
+          ${systems.map(system=>`<button type="button" class="lapland-system-card is-${system.state}" data-verify-system="${system.key}" data-lapland-system="${system.key}" aria-label="Wake ${system.label}"><span class="lapland-card-name">${system.label}</span><span class="lapland-card-state" data-verify-status="${system.key}">TAP</span></button>`).join('')}
         </div>
       </section>
       <section class="lapland-stage lapland-transmission-stage" id="laplandTransmissionStage" hidden>
-        <div class="incoming-transmission lapland-incoming">
-          <div class="transmission-wave">${'<b></b>'.repeat(24)}</div>
-          <div class="kicker">Incoming Transmission</div>
+        <div class="incoming-transmission lapland-incoming lapland-elf-transmission" role="status" aria-label="Incoming ELF Engineering transmission">
+          <div class="transmission-wave" aria-hidden="true">${'<b></b>'.repeat(24)}</div>
+          <div class="kicker">INCOMING TRANSMISSION</div>
           <h2>ELF ENGINEERING</h2>
-          <div class="signal-state lock">Signal locked</div>
+          <div class="signal-state lock">SIGNAL LOCKED</div>
         </div>
       </section>
       <section class="lapland-stage lapland-party-stage" id="laplandPartyStage" hidden aria-label="Las Vegas launch celebration">
@@ -1279,103 +1457,16 @@
       </section>
     </div>`;
   }
-  function northernBody(){return `<div class="mission-instrument panel northern-panel northern-hud-panel" id="northernPanel">
-      <div class="northern-santa-label" aria-hidden="true"><i></i><span>SANTA-1</span><i></i></div>
-      <div class="northern-hud-window" aria-hidden="true">
-        <svg class="northern-hud-svg" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet" role="presentation">
-          <defs>
-            <radialGradient id="nfHudBg" cx="50%" cy="48%" r="66%">
-              <stop offset="0" stop-color="#0a3146" stop-opacity=".48"/>
-              <stop offset=".52" stop-color="#061f31" stop-opacity=".18"/>
-              <stop offset="1" stop-color="#020d17" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="nfSoftGlow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="6" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="nfCoreGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="10" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-
-          <rect width="1000" height="650" fill="url(#nfHudBg)"/>
-
-          <g class="nf-stars" fill="#b8f4ff">
-            <circle cx="74" cy="88" r="2.2" opacity=".72"/><circle cx="122" cy="170" r="1.4" opacity=".45"/><circle cx="180" cy="108" r="1.8" opacity=".62"/>
-            <circle cx="238" cy="202" r="1.6" opacity=".5"/><circle cx="294" cy="76" r="1.2" opacity=".55"/><circle cx="350" cy="144" r="2" opacity=".72"/>
-            <circle cx="420" cy="94" r="1.3" opacity=".45"/><circle cx="470" cy="188" r="1.5" opacity=".58"/><circle cx="560" cy="112" r="1.5" opacity=".5"/>
-            <circle cx="642" cy="76" r="1.8" opacity=".68"/><circle cx="704" cy="170" r="1.2" opacity=".48"/><circle cx="770" cy="108" r="2" opacity=".66"/>
-            <circle cx="834" cy="196" r="1.5" opacity=".5"/><circle cx="906" cy="92" r="1.8" opacity=".68"/><circle cx="942" cy="228" r="1.3" opacity=".46"/>
-            <circle cx="96" cy="334" r="1.5" opacity=".5"/><circle cx="154" cy="444" r="2" opacity=".68"/><circle cx="220" cy="352" r="1.3" opacity=".48"/>
-            <circle cx="284" cy="528" r="1.8" opacity=".58"/><circle cx="344" cy="418" r="1.4" opacity=".48"/><circle cx="400" cy="566" r="2" opacity=".7"/>
-            <circle cx="606" cy="548" r="1.5" opacity=".52"/><circle cx="668" cy="438" r="1.4" opacity=".46"/><circle cx="724" cy="568" r="2" opacity=".68"/>
-            <circle cx="790" cy="420" r="1.3" opacity=".52"/><circle cx="848" cy="522" r="1.8" opacity=".62"/><circle cx="912" cy="390" r="1.5" opacity=".5"/>
-            <circle cx="952" cy="548" r="2.1" opacity=".7"/>
-          </g>
-
-          <g class="nf-hud-static" fill="none" stroke="#58ddfb" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="nf-faint-ring nf-ring-drift-a" cx="500" cy="325" r="246" opacity=".14" stroke-width="1.4"/>
-            <circle class="nf-faint-ring nf-ring-drift-b" cx="500" cy="325" r="184" opacity=".12" stroke-width="1.3" stroke-dasharray="3 12"/>
-            <circle class="nf-dotted-ring nf-ring-drift-a" cx="500" cy="325" r="138" opacity=".78" stroke-width="2" stroke-dasharray="2 11"/>
-
-            <path class="nf-outer-arc" d="M178 112 A350 350 0 0 0 178 538" stroke-width="5" opacity=".92"/>
-            <path class="nf-outer-arc" d="M822 112 A350 350 0 0 1 822 538" stroke-width="5" opacity=".92"/>
-            <path d="M250 166 A270 270 0 0 0 250 484" stroke-width="3" opacity=".68"/>
-            <path d="M750 166 A270 270 0 0 1 750 484" stroke-width="3" opacity=".68"/>
-
-            <path class="nf-mid-arc" d="M320 188 A205 205 0 0 0 320 462" stroke-width="10" opacity=".95" filter="url(#nfSoftGlow)"/>
-            <path class="nf-mid-arc" d="M680 188 A205 205 0 0 1 680 462" stroke-width="10" opacity=".95" filter="url(#nfSoftGlow)"/>
-            <path d="M395 248 A114 114 0 0 0 395 402" stroke-width="5" opacity=".9"/>
-            <path d="M605 248 A114 114 0 0 1 605 402" stroke-width="5" opacity=".9"/>
-
-            <path d="M402 92 L430 120 H570 L598 92" stroke-width="3" opacity=".82"/>
-            <path d="M402 558 L430 530 H570 L598 558" stroke-width="3" opacity=".82"/>
-            <path d="M443 111 H557" stroke-width="6" stroke-dasharray="7 9" opacity=".76"/>
-            <path d="M443 539 H557" stroke-width="6" stroke-dasharray="7 9" opacity=".76"/>
-
-            <path d="M56 325 H258" stroke-width="2" opacity=".56"/><path d="M742 325 H944" stroke-width="2" opacity=".56"/>
-            <path d="M500 66 V150" stroke-width="2" opacity=".58"/><path d="M500 500 V584" stroke-width="2" opacity=".58"/>
-            <path d="M348 325 l-20 -14 v28 z" stroke-width="3" opacity=".9"/>
-            <path d="M652 325 l20 -14 v28 z" stroke-width="3" opacity=".9"/>
-
-            <g class="nf-side-ticks" opacity=".72" stroke-width="3">
-              <path d="M214 218 h18"/><path d="M202 240 h15"/><path d="M194 264 h13"/><path d="M188 290 h12"/>
-              <path d="M188 360 h12"/><path d="M194 386 h13"/><path d="M202 410 h15"/><path d="M214 432 h18"/>
-              <path d="M786 218 h-18"/><path d="M798 240 h-15"/><path d="M806 264 h-13"/><path d="M812 290 h-12"/>
-              <path d="M812 360 h-12"/><path d="M806 386 h-13"/><path d="M798 410 h-15"/><path d="M786 432 h-18"/>
-            </g>
-          </g>
-
-          <g class="nf-reticle" fill="none" stroke="#9becff" stroke-linecap="round">
-            <path d="M430 325 H570" stroke-width="2.5" opacity=".9"/>
-            <path d="M500 255 V395" stroke-width="2.5" opacity=".9"/>
-            <circle cx="500" cy="325" r="31" stroke="#5eddf9" stroke-width="4" opacity=".78" filter="url(#nfSoftGlow)"/>
-            <circle cx="500" cy="325" r="17" stroke="#9becff" stroke-width="3" opacity=".88"/>
-          </g>
-
-          <g class="nf-flight-progress">
-            <line class="nf-progress-line-svg" x1="500" y1="445" x2="500" y2="205" stroke="#70e6ff" stroke-width="3" opacity=".62"/>
-            <circle class="nf-progress-node-svg nf-node-ready" cx="500" cy="445" r="11"/>
-            <circle class="nf-progress-node-svg nf-node-authorising" cx="500" cy="325" r="11"/>
-            <circle class="nf-progress-node-svg nf-node-airborne" cx="500" cy="205" r="11"/>
-            <g class="nf-progress-marker-anchor" transform="translate(500 445)">
-              <g class="nf-progress-marker-svg">
-                <circle class="nf-marker-halo" r="31" fill="#57dffb" opacity=".10"/>
-                <circle class="nf-marker-ring" r="22" fill="#071b2b" stroke="#77e9ff" stroke-width="4" filter="url(#nfCoreGlow)"/>
-                <circle class="nf-marker-core" r="10" fill="#e9fbff"/>
-              </g>
-            </g>
-          </g>
-        </svg>
-      </div>
+  function northernBody(){return `<div class="mission-instrument panel northern-panel northern-brand-panel" id="northernPanel">
+      <div class="northern-brand-sleigh-frame"><img src="./assets/north-pole-brand-sleigh.webp" alt="Santa's sleigh carrying presents, illustrated in the official Christmas at Silverstone brand style"></div>
       <div class="northern-conditions" aria-label="Final flight conditions">
-        <div class="northern-condition" data-flight-check="0"><span>Flight Path</span><strong>Checking</strong></div>
-        <div class="northern-condition" data-flight-check="1"><span>Airspace</span><strong>Checking</strong></div>
-        <div class="northern-condition" data-flight-check="2"><span>Launch Window</span><strong>Checking</strong></div>
+        <div class="northern-condition" data-flight-check="0"><span>ROUTE</span><strong>WAIT</strong></div>
+        <div class="northern-condition" data-flight-check="1"><span>SKIES</span><strong>WAIT</strong></div>
+        <div class="northern-condition" data-flight-check="2"><span>REINDEER</span><strong>WAIT</strong></div>
       </div>
       <button class="btn primary wide northern-authorise-btn" id="authoriseFlight" disabled>
-        <span class="northern-authorise-label">Authorise Flight</span>
+        <span class="northern-authorise-label">WAVE THE FLAG!</span>
+        <span class="northern-flag-icon" aria-hidden="true"><img src="./assets/north-pole-flag-brand.webp" alt=""></span>
       </button>
       <div class="visually-hidden" id="northernHint" aria-live="polite">Final flight checks in progress.</div>
     </div>`}
@@ -1400,6 +1491,13 @@
         set({missionOpen:'elf-radio',missionReturnNav:'radar'});
       }else render();
     }));
+    document.querySelectorAll('[data-pitcrew-players]').forEach(b=>b.addEventListener('click',()=>{
+      const next=Math.max(1,Math.min(4,(Number(state.pitCrewPlayers)||1)+Number(b.dataset.pitcrewPlayers)));
+      if(next!==state.pitCrewPlayers){state.pitCrewPlayers=next;save();render();}
+    }));
+    document.querySelectorAll('[data-pitcrew-confirm]').forEach(b=>b.addEventListener('click',()=>{
+      state.pitCrewConfirmed=true;save();render();
+    }));
     document.querySelectorAll('[data-elf-audio]').forEach(b=>b.addEventListener('click',toggleElfAudio));
     document.querySelectorAll('[data-mission-audio-setting]').forEach(b=>b.addEventListener('click',toggleMissionAudioSetting));
     document.querySelectorAll('[data-gps-setting]').forEach(b=>b.addEventListener('click',toggleGpsSetting));
@@ -1422,6 +1520,11 @@
     document.querySelectorAll('[data-location]').forEach(b=>b.addEventListener('click',()=>{
       if(b.dataset.location==='demo'){startDemoExperience();return;}
       startLiveExperience();
+    }));
+    document.querySelectorAll('[data-gps-status]').forEach(b=>b.addEventListener('click',()=>{
+      if(b.dataset.gpsStatus==='retry'){startLiveExperience();return;}
+      if(b.dataset.gpsStatus==='demo'){locationOnboardingAttempt++;startDemoExperience();return;}
+      if(b.dataset.gpsStatus==='continue'){completeConnectedLocationOnboarding();return;}
     }));
     document.querySelectorAll('[data-start-mission]').forEach(b=>b.addEventListener('click',()=>openMission(b.dataset.startMission)));
     document.querySelectorAll('[data-open-mission]').forEach(row=>{
@@ -1448,6 +1551,13 @@
     const idx=checkpointIndex(id);
     const allowed=state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange);
     if(!allowed){toast('Mission is not available yet.');return;}
+    // Retain an in-progress turn if the passenger temporarily exited a mission.
+    // Starting a different checkpoint begins again with Player 1.
+    if(state.missionPlayerTurnId!==id){
+      state.missionPlayerTurnId=id;
+      state.missionPlayerTurn=1;
+      save();
+    }
     // MC-01 is a cinematic activation. The Circuit Entry screen begins
     // immediately when opened; there is no second Start Activation control.
     if(id==='entry'&&!state.completed.includes('entry')){
@@ -1464,8 +1574,17 @@
   }
   function showCompletion(title,copy){
     const mc=document.getElementById('missionContent'); if(!mc) return;
-    const outcome=copy||title||'';
-    mc.innerHTML=`<div class="completion panel"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2>${outcome?`<p>${outcome}</p>`:''}<button class="btn primary wide" id="returnRadar">Continue</button></div>`;
+    // Intermediate passengers hand directly to the next player once the
+    // activation's own end animation has finished. Only the last passenger
+    // sees the original Mission Complete / Continue screen.
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const currentTurn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+    if(state.missionOpen!=='elf-radio'&&currentTurn<players){
+      completeCurrent();
+      return;
+    }
+    mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2><button class="btn primary wide mission-complete-cta" id="returnRadar"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
     const continueBtn=document.getElementById('returnRadar');
     let continueCommitted=false;
     const commitContinue=event=>{
@@ -1487,7 +1606,8 @@
   function showRadioCompletion(){
     const mc=document.getElementById('missionContent'); if(!mc) return;
     const returnNav=state.missionReturnNav==='comms'?'comms':'radar';
-    mc.innerHTML=`<div class="completion panel"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><div class="kicker">Signal Locked</div><h2>ELF FM Locked</h2><p>Signal acquired at 87.7. ELF FM is now available from Communications.</p><button class="btn primary wide" id="returnElf">Continue</button></div>`;
+    mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>SIGNAL LOCKED</h2><button class="btn primary wide mission-complete-cta" id="returnElf"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
     document.getElementById('returnElf').onclick=()=>{
       state={...state,elfUnlocked:true,elfPromptSeen:true,missionOpen:null,missionReturnNav:returnNav,nav:returnNav};
       save();render();
@@ -1496,6 +1616,34 @@
   }
   function completeCurrent(){
     const id=state.missionOpen; const idx=checkpointIndex(id); if(idx<0) return;
+    const players=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const turn=state.missionPlayerTurnId===id?Math.max(1,Math.min(players,Number(state.missionPlayerTurn)||1)):1;
+    if(turn<players){
+      // Show a consistent handover after the completed player's existing
+      // Mission Complete screen, but do not advance checkpoints yet.
+      if(id==='lapland'){
+        // Keep the current music position and radio override between players.
+        // The track is stopped only on mission exit/final completion.
+        laplandPreserveMusicForHandover=false;
+      }
+      state.missionPlayerTurnId=id;
+      state.missionPlayerTurn=turn+1;
+      save();
+      const mc=document.getElementById('missionContent');
+      if(!mc)return;
+      mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
+      mc.innerHTML=`<div class="mission-player-changeover panel" role="dialog" aria-modal="true" aria-labelledby="playerChangeTitle"><div class="mission-player-changeover-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></div><h2 id="playerChangeTitle"><span>YOUR TURN</span><span>PLAYER ${turn+1}</span></h2><button type="button" class="btn primary wide mission-player-changeover-cta" id="playerChangeContinue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+      const next=document.getElementById('playerChangeContinue');
+      next?.addEventListener('click',()=>{
+        if(state.missionOpen!==id||state.missionPlayerTurnId!==id)return;
+        next.disabled=true;
+        // Re-rendering resets the ten tiles, but must not restart the music.
+        if(id==='lapland')laplandPreserveMusicForHandover=true;
+        render();
+      },{once:true});
+      next?.focus();
+      return;
+    }
     if(id==='lapland'){
       // Keep ELF FM suppressed through the exit sting, then restore it with a
       // fade only after all Lapland mission audio has finished.
@@ -1508,7 +1656,7 @@
     if(idx===routeIndex) routeIndex=nextRouteIndex(routeIndex);
     const returnNav=state.missionReturnNav||'radar';
     resetGeofenceRuntime();
-    state={...state,completed:done,available,missionOpen:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
+    state={...state,completed:done,available,missionOpen:null,missionPlayerTurn:1,missionPlayerTurnId:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
     if(state.mode==='demo'){
       clearDemo();
       demoHoldUntil=0;
@@ -1551,15 +1699,57 @@
     if(state.mode==='demo') clearDemo();
     if(state.missionOpen==='entry') return;
     resetGeofenceRuntime();
+    if(state.missionPlayerTurnId!=='entry'){
+      state.missionPlayerTurnId='entry';
+      state.missionPlayerTurn=1;
+    }
     state={...state,missionOpen:'entry',missionReturnNav:state.nav||'radar',targetVisible:true,targetInRange:true,lastMessage:'CIRCUIT LINK SIGNAL DETECTED'};
     save();render();
   }
 
+  // The search animation is theatrical; the outcome is always determined by real GPS.
+  // A hard 10-second deadline limits prolonged searching even if permission is stalled.
+  let locationOnboardingAttempt=0;
+  let locationOnboardingOutcome=null;
+  const LOCATION_SEARCH_MIN_MS=2500;
+  const LOCATION_SEARCH_TIMEOUT_MS=10000;
   function startLiveExperience(){
-    if(!navigator.geolocation){toast('Location services are unavailable on this device.');return;}
-    navigator.geolocation.getCurrentPosition(pos=>{
-      state={...state,onboarded:true,mode:'live',gpsEnabled:true,nav:'radar',routeIndex:normaliseRouteIndex(state.routeIndex||ROUTE_START_INDEX),gpsAccuracy:pos.coords.accuracy,gpsCondition:gpsCondition(pos.coords.accuracy)};save();ensureOpeningMessage();render();startGpsWatch();processGps(normalisePosition(pos),true);
-    },()=>toast('Location permission is required for Live Radar.'),{enableHighAccuracy:true,timeout:10000,maximumAge:0});
+    const attempt=++locationOnboardingAttempt;
+    locationOnboardingOutcome=null;
+    const started=Date.now();
+    let settled=false;
+    state.bootDone='location-finding';save();render();
+    const hardDeadline=setTimeout(()=>finish({status:'failed',reason:'timeout'}),LOCATION_SEARCH_TIMEOUT_MS);
+    function finish(outcome){
+      if(settled||attempt!==locationOnboardingAttempt)return;
+      settled=true;clearTimeout(hardDeadline);
+      const minWait=Math.max(0,LOCATION_SEARCH_MIN_MS-(Date.now()-started));
+      setTimeout(()=>{
+        if(attempt!==locationOnboardingAttempt||state.onboarded||state.bootDone!=='location-finding')return;
+        locationOnboardingOutcome=outcome;
+        state.bootDone='location-result';save();render();
+      },minWait);
+    }
+    if(!navigator.geolocation){finish({status:'failed',reason:'unavailable'});return;}
+    try{
+      navigator.geolocation.getCurrentPosition(pos=>{
+        if(!Number.isFinite(pos.coords.latitude)||!Number.isFinite(pos.coords.longitude)){
+          finish({status:'failed',reason:'unavailable'});return;
+        }
+        finish({status:'connected',position:pos});
+      },err=>{
+        finish({status:'failed',reason:err.code===1?'denied':err.code===3?'timeout':'unavailable'});
+      },{enableHighAccuracy:true,timeout:LOCATION_SEARCH_TIMEOUT_MS,maximumAge:0});
+    }catch{finish({status:'failed',reason:'unavailable'});}
+  }
+  function completeConnectedLocationOnboarding(){
+    const outcome=locationOnboardingOutcome;
+    if(state.bootDone!=='location-result'||outcome?.status!=='connected'||!outcome.position)return;
+    locationOnboardingAttempt++;
+    const pos=outcome.position;
+    locationOnboardingOutcome=null;
+    state={...state,onboarded:true,bootDone:true,mode:'live',gpsEnabled:true,nav:'radar',routeIndex:normaliseRouteIndex(state.routeIndex||ROUTE_START_INDEX),gpsAccuracy:pos.coords.accuracy,gpsCondition:gpsCondition(pos.coords.accuracy)};
+    save();ensureOpeningMessage();render();startGpsWatch();processGps(normalisePosition(pos),true);
   }
   let mc00ScanTimer = null;
   let mc00ScanStartTimer = null;
@@ -1661,6 +1851,8 @@
   let mc01Timers=[];
   let mc01BloomEl=null;
   let mc01BloomAudio=null;
+  let mc01TransferRaf=0;
+  let mc01TransferProgress=0;
 
   function getMc01BloomAudio(){
     if(!mc01BloomAudio){
@@ -1679,6 +1871,9 @@
   }
 
   function stopMc01Activation(){
+    cancelAnimationFrame(mc01TransferRaf);
+    mc01TransferRaf=0;
+    mc01TransferProgress=0;
     mc01Timers.forEach(clearTimeout);
     mc01Timers=[];
     stopMc01Bloom(true);
@@ -1695,7 +1890,7 @@
   function showMc01EnergyBloom(){
     if(state.missionOpen!=='entry'||mc01BloomEl) return;
     const el=document.createElement('div');
-    el.className='mc01-energy-bloom';
+    el.className='mc01-energy-bloom northern-airborne-brand mc01-circuit-brand-bloom';
     el.setAttribute('role','status');
     el.setAttribute('aria-live','polite');
     el.innerHTML=`<div class="mc01-bloom-field" aria-hidden="true"><i></i><i></i><i></i></div><div class="mc01-bloom-copy"><img class="mc01-bloom-mark" src="./assets/silverstone-s-mark.webp" alt=""><div class="kicker">Circuit Link</div><h1>Energy Transfer Complete</h1></div>`;
@@ -1728,65 +1923,98 @@
     const stateValue=document.getElementById('mc01State');
     const transferValue=document.getElementById('mc01TransferValue');
     const transferFill=document.getElementById('mc01TransferFill');
-    if(!panel||!stateLabel||!stateValue||!transferValue||!transferFill) return;
+    const chargeButton=document.getElementById('mc01ChargeButton');
+    const markers=[...panel?.querySelectorAll('[data-mc01-installation]')||[]];
+    if(!panel||!stateLabel||!stateValue||!transferFill||!chargeButton) return;
 
     stopMc01Activation();
     if(state.audio) getMc01BloomAudio();
 
-    const setProgress=value=>{
-      const progress=Math.max(0,Math.min(100,Number(value)||0));
-      transferValue.textContent=`${progress}%`;
+    const renderProgress=value=>{
+      const progress=Math.max(0,Math.min(100,value));
+      mc01TransferProgress=progress;
+      transferValue.textContent=`${Math.round(progress)}%`;
       transferFill.style.transform=`scaleX(${progress/100})`;
+      // Marker reveals remain tied directly to the actual progress percentage.
+      // No separate connector or additional marker-activation effect.
+      const visible=Math.min(markers.length,Math.floor(progress*markers.length/100+1e-8));
+      markers.forEach((marker,i)=>marker.classList.toggle('is-visible',i<visible));
+      panel.style.setProperty('--mc01-energy-progress',String(progress/100));
     };
-    const setStage=(stage,label,value,progress)=>{
-      if(!document.getElementById('mc01Activation')) return;
+    const setProgress=(value,duration=0)=>{
+      cancelAnimationFrame(mc01TransferRaf);
+      mc01TransferRaf=0;
+      const target=Math.max(0,Math.min(100,Number(value)||0));
+      if(!duration){renderProgress(target);return;}
+      const from=mc01TransferProgress;
+      const start=performance.now();
+      const step=now=>{
+        if(!panel.isConnected||state.missionOpen!=='entry'){mc01TransferRaf=0;return;}
+        const fraction=Math.min(1,(now-start)/duration);
+        renderProgress(from+(target-from)*fraction);
+        if(fraction<1)mc01TransferRaf=requestAnimationFrame(step);
+        else mc01TransferRaf=0;
+      };
+      mc01TransferRaf=requestAnimationFrame(step);
+    };
+    const setStage=(stage,label,value)=>{
+      if(!panel.isConnected||state.missionOpen!=='entry') return;
       panel.dataset.stage=stage;
       stateLabel.textContent=label;
       stateValue.textContent=value;
-      setProgress(progress);
     };
 
-    setStage('detected','Circuit Link','Signal Detected',0);
-    ping(560,.08,.025);
+    // The first of twelve locations is already active. Each additional tap
+    // reveals exactly one marker and increases the transfer bar in lockstep.
+    const markerCount=markers.length;
+    let activated=markerCount>0?1:0;
+    let sequenceStarted=false;
+    setStage('detected','Circuit Link','Signal Detected');
+    setProgress(markerCount?100/markerCount:0);
+    chargeButton.disabled=markerCount<2;
+    if(state.audio)ping(560,.08,.025);
 
-    mc01Later(()=>{
-      setStage('routing','Circuit Link','Connection Establishing',25);
+    const pulseCircuit=()=>{
+      panel.classList.remove('mc01-tap-pulse');
+      // Reflow restarts the short, purely visual circuit glow for each tap.
+      void panel.offsetWidth;
+      panel.classList.add('mc01-tap-pulse');
+      mc01Later(()=>panel.classList.remove('mc01-tap-pulse'),420);
+    };
+    const startFinalSequence=()=>{
+      if(sequenceStarted)return;
+      sequenceStarted=true;
+      chargeButton.disabled=true;
+      chargeButton.hidden=true;
+      setProgress(100);
+      setStage('routing','Circuit Link','Connecting');
       ping(640,.06,.025);
-      haptic(18);
-    },800);
-
-    // Extra visible scan beat: advance the Circuit Link state so the 50%
-    // marker communicates a distinct routing step before power transfer.
-    mc01Later(()=>{
-      setStage('routing','Circuit Link','Energy Routing',50);
-      ping(680,.055,.022);
-      haptic(14);
-    },1850);
-
-    mc01Later(()=>{
-      setStage('transfer','Power Transfer','Routing to Santa-1',75);
-      ping(720,.08,.03);
       haptic([18,28,24]);
-    },3000);
-
-    mc01Later(()=>{
-      setStage('recovery','Recovery Sequence','Initiated',100);
-      ping(880,.14,.05);
-      haptic([30,35,70]);
-    },4200);
-
-    // The scan now spends more of its runtime progressing through 25/50/75/100,
-    // then holds 100% only briefly before the energy-transfer payoff begins.
-    mc01Later(()=>{
-      showMc01EnergyBloom();
-    },4950);
-
-    // Hold ENERGY TRANSFER COMPLETE for three seconds. The completion card is
-    // rendered underneath the overlay first, then the overlay fades away so the
-    // scan can never flash back on screen between the two states.
-    mc01Later(()=>{
-      finishMc01EnergyBloom();
-    },7950);
+      // Preserve the original Circuit Link routing, recovery and energy bloom
+      // payoff, but start it only after the eleventh deliberate charge tap.
+      mc01Later(()=>{
+        setStage('transfer','Power Transfer','Routing to Santa-1');
+        ping(720,.08,.03);
+      },700);
+      mc01Later(()=>{
+        setStage('recovery','Recovery Sequence','Initiated');
+        ping(880,.14,.05);
+        haptic([30,35,70]);
+      },1650);
+      mc01Later(()=>showMc01EnergyBloom(),2450);
+      // The established full-screen energy bloom remains for three seconds.
+      mc01Later(()=>finishMc01EnergyBloom(),5450);
+    };
+    chargeButton.addEventListener('click',()=>{
+      if(!panel.isConnected||state.missionOpen!=='entry'||sequenceStarted)return;
+      if(activated>=markerCount)return;
+      activated++;
+      setProgress(activated*100/markerCount);
+      pulseCircuit();
+      ping(560+activated*18,.065,.025);
+      haptic(18);
+      if(activated>=markerCount)startFinalSequence();
+    });
   }
   function startGpsWatch(){
     if(state.gpsEnabled===false||gpsWatchId!==null||!navigator.geolocation) return;
@@ -2007,7 +2235,7 @@
     if(gpsValue){const condition=state.mode==='demo'?'DEMO':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
     const sleighValue=document.querySelector('.status-cell:nth-child(2) .status-value'); if(sleighValue)sleighValue.textContent=`${recovery()}%`;
     const checkpointValue=document.querySelector('.status-cell:last-child .status-value');
-    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'GARAGES':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
+    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
@@ -2664,13 +2892,23 @@
       if(activeScanAudio===audio){audio.volume=.72;activeScanAudio=null;}
     }));
 
+    function updateDiagProgress(count){
+      const value=document.getElementById('diagProgressValue');
+      if(value)value.textContent=`${count}/6`;
+      document.querySelectorAll('[data-diag-progress]').forEach((node,index)=>{
+        node.classList.toggle('is-complete',index<count);
+      });
+    }
+    updateDiagProgress(0);
+
     document.querySelectorAll('[data-sensor]').forEach(btn=>btn.onclick=()=>{
       const i=Number(btn.dataset.sensor);
       if(done.has(i)||busy)return;
       busy=true;
       document.querySelectorAll('[data-sensor]').forEach(other=>{ if(other!==btn&&!other.classList.contains('done')) other.classList.add('scan-locked'); });
       btn.classList.add('active');
-      btn.querySelector('.state').textContent='Scanning…';
+      btn.querySelector('.state').textContent='CHECKING....';
+      updateDiagProgress(done.size);
       playDiagnosticScanFx(i);
       haptic(12);
       setTimeout(()=>{
@@ -2678,7 +2916,8 @@
         done.add(i);
         btn.classList.remove('active');
         btn.classList.add('done');
-        btn.querySelector('.state').innerHTML='Captured <span class="checkmark-icon checkmark-icon--inline" aria-hidden="true"></span>';
+        btn.querySelector('.state').textContent='CHECKED!';
+        updateDiagProgress(done.size);
         document.querySelectorAll('[data-sensor]').forEach(other=>other.classList.remove('scan-locked'));
         playOneShot(captureAudio);
         haptic(24);
@@ -2744,7 +2983,7 @@
     const progressCount=document.getElementById('relayLockedCount');
     const progressHead=document.querySelector('.relay-progress-head');
     const progressBars=[...document.querySelectorAll('[data-relay-progress]')];
-        const cycles=[1900,1650,1450,1300];
+    const cycles=[1900,1650,1450,1300];
     const relayFxShort=new Audio('./assets/mc03-relay-success-short.mp3');
     const relayFxFull=new Audio('./assets/mc03-relay-success-full.mp3');
     const relayFxMiss=new Audio('./assets/mc03-relay-miss.mp3');
@@ -2755,6 +2994,8 @@
     }
     function stopRelayFx(){[relayFxShort,relayFxFull,relayFxMiss].forEach(a=>{try{a.pause();a.currentTime=0;}catch{}});}
     let stage=0,phase=0,start=performance.now(),raf=0,locked=false,finishing=false;
+    let finalHandoffRaf=0,incomingTimer=0;
+    const FINAL_HANDOFF_MS=1400; // Visible carrier: LINK 04 -> RADIO.
     const santa=getSantaCommsAudio();
     try{santa.load();}catch{}
     const routeSvg=document.querySelector('.relay-route');
@@ -2823,12 +3064,71 @@
       carrierPackets.forEach(packet=>packet.style.opacity='0');
       requestAnimationFrame(alignRelayRoute);
       stateEl.textContent=`Relay 0${stage+1} armed`;
-      if(progressCount)progressCount.textContent=`${stage} / 4`;
+      if(progressCount)progressCount.textContent=`${stage}/4`;
       progressHead?.classList.remove('is-complete');
       progressBars.forEach((bar,i)=>{
         bar.classList.toggle('on',i<stage);
         bar.classList.remove('complete');
       });
+    }
+    // Preserve the four original tap windows. After the final successful tap,
+    // let the fifth carrier segment travel from Link 04 to RADIO. Do not lock
+    // the destination or play the full success effect until it has arrived.
+    function beginFinalRadioHandoff(){
+      finishing=true;
+      cancelAnimationFrame(raf);
+      carrierPackets.forEach(packet=>packet.style.opacity='0');
+      alignRelayRoute();
+      const finalHop=hops[4];
+      finalHop?.classList.remove('locked');
+      finalHop?.classList.add('active');
+      const radio=document.querySelector('.relay-destination');
+      radio?.classList.remove('locked');
+      const packet=carrierPackets[4];
+      const beganAt=performance.now();
+      stateEl.textContent='Link 04 locked. Transmitting to Santa.';
+      const arrive=()=>{
+        if(packet)packet.style.opacity='0';
+        finalHop?.classList.remove('active');
+        finalHop?.classList.add('locked');
+        radio?.classList.add('locked');
+        const receiverIcon=radio?.querySelector('.relay-receiver-icon img');
+        if(receiverIcon)receiverIcon.src='./assets/relay-receiver-hi-spec-green.svg';
+        progressHead?.classList.add('is-complete');
+        progressBars.forEach(bar=>bar.classList.add('complete'));
+        stateEl.textContent='Radio linked. Incoming transmission.';
+        playRelayFx(relayFxFull,.95);
+        haptic([16,30,22]);
+        // Each passenger finishes the relay, but the Santa transmission belongs
+        // only to the final passenger, immediately before Mission Complete.
+        const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+        const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+        incomingTimer=setTimeout(()=>{
+          if(turn<passengers){
+            showCompletion('Comms Link Restored','Communications have been established and Mission Control is now connected to Santa-1.');
+          }else{
+            showIncomingTransmission();
+          }
+        },2350);
+      };
+      const animateFinalHop=(now)=>{
+        const progress=Math.max(0,Math.min(1,(now-beganAt)/FINAL_HANDOFF_MS));
+        const segment=carrierSegments[4];
+        if(packet&&segment?.a&&segment?.b){
+          const eased=progress*progress*(3-2*progress);
+          const x=segment.a.x+(segment.b.x-segment.a.x)*eased;
+          const y=segment.a.y+(segment.b.y-segment.a.y)*eased;
+          const angle=Math.atan2(segment.b.y-segment.a.y,segment.b.x-segment.a.x)*180/Math.PI;
+          packet.style.left=`${x}px`;
+          packet.style.top=`${y}px`;
+          packet.style.transform=`translate(-100%,-50%) rotate(${angle}deg)`;
+          packet.style.opacity=String(Math.max(0,Math.min(1,progress/.07,(1-progress)/.03)));
+        }
+        if(progress<1){finalHandoffRaf=requestAnimationFrame(animateFinalHop);return;}
+        finalHandoffRaf=0;
+        arrive();
+      };
+      finalHandoffRaf=requestAnimationFrame(animateFinalHop);
     }
     function showIncomingTransmission(){
       finishing=true;cancelAnimationFrame(raf);
@@ -2887,22 +3187,13 @@
       hops[stage]?.classList.remove('active');
       hops[stage]?.classList.add('locked');
       carrierPackets.forEach(packet=>packet.style.opacity='0');
-      if(progressCount)progressCount.textContent=`${stage+1} / 4`;
+      if(progressCount)progressCount.textContent=`${stage+1}/4`;
       progressBars.forEach((bar,i)=>bar.classList.toggle('on',i<=stage));
+      stateEl.textContent=stage===3?'Link 04 captured.':'Relay locked · signal strengthened.';
+      // The short tap-confirmation remains; the final sound plays at RADIO.
+      playRelayFx(relayFxShort,.9);haptic([20,25,38]);
       if(stage===3){
-        progressHead?.classList.add('is-complete');
-        progressBars.forEach(bar=>bar.classList.add('complete'));
-      }
-      stateEl.textContent=stage===3?'Transmission path locked.':'Relay locked · signal strengthened.';
-      playRelayFx(stage===3?relayFxFull:relayFxShort,stage===3?.95:.9);haptic([20,25,38]);
-      if(stage===3){
-        hops.forEach(h=>h.classList.add('locked'));
-        const dest=document.querySelector('.relay-destination');dest?.classList.add('locked');
-        const receiverIcon=dest?.querySelector('.relay-receiver-icon img');
-        if(receiverIcon) receiverIcon.src='./assets/relay-receiver-hi-spec-green.svg';
-        // Prime the Santa media element inside the final user gesture, but at
-        // zero volume. This preserves reliable mobile playback while the
-        // visible carrier/static intro and clean pause happen afterwards.
+        // Prime Santa audio inside the user gesture for iOS playback.
         if(state.audio){
           try{
             santa.currentTime=0;santa.volume=0;
@@ -2910,10 +3201,10 @@
             if(prime&&typeof prime.then==='function') prime.then(()=>{try{santa.pause();santa.currentTime=0;santa.volume=1;}catch{}}).catch(()=>{});
           }catch{}
         }
-        setTimeout(()=>showIncomingTransmission(),2350);
+        beginFinalRadioHandoff();
       }else setTimeout(()=>arm(stage+1),460);
     });
-    cleanupMission=()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',onRelayResize);stopRelayFx();stopSantaTransmission(true);};
+    cleanupMission=()=>{cancelAnimationFrame(raf);cancelAnimationFrame(finalHandoffRaf);clearTimeout(incomingTimer);window.removeEventListener('resize',onRelayResize);stopRelayFx();stopSantaTransmission(true);};
     hops[0]?.classList.add('active');
     requestAnimationFrame(alignRelayRoute);
     raf=requestAnimationFrame(draw);
@@ -2947,7 +3238,7 @@
     powerWinAudio.preload='auto';
     powerWinAudio.volume=.92;
     const audioFadeMap=new WeakMap();
-    let speed=0,holding=false,sustain=0,last=performance.now(),roadPhase=0,grassPhase=0,raf=0,finished=false;
+    let speed=0,holding=false,sustain=0,last=performance.now(),roadPhase=0,grassPhase=0,streakPhase=0,raf=0,finished=false;
     let thresholdStep=0;
     let runStarted=false, elapsed=0;
 
@@ -3050,7 +3341,9 @@
     function updateRoad(dt,norm,now){
       // Scroll the road and grass textures together so they share one ground plane
       // and meet the sky on exactly the same horizon line.
-      const travel=(dt*.00205)*speed;
+      // Slightly faster scenery scroll restores the sensation of speed lost
+      // when the original perspective track was replaced with the flat road.
+      const travel=(dt*.0026)*speed;
       // Keep the perspective planes geometrically fixed. Speed is communicated by
       // texture travel, speed lines and car motion instead of scaling the 3D planes,
       // which prevents iOS Safari from clipping/flickering them at high velocity.
@@ -3060,10 +3353,15 @@
       road.style.setProperty('--grass-scroll',`${grassPhase.toFixed(2)}px`);
       const jitter=Math.sin(now*.026)*(norm*1.35)+Math.sin(now*.051)*(norm*.45);
       car.style.transform=`translateX(-50%) translateX(${jitter.toFixed(2)}px) translateY(${(norm*-1.8).toFixed(2)}px) scale(${(1+norm*.025).toFixed(3)})`;
+      // Visual-only speed streaks: traverse the full height of the flat road,
+      // gradually appearing above cruising speed. No gameplay thresholds change.
+      const streakSpan=Math.max(180,road.clientHeight+150);
+      streakPhase=(streakPhase+travel*1.45)%streakSpan;
       speedLines.forEach((line,i)=>{
-        const alpha=Math.max(0,(norm-.55)*1.8)*(.25+((i%4)/5));
-        line.style.opacity=String(Math.min(.72,alpha));
-        line.style.transform=`translateY(${(((now*.085*Math.max(.2,norm))+i*19)%150).toFixed(1)}px) scaleY(${(1+norm*.9).toFixed(2)})`;
+        const alpha=Math.min(.56,Math.max(0,(norm-.40)*1.05))*(.72+(i%4)*.09);
+        line.style.opacity=alpha.toFixed(3);
+        const y=(streakPhase+i*streakSpan/speedLines.length)%streakSpan;
+        line.style.transform=`translateY(${y.toFixed(1)}px) scaleY(${(1.05+norm*1.3).toFixed(2)})`;
       });
     }
 
@@ -3239,6 +3537,8 @@
         button.setAttribute('aria-disabled',String(completed||isFull));
         button.classList.toggle('is-charging',!completed&&!isFull);
         button.classList.toggle('is-full',isFull);
+        const caption=button.querySelector('.spirit-cell-state');
+        if(caption) caption.textContent=isFull?'FULL':hits>0?'CHARGING':'TAP TO FILL!';
       }
     }
 
@@ -3373,6 +3673,7 @@
       {id:'white',name:'White',rgb:'247,250,255'}
     ];
 
+    const TARGET_CAPTURES=8;
     let cleared=0;
     let finished=false;
     let raf=0;
@@ -3423,9 +3724,18 @@
     function rand(min,max){return min+Math.random()*(max-min);}
     function intensity(){return cleared<3?1:cleared<7?2:3;}
     function stageConfig(){
-      if(cleared<3) return {maxConcurrent:1,spawnMin:520,spawnMax:700,lifetimeMin:900,lifetimeMax:1100,armDelay:120};
-      if(cleared<7) return {maxConcurrent:2,spawnMin:340,spawnMax:520,lifetimeMin:650,lifetimeMax:830,armDelay:105};
-      return {maxConcurrent:3,spawnMin:230,spawnMax:380,lifetimeMin:460,lifetimeMax:620,armDelay:95};
+      // Gradually increase difficulty with each capture. No abrupt speed-up at
+      // capture 3 or easier final stage at capture 7. Retain the original
+      // maximum of two concurrent sparkles once the opening stage is cleared.
+      const level=Math.min(cleared,TARGET_CAPTURES-1);
+      return {
+        maxConcurrent:level<3?1:2,
+        spawnMin:520-level*13,
+        spawnMax:700-level*17,
+        lifetimeMin:1000-level*30,
+        lifetimeMax:1200-level*30,
+        armDelay:120-level*2
+      };
     }
     function refillSignatureBag(){
       signatureBag=[...ENERGY_SIGNATURES];
@@ -3458,7 +3768,7 @@
     }
 
     function renderStability(){
-      progress.textContent=`${cleared} / 10`;
+      progress.textContent=`${cleared}/${TARGET_CAPTURES}`;
       steps.forEach((step,i)=>{
         const isOn=i<cleared;
         const rgb=capturedSignatures[i]||'98,239,157';
@@ -3605,21 +3915,21 @@
     function expireSignature(item){
       if(finished||!liveItems.has(item)||item.locked) return;
       removeSignature(item,'passed',180);
-      if(stateEl) stateEl.textContent=cleared>=10?'Power stabilised':'';
+      if(stateEl) stateEl.textContent=cleared>=TARGET_CAPTURES?'Power stabilised':'';
     }
 
     function captureSignature(item){
       if(finished||!liveItems.has(item)||item.locked||!item.armed) return;
       const c=signatureCentre(item);
-      spawnBurst(c.x,c.y,item.signature.rgb);
+      spawnBurst(c.x,c.y,'255,0,54');
       removeSignature(item,'popped',210);
-      cleared=Math.min(10,cleared+1);
+      cleared=Math.min(TARGET_CAPTURES,cleared+1);
       capturedSignatures[cleared-1]=item.signature.rgb;
       renderStability();
       playEnergyHit();
       haptic(18);
-      if(stateEl) stateEl.textContent=cleared===10?'Power stabilised':'';
-      if(cleared>=10){finish();return;}
+      if(stateEl) stateEl.textContent=cleared===TARGET_CAPTURES?'Power stabilised':'';
+      if(cleared>=TARGET_CAPTURES){finish();return;}
       later(()=>{
         const cfg=stageConfig();
         if(!finished&&liveItems.size<cfg.maxConcurrent) createSignature();
@@ -3638,12 +3948,10 @@
       el.style.left=pos.x+'%';
       el.style.top=pos.y+'%';
       el.style.setProperty('--emotion-rgb',signature.rgb);
-      el.setAttribute('aria-label',`Capture ${signature.name.toLowerCase()} energy signature`);
+      el.setAttribute('aria-label','Catch Christmas sparkle');
       el.innerHTML=`
         <span class="signature-core power-pulse-energy-core" aria-hidden="true">
-          <svg class="power-pulse-energy-icon" viewBox="66 0 66 126" focusable="false" aria-hidden="true">
-            <path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path>
-          </svg>
+          <img class="powerup-snowflake-art" src="./assets/silverstone-snowflake-white.webp" alt="" draggable="false">
         </span>
         <span class="signature-scan" aria-hidden="true"></span>`;
       layer.appendChild(el);
@@ -3691,7 +3999,7 @@
       field.classList.remove('is-hit');
       field.classList.add('stabilised');
       beam.classList.add('active');
-      progress.textContent='10 / 10';
+      progress.textContent=`${TARGET_CAPTURES}/${TARGET_CAPTURES}`;
       haptic([28,24,58]);
       // Let the final capture hit land, then resolve into the dedicated Power Pulse boost.
       later(playEnergyBoost,140);
@@ -3705,7 +4013,7 @@
     field.addEventListener('gesturestart',blockFieldGesture,{passive:false});
 
     renderStability();
-    startStarstream();
+    // The old starscape is no longer part of this game; no background canvas RAF is needed.
     if(stateEl) stateEl.textContent='';
     createSignature();
     scheduleSpawn();
@@ -4207,6 +4515,8 @@
       vx=speed*lateral;
       vy=Math.sqrt(Math.max(.001,speed*speed-vx*vx));
       running=true;
+      // A new launch restores the live puck trail after the previous goal.
+      trail.style.opacity='';
       last=performance.now();
       stateEl.textContent=`Beam 0${beam} live`;
     }
@@ -4279,6 +4589,8 @@
     function scoreGoal(){
       if(!running) return;
       running=false;
+      // Remove the last puck streak as soon as the goal is registered.
+      trail.style.opacity='0';
       const scoredBeam=beam;
       markBeamCharged(scoredBeam);
       stateEl.textContent=`BEAM 0${scoredBeam} CHARGED`;
@@ -4368,7 +4680,8 @@
       puck.classList.add('is-countdown');
       puck.setAttribute('aria-label','Jingle Beams countdown');
       trail.style.opacity='0';
-      updateBounds(false);
+      // Preserve any deflector movement made before the countdown begins.
+      updateBounds();
       puckX=bounds.w/2;
       puckY=bounds.h/2;
       previousPuck={x:puckX,y:puckY};
@@ -4390,7 +4703,8 @@
         puck.setAttribute('aria-label','Jingle Beams puck');
         arena.classList.remove('is-counting');
         arena.classList.add('is-live');
-        updateBounds(false);
+        // Keep the player's chosen deflector position when 3-2-1 ends.
+        updateBounds();
         puckX=bounds.w/2;
         puckY=bounds.h/2;
         previousPuck={x:puckX,y:puckY};
@@ -4470,6 +4784,7 @@
     const roundEl=document.getElementById('landoRound');
     const lamps=[...document.querySelectorAll('.lando-lamp')];
     const results=[...document.querySelectorAll('[data-lando-result]')];
+    const progress=[...document.querySelectorAll('[data-lando-progress]')];
     const redLightAudio=Array.from({length:5},()=>new Audio('./assets/lando-red-light-beep.wav'));
     const goAudio=new Audio('./assets/lando-go-beep.wav');
     redLightAudio.forEach(audio=>{audio.preload='auto';audio.volume=.72;});
@@ -4503,9 +4818,13 @@
     function setResultState(n,status,value=null){
       const el=results[n-1]; if(!el)return;
       el.className=`lando-result ${status}`;
+      const segment=progress[n-1];
+      if(segment){
+        segment.className=`lando-progress-segment ${status}`;
+      }
       if(value!==null){
         const ms=Math.max(0,Math.round(Number(value)||0));
-        el.innerHTML=`<span class="lando-result-value"><b>${ms}</b><small>ms</small></span>`;
+        el.innerHTML=`<span class="lando-score-label">GO ${n}</span><span class="lando-result-value"><b>${ms}</b><small>ms</small></span>`;
       }
     }
     function resetLights(){lamps.forEach(l=>l.className='lando-lamp');}
@@ -4549,7 +4868,7 @@
         roundEl.classList.add('is-complete');
         const scored=results.map(el=>({el,ms:Number(el.dataset.ms)})).filter(x=>Number.isFinite(x.ms));
         const best=scored.sort((a,b)=>a.ms-b.ms)[0];
-        timers.push(setTimeout(()=>{best?.el.classList.add('best');haptic([18,20,52]);},520));
+        timers.push(setTimeout(()=>{best?.el.classList.add('best');const bestSegment=progress[results.indexOf(best?.el)];bestSegment?.classList.add('best');haptic([18,20,52]);},520));
         timers.push(setTimeout(()=>showCompletion('Response Calibrated','Santa-1’s flight response has been calibrated for high-speed operation.'),1750));
       }else{
         timers.push(setTimeout(()=>{
@@ -4588,12 +4907,13 @@
     const panel=document.querySelector('.aurora-panel');
     const dial=document.getElementById('auroraDial');
     const lockCount=document.getElementById('auroraLockCount');
+    const alignBtn=document.getElementById('auroraAlignBtn');
     const lockTrack=[...document.querySelectorAll('#auroraLockTrack i')];
     const stateEl=document.getElementById('auroraState');
     const north=document.querySelector('.aurora-north');
     const pulseEl=document.querySelector('.aurora-charge-pulse');
     const finalWave=document.querySelector('.aurora-final-wave');
-    if(!dial||!lockCount||lockTrack.length!==3||!stateEl)return;
+    if(!dial||!lockCount||lockTrack.length!==3||!stateEl||!alignBtn)return;
 
     const ringEls={
       outer:document.querySelector('[data-aurora-ring="outer"]'),
@@ -4611,9 +4931,48 @@
     const reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     const speedScale=reduced ? .72 : 1;
 
+    // Aurora Apex: size the complete game panel, not just the CTA. The panel
+    // has content below TAP TO ALIGN, and the scrollport has bottom padding;
+    // omitting either creates an unnecessary internal scrollbar on screens
+    // where the game otherwise fits.
+    const content=panel.closest('.mission-content');
+    const dialFitMinimum=210;
+    let dialFitFrame=0;
+    function fitAuroraDial(){
+      if(!content||!panel.isConnected)return;
+      const panelStyle=getComputedStyle(panel);
+      const fullWidth=Math.min(520,Math.max(0,panel.clientWidth-
+        parseFloat(panelStyle.paddingLeft||0)-parseFloat(panelStyle.paddingRight||0)));
+      if(!fullWidth)return;
+      // Start at the natural size after every resize. Shrink only when the
+      // entire panel (including bottom padding) cannot fit in the viewport.
+      dial.style.setProperty('width',`${fullWidth}px`,'important');
+      const contentStyle=getComputedStyle(content);
+      const bottomPadding=parseFloat(contentStyle.paddingBottom)||0;
+      const availableBottom=content.getBoundingClientRect().bottom-bottomPadding-2;
+      for(let i=0;i<3;i++){
+        const extra=panel.getBoundingClientRect().bottom-availableBottom;
+        const size=dial.getBoundingClientRect().width;
+        if(extra<=1||size<=dialFitMinimum+1)break;
+        dial.style.setProperty('width',`${Math.max(dialFitMinimum,size-extra-3)}px`,'important');
+      }
+      // For genuinely short viewports the 210px minimum is retained and
+      // scrolling remains the fallback, rather than clipping the CTA.
+    }
+    function scheduleAuroraFit(){
+      cancelAnimationFrame(dialFitFrame);
+      dialFitFrame=requestAnimationFrame(fitAuroraDial);
+    }
+    window.addEventListener('resize',scheduleAuroraFit);
+    scheduleAuroraFit();
+
     const lockAudio=new Audio('./assets/aurora-ring-lock.wav');
     lockAudio.preload='auto';
     lockAudio.volume=.78;
+    // Supplied incorrect-alignment cue, attenuated in the asset and at playback.
+    const wrongAudio=new Audio('./assets/aurora-wrong.mp3');
+    wrongAudio.preload='auto';
+    wrongAudio.volume=.25;
     const ambientAudio=new Audio('./assets/aurora-ambient-loop.wav');
     ambientAudio.preload='auto';
     ambientAudio.loop=true;
@@ -4685,8 +5044,11 @@
         const isActive=!isLocked&&i===activeIndex;
         ringEls[key].classList.toggle('active',isActive);
         ringEls[key].classList.toggle('tracking',!isLocked&&!isActive);
+        const ringArt=ringEls[key].querySelector('img');
+        if(ringArt)ringArt.src=isActive?'./assets/aurora-ring-active.webp':`./assets/aurora-ring-${key}.webp`;
       });
       const active=activeKey();
+      if(active)dial.dataset.activeRing=active;
       if(active) stateEl.textContent=`Align the ${labels[active].toLowerCase()} navigation ring with the North Pole axis.`;
       updateProgress();
     }
@@ -4709,6 +5071,9 @@
 
     function finishSequence(){
       finished=true;
+      alignBtn.disabled=true;
+      alignBtn.textContent='NAVIGATION LOCKED';
+      dial.dataset.activeRing='complete';
       dial.classList.remove('capture-ready','miss','desync');
       dial.classList.add('complete');
       panel?.classList.add('is-complete');
@@ -4764,6 +5129,15 @@
       clearMomentClass(dial,'desync',230);
       clearMomentClass(ringEls[key],'miss',250);
       stateEl.textContent='Navigation alignment missed.';
+      // Use the user-supplied incorrect alignment cue; no synthesized fallback.
+      if(state.audio){
+        try{
+          wrongAudio.pause();
+          wrongAudio.currentTime=0;
+          const play=wrongAudio.play();
+          if(play&&typeof play.catch==='function')play.catch(()=>{});
+        }catch{}
+      }
       haptic([12,22,12]);
       feedbackTimers.push(setTimeout(()=>{
         if(!finished&&key===activeKey())stateEl.textContent=`Align the ${labels[key].toLowerCase()} navigation ring with the North Pole axis.`;
@@ -4806,15 +5180,14 @@
 
     function captureRing(event){
       event?.preventDefault?.();
-      const requested=event?.currentTarget?.dataset?.auroraRing;
       const key=activeKey();
-      if(!key||finished||requested!==key)return;
+      if(!key||finished)return;
       startAmbient();
       const offset=Math.abs(signed(angles[key]));
       if(offset<=captureWindows[key]) lockRing(key);
       else missCapture(key);
     }
-    order.forEach(key=>ringEls[key]?.addEventListener('click',captureRing));
+    alignBtn.addEventListener('click',captureRing);
 
     order.forEach(renderRing);
     updateStage();
@@ -4823,12 +5196,16 @@
     raf=requestAnimationFrame(frame);
 
     cleanupMission=()=>{
+      window.removeEventListener('resize',scheduleAuroraFit);
+      cancelAnimationFrame(dialFitFrame);
+      dial.style.removeProperty('width');
       cancelAnimationFrame(raf);
       cancelAnimationFrame(ambientFadeRaf);
       clearTimeout(completionTimer);
       feedbackTimers.forEach(clearTimeout);
-      order.forEach(key=>ringEls[key]?.removeEventListener('click',captureRing));
+      alignBtn.removeEventListener('click',captureRing);
       try{lockAudio.pause();lockAudio.currentTime=0;}catch{}
+      try{wrongAudio.pause();wrongAudio.currentTime=0;}catch{}
       try{ambientAudio.pause();ambientAudio.currentTime=0;ambientAudio.volume=.17;}catch{}
       endMissionAudioRadioOverride('aurora');
     };
@@ -4840,6 +5217,7 @@
   let laplandMusicSource=null;
   let laplandMusicGain=null;
   let laplandTimers=[];
+  let laplandPreserveMusicForHandover=false;
 
   function clearLaplandTimers(){
     laplandTimers.forEach(id=>clearTimeout(id));
@@ -5020,7 +5398,6 @@
   }
 
   function bindLapland(){
-    const btn=document.getElementById('initiateTest');
     const panel=document.getElementById('laplandPanel');
     const verificationStage=document.getElementById('laplandVerificationStage');
     const transmissionStage=document.getElementById('laplandTransmissionStage');
@@ -5028,12 +5405,10 @@
     const discoVisual=document.getElementById('laplandDiscoVisual');
     const onlineCount=document.getElementById('laplandOnlineCount');
     const onlineSegments=[...document.querySelectorAll('[data-lapland-progress]')];
+    const cards=[...document.querySelectorAll('[data-lapland-system]')];
     const head=document.querySelector('.lapland-head');
-    if(!btn||!panel||!verificationStage||!transmissionStage||!partyStage) return;
+    if(!panel||!verificationStage||!transmissionStage||!partyStage||!cards.length) return;
 
-    // Render the disco ball from the existing 8x5 sprite sheet onto a canvas.
-    // Canvas cropping is much more reliable on mobile Safari than animating a
-    // very large transparent WebP as a CSS background.
     let discoRaf=0;
     let discoStartedAt=0;
     let discoLastFrame=-1;
@@ -5053,11 +5428,7 @@
       ctx.clearRect(0,0,discoVisual.width,discoVisual.height);
       ctx.drawImage(discoSprite,sx,sy,sw,sh,0,0,discoVisual.width,discoVisual.height);
     };
-    const stopDisco=()=>{
-      cancelAnimationFrame(discoRaf);
-      discoRaf=0;
-      discoLastFrame=-1;
-    };
+    const stopDisco=()=>{cancelAnimationFrame(discoRaf);discoRaf=0;discoLastFrame=-1;};
     const startDisco=()=>{
       if(!(discoVisual instanceof HTMLCanvasElement))return;
       stopDisco();
@@ -5065,7 +5436,7 @@
       const render=now=>{
         if(state.missionOpen!=='lapland'||partyStage.hidden){stopDisco();return;}
         const frame=Math.floor((now-discoStartedAt)/100)%40;
-        if(frame!==discoLastFrame){discoLastFrame=frame;drawDiscoFrame(frame);}
+        if(frame!==discoLastFrame){discoLastFrame=frame;drawDiscoFrame(frame);}        
         discoRaf=requestAnimationFrame(render);
       };
       drawDiscoFrame(0);
@@ -5073,12 +5444,10 @@
     };
     discoSprite.addEventListener('load',()=>drawDiscoFrame(0),{once:true});
 
+    // Calling play() on an already playing HTMLAudioElement does not seek it.
+    // The same music instance runs throughout passenger handovers.
     startLaplandMusic();
 
-    // MC01–MC10 each restore one named system. Checks run down column 1 first,
-    // then column 2, matching the visible mission-order layout.
-    const checks=['entry','velocity','luffield','power','spirit','escapade','comet','jingle','lando','aurora'];
-    const systemKeys=['circuitry','diagnostic','comms','power','core','propulsion','guidance','control','response','navigation'];
     const setCharge=value=>panel.style.setProperty('--lapland-charge',String(Math.max(0,Math.min(1,value))));
     const setOnlineProgress=(onlineSystems,complete=false)=>{
       const ticks=Math.max(0,Math.min(10,onlineSystems));
@@ -5091,32 +5460,17 @@
         segment.classList.toggle('complete',complete&&ticks===10);
       });
     };
-    const setRowState=(key,nextState,label)=>{
+    const setRowState=(key,nextState)=>{
       const row=document.querySelector(`[data-verify-system="${key}"]`);
       const status=document.querySelector(`[data-verify-status="${key}"]`);
       if(!row||!status) return;
       row.classList.remove('is-standby','is-online','is-offline','is-checking');
       row.classList.add(`is-${nextState}`);
-      status.textContent=label;
-    };
-    const setButtonState=mode=>{
-      btn.classList.remove('is-initialising','is-complete');
-      delete btn.dataset.review;
-      if(mode==='initialising'){
-        btn.disabled=true;
-        btn.textContent='SYSTEM VERIFICATION';
-        btn.classList.add('is-initialising');
-      }else if(mode==='complete'){
-        btn.disabled=true;
-        btn.textContent='COMPLETE';
-        btn.classList.add('is-complete');
-      }else{
-        btn.disabled=false;
-        btn.textContent='INITIALISE LAUNCH';
-      }
+      status.textContent=nextState==='online'?'AWAKE':nextState==='checking'?'WAKING…':'TAP';
+      row.setAttribute('aria-pressed',nextState==='online'?'true':'false');
+      if(nextState==='online') row.setAttribute('disabled','disabled');
     };
     const setLaunchComplete=()=>{
-      setButtonState('complete');
       panel.classList.add('is-complete');
       head?.classList.add('is-launch-clear');
       ping(820,.08,.026);
@@ -5124,13 +5478,12 @@
       haptic([20,24,62]);
     };
     let stopTransmission=()=>{};
-
     const showTransmission=()=>{
       if(state.missionOpen!=='lapland') return;
       verificationStage.hidden=true;
       partyStage.hidden=true;
       transmissionStage.hidden=false;
-      panel.classList.remove('is-verifying','is-celebrating','is-party');
+      panel.classList.remove('is-celebrating','is-party');
       panel.classList.add('is-transmission');
       head?.classList.remove('is-celebrating');
       if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.018,360);
@@ -5156,80 +5509,53 @@
         }
       },10000);
     };
-    const showParty=()=>{
-      if(state.missionOpen!=='lapland')return;
-      revealParty();
-    };
+    const showParty=()=>{if(state.missionOpen!=='lapland')return;revealParty();};
 
-    setButtonState('idle');
+    primeLaplandVoiceSilently();
+    setCharge(0);
     setOnlineProgress(0,false);
-
-    btn.onclick=()=>{
-      if(btn.dataset.review==='true'){stopLaplandAudio();set({missionOpen:null,nav:'missions'});return;}
-
-      primeLaplandVoiceSilently();
-
-      setButtonState('initialising');
-      clearLaplandTimers();
-      panel.querySelector('.final-check-note')?.remove();
-      panel.classList.remove('is-complete','is-celebrating','is-party','is-transmission','has-attention');
-      head?.classList.remove('is-launch-clear','is-celebrating');
-      panel.classList.add('is-verifying');
-      transmissionStage.hidden=true;
-      partyStage.hidden=true;
-      verificationStage.hidden=false;
-      setCharge(0);
-      setOnlineProgress(0,false);
-      let onlineSystems=0;
-      const missing=[];
-
-      startLaplandMusic();
-      if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.34,220);
-      systemKeys.forEach(key=>setRowState(key,'standby','Standby'));
-
-      checks.forEach((checkpointId,i)=>laplandLater(()=>{
-        const key=systemKeys[i];
-        setRowState(key,'checking','Checking');
-        ping(430+i*34,.04,.012);
-
+    let onlineSystems=0;
+    const awakened=new Set();
+    cards.forEach(card=>{
+      const key=card.dataset.laplandSystem;
+      setRowState(key,'standby');
+      card.addEventListener('click',()=>{
+        if(state.missionOpen!=='lapland' || verificationStage.hidden || awakened.has(key)) return;
+        awakened.add(key);
+        card.disabled=true;
+        setRowState(key,'checking');
+        panel.classList.add('has-attention');
+        panel.classList.remove('is-complete','is-transmission','is-party','is-celebrating');
+        ping(430+(onlineSystems*18),.04,.012);
+        haptic(10);
         laplandLater(()=>{
-          const ready=state.completed.includes(checkpointId);
-          setRowState(key,ready?'online':'offline',ready?'Online':'Offline');
-          if(!ready) missing.push(checkpointId);
-          if(ready) onlineSystems++;
-          setCharge((i+1)/checks.length);
-          setOnlineProgress(onlineSystems,false);
-          ping(ready?540+i*38:220,.05,.016);
-
-          if(i===checks.length-1){
-            laplandLater(()=>{
-              const clear=!missing.length;
-              setCharge(1);
-              panel.classList.remove('is-verifying');
-
-              if(clear){
-                setOnlineProgress(10,true);
-                setLaunchComplete();
-                // Let COMPLETE register before the narrative hand-off.
-                laplandLater(showTransmission,1550);
-              }else{
-                if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.34,350);
-                panel.classList.add('has-attention');
-                btn.disabled=false;btn.dataset.review='true';btn.textContent='View Missions';btn.classList.remove('is-initialising','is-complete');
-                const note=document.createElement('div'); note.className='final-check-note';
-                note.innerHTML=`<div class="kicker">Systems Require Attention</div><p>${missing.length} ${missing.length===1?'system':'systems'} must be restored before launch systems can come online.</p>`;
-                verificationStage.appendChild(note);haptic([20,35,20]);
-              }
-            },620);
+          setRowState(key,'online');
+          onlineSystems++;
+          setCharge(onlineSystems/10);
+          setOnlineProgress(onlineSystems,onlineSystems===10);
+          ping(540+(onlineSystems*20),.05,.016);
+          if(onlineSystems===10){
+            setCharge(1);
+            setLaunchComplete();
+            cards.forEach(el=>el.disabled=true);
+            // Intermediate players go straight to handover: no transmission,
+            // disco ball, or mission-complete celebration until the final turn.
+            const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+            const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+            laplandLater(turn<passengers?()=>showCompletion('Launch Systems Online',''):showTransmission,1550);
           }
-        },220);
-      },220+i*360));
-    };
+        },120);
+      });
+    });
 
     cleanupMission=()=>{
       stopTransmission();
       stopDisco();
-      stopLaplandAudio();
+      if(laplandPreserveMusicForHandover){
+        laplandPreserveMusicForHandover=false;
+        clearLaplandTimers();
+        // Preserve the active soundtrack and radio override during turn reset.
+      }else stopLaplandAudio();
     };
   }
   let northernTimers=[];
@@ -5301,11 +5627,11 @@
   function showNorthernTransmission(){
     const mc=document.getElementById('missionContent'); if(!mc)return;
     if(state.audio) beginMissionAudioRadioOverride('northern-transmission');
-    mc.innerHTML=`<div class="mission-instrument panel incoming-transmission">
-      <div class="transmission-wave">${'<b></b>'.repeat(24)}</div>
-      <div class="kicker">Incoming Transmission</div>
+    mc.innerHTML=`<div class="mission-instrument panel incoming-transmission northern-final-transmission" role="status" aria-label="Incoming SANTA-1 transmission">
+      <div class="transmission-wave" aria-hidden="true">${'<b></b>'.repeat(24)}</div>
+      <div class="kicker">INCOMING TRANSMISSION</div>
       <h2>SANTA-1</h2>
-      <div class="signal-state lock">Signal locked</div>
+      <div class="signal-state lock">SIGNAL LOCKED</div>
     </div>`;
 
     let finished=false;
@@ -5370,14 +5696,22 @@
     playNorthernAirborneMagic();
     ping(980,.18,.05);haptic([35,30,85,35,110]);
     const el=document.createElement('div');
-    el.className='mc01-energy-bloom';
+    el.className='mc01-energy-bloom northern-airborne-brand';
     el.setAttribute('role','status');
     el.setAttribute('aria-live','polite');
-    el.innerHTML=`<div class="mc01-bloom-field" aria-hidden="true"><i></i><i></i><i></i></div><div class="mc01-bloom-copy"><img class="mc01-bloom-mark" src="./assets/silverstone-s-mark.webp" alt=""><div class="kicker">SANTA-1</div><h1>AIRBORNE</h1></div>`;
+    el.innerHTML=`<div class="mc01-bloom-field" aria-hidden="true"><i></i><i></i><i></i></div><div class="mc01-bloom-copy northern-airborne-copy"><img class="mc01-bloom-mark northern-airborne-mark" src="./assets/silverstone-s-mark.webp" alt=""><div class="kicker">SANTA-1</div><h1>AIRBORNE</h1></div>`;
     document.body.appendChild(el);northernTakeoverEl=el;
     // Put the transmission behind the takeover before its fade begins so
     // the authorisation screen never flashes back between states.
-    northernLater(()=>showNorthernTransmission(),3500);
+    const passengers=Math.max(1,Math.min(4,Number(state.pitCrewPlayers)||1));
+    const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
+    northernLater(()=>{
+      if(turn<passengers){
+        showNorthernMissionComplete();
+      }else{
+        showNorthernTransmission();
+      }
+    },3500);
     northernLater(()=>el.classList.add('is-exiting'),3820);
     northernLater(()=>{
       if(el.isConnected)el.remove();
@@ -5397,15 +5731,15 @@
     cleanupMission=stopNorthernSequence;
     [getNorthernFlybyAudio(),getNorthernSantaAudio(),getNorthernMagicAudio()].forEach(audio=>{try{audio.load();}catch{}});
 
-    label.textContent='Authorise Flight';
+    label.textContent='WAVE THE FLAG!';
     button.disabled=true;
     button.classList.remove('success','is-authorising','is-authorised');
     panel.classList.remove('is-ready','is-authorising','is-authorised','is-airborne');
 
-    const checkValues=['Locked','Clear','Open'];
+    const checkValues=['SET','CLEAR','READY'];
     checks.forEach((check,i)=>{
       check.classList.remove('ready');
-      const value=check.querySelector('strong'); if(value)value.textContent='Checking';
+      const value=check.querySelector('strong'); if(value)value.textContent='WAIT';
       northernLater(()=>{
         check.classList.add('ready');
         if(value)value.textContent=checkValues[i];
@@ -5428,7 +5762,7 @@
       button.classList.add('is-authorising');
       panel.classList.remove('is-ready');
       panel.classList.add('is-authorising');
-      label.textContent='Authorising';
+      label.textContent='WAVING FLAG…';
       hint.textContent='Final flight authorisation in progress.';
       ping(690,.08,.025);haptic(22);
 
@@ -5437,7 +5771,7 @@
         panel.classList.remove('is-authorising');
         button.classList.add('success','is-authorised');
         panel.classList.add('is-authorised');
-        label.textContent='Authorised';
+        label.textContent='FLAG WAVED!';
         hint.textContent='Santa-1 cleared for departure.';
         ping(920,.16,.05);haptic([30,30,85]);
         northernLater(()=>panel.classList.add('is-airborne'),220);
@@ -5455,7 +5789,7 @@
     './assets/mc02-control-mid-ring.svg','./assets/mc02-response-arrow.svg','./assets/mc02-response-cones.svg',
     './assets/mc02-stability-front-car.svg','./assets/mc02-stability-headlights.svg','./assets/mc02-traction-car.svg','./assets/mc02-traction-skids.svg',
     './assets/care-bears-logo.png','./assets/lando-gantry.webp',
-    './assets/aurora-sky.webp','./assets/aurora-ring-outer.webp','./assets/aurora-ring-middle.webp','./assets/aurora-ring-inner.webp',
+    './assets/aurora-sky.webp','./assets/aurora-ring-outer.webp','./assets/aurora-ring-middle.webp','./assets/aurora-ring-inner.webp','./assets/aurora-ring-active.webp','./assets/north-star-brand-guide.webp',
     './assets/las-vegas-logo-white.svg',
     './assets/sleigh-stage-2.webp','./assets/sleigh-stage-3.webp','./assets/sleigh-stage-4.webp','./assets/sleigh-stage-5.webp'
   ];
