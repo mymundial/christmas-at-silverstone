@@ -19153,3 +19153,9 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
   .care-bears-partner-line{font-size:10px!important;letter-spacing:.22em!important;}
   .mission-row.partner-row .mission-partner-line{font-size:8px!important;letter-spacing:.16em!important;}
 }
+
+/* Care Bears list and tracker refinement: keep status anchors and normal text spacing. */
+.nav-view[data-view="missions"] .mission-row.partner-row .row-action{gap:clamp(10px,2.8vw,14px)!important;}
+.nav-view[data-view="radar"] #radarMessage.partner-target{flex-shrink:0!important;}
+#radarMessage.partner-target h3{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;}
+#radarMessage .radar-partner-line{display:block!important;margin:3px 0 0!important;color:rgba(255,150,168,.9)!important;font-family:var(--font-display)!important;font-size:clamp(7px,1.9vw,9px)!important;line-height:1.15!important;letter-spacing:.10em!important;text-align:left!important;white-space:normal!important;}
