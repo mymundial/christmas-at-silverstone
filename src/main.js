@@ -827,8 +827,8 @@
   function statusStrip(){
     const cp=current();
     const activationDistance=distanceToActivation(cp,state.distance);
-    const distanceValue=!cp?'–':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
-    const condition=state.mode==='demo'?'DEMO':state.gpsEnabled===false?'OFF':state.gpsCondition;
+    const distanceValue=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
+    const condition=state.mode==='demo'?'OFF':state.gpsEnabled===false?'OFF':state.gpsCondition;
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
       <div class="status-cell"><div class="status-label">Sleigh Rebuild</div><div class="status-value ${recovery()>=100?'is-complete':''}">${recovery()}%</div></div>
@@ -837,8 +837,8 @@
   }
 
   function radarMessage(cp){
-    if(cp&&state.targetInRange&&cp.playable){
-      return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
+    if(cp&&cp.playable&&(state.targetInRange||state.mode==='demo')){
+      return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3>${state.mode==='demo'?'<p class="no-gps-checkpoint-hint">TAP WHEN YOU SEE THE CHECKPOINT</p>':''}</div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
       return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
@@ -879,13 +879,7 @@
     bindGlobal();
     if(state.nav==='radar'){
       updateRadarLive();
-      // Demo progression is re-armed whenever Radar is rendered. This makes
-      // returning from Comms / Missions / Sleigh resilient if a pending demo
-      // timer was interrupted while another panel was open.
-      if(state.mode==='demo'&&!state.missionOpen){
-        maybeStartDemoTarget(400);
-        rearmDemoRoute(900);
-      }
+      // In No GPS mode, checkpoints are available immediately; there are no simulated journeys.
     }
   }
   function renderLaunch(){
@@ -904,7 +898,7 @@
       const detail=connected
         ? `<span>Accurate to about ${accuracy===null?'—':`<strong>${accuracy} m</strong>`}.</span><span>We’ll tell you when a pit stop is close.</span>`
         : 'We couldn’t establish your location.<br>Check your signal and location settings,<br>then try again.';
-      const controls=failed?`<button type="button" class="gps-status-demo-link" data-gps-status="demo"><span>CONTINUE WITHOUT LOCATION</span><small>You’ll tap to unlock each pit stop when you see it</small></button>`:'';
+      const controls=failed?`<button type="button" class="gps-status-demo-link" data-gps-status="demo"><span>CONTINUE WITHOUT GPS</span></button>`:'';
       const retryControl=failed?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="retry"><span>TRY AGAIN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
       const continueControl=connected?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="continue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
       const findingSpinner=finding?'<div class="gps-finding-spinner" aria-hidden="true"></div>':'';
@@ -921,9 +915,8 @@
           <div class="gps-status-main" role="${finding?'status':'group'}" ${finding?'aria-live="polite"':''}>
             ${findingSpinner}${findingTitle}${resultVisual}${bodyTitle}
             <p class="${finding?'gps-finding-description':connected?'gps-connected-description':''}">${bodyCopy}</p>
-            ${retryControl}${continueControl}
+            ${retryControl}${continueControl}${controls}
           </div>
-          <div class="gps-status-actions">${controls}</div>
         </div>
       </section>`;
     }
@@ -961,7 +954,6 @@
       </div>
       <div class="location-permission-actions">
         <button type="button" class="btn primary wide location-permission-cta" data-location="request"><span>ENABLE LOCATION</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
-        <button type="button" class="location-permission-demo" data-location="demo">TESTING? USE DEMO MODE</button>
       </div>
     </div></section>`;
   }
@@ -1006,20 +998,22 @@
     const cp=current();
     const modeClass=state.mode==='demo'?' demo-radar-page':'';
     const finalCircuitOverview=state.completed.includes('northern');
+    const noGpsOverview=state.mode==='demo';
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
-    const circuitMode=state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
-    const circuitLayer=finalCircuitOverview
+    const circuitMode=noGpsOverview||state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
+    const circuitLayer=(finalCircuitOverview||noGpsOverview)
       ? `<div class="track-radar-map final-overview" id="trackRadarMap" aria-hidden="true"><div class="track-radar-art" id="trackRadarArt"></div></div>`
       : circuitMode
         ? `<div class="track-radar-map waiting" id="trackRadarMap" aria-hidden="true" style="--circuit-radar-zoom:${CIRCUIT_RADAR_ZOOM}"><div class="track-radar-art" id="trackRadarArt"></div><span class="track-radar-target hidden" id="trackRadarTarget"></span></div>`
         : '';
-    const userMarker=finalCircuitOverview?'':'<div class="user-dot"></div>';
-    const targetMarker=!finalCircuitOverview&&cp?'<div class="target-dot hidden"></div>':'';
-    return `<section class="radar-page${modeClass}">${statusStrip()}<section class="radar-zone" aria-label="Live checkpoint radar"><section class="radar-wrap"><div class="radar${circuitMode?' circuit-radar':''}${finalCircuitOverview?' circuit-overview-radar':''}">${circuitLayer}<div class="sweep"></div>${userMarker}${targetMarker}</div></section></section>${radarMessage(cp)}</section>`;
+    const userMarker=(finalCircuitOverview||noGpsOverview)?'':'<div class="user-dot"></div>';
+    const targetMarker=!(finalCircuitOverview||noGpsOverview)&&cp?'<div class="target-dot hidden"></div>':'';
+    return `<section class="radar-page${modeClass}">${statusStrip()}<section class="radar-zone" aria-label="Live checkpoint radar"><section class="radar-wrap"><div class="radar${circuitMode?' circuit-radar':''}${(finalCircuitOverview||noGpsOverview)?' circuit-overview-radar':''}">${circuitLayer}<div class="sweep"></div>${userMarker}${targetMarker}</div></section></section>${radarMessage(cp)}</section>`;
   }
   function missionStatus(cp){
     const idx=checkpointIndex(cp.id);
     if(state.completed.includes(cp.id)) return 'COMPLETE';
+    if(state.mode==='demo') return checkpointIndex(cp.id)===state.routeIndex?'AVAILABLE':'LOCKED';
     if(state.available.includes(cp.id)) return 'AVAILABLE';
     if(idx===state.routeIndex) return state.targetInRange?'IN RANGE':'NEXT';
     if(idx<state.routeIndex) return 'AVAILABLE';
@@ -1096,9 +1090,9 @@
     const radioButton=state.elfUnlocked
       ? `<button class="mission-setting-toggle radio-setting ${state.elfAudioOn?'on':'off'}" id="elfAudioToggle" data-elf-audio aria-pressed="${state.elfAudioOn?'true':'false'}" aria-label="ELF FM ${state.elfAudioOn?'on':'off'}" ${streamReady?'':'aria-disabled="true"'}><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`
       : `<button class="mission-setting-toggle radio-setting off" data-tune-elf aria-pressed="false" aria-label="Tune ELF FM"><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`;
-    const gpsClass=state.mode==='demo'?'demo':gpsOn?'on':'off';
-    const gpsStateLabel=state.mode==='demo'?'':`<strong>${gpsOn?'ACTIVE':state.gpsCondition}</strong>`;
-    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsClass}" aria-label="GPS Location ${state.mode==='demo'?'demo mode':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span>${gpsStateLabel}</span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
+    const gpsClass=state.mode==='demo'?'off':gpsOn?'on':'off';
+    const gpsStateLabel=state.mode==='demo'?'<strong>OFF</strong>':`<strong>${gpsOn?'ACTIVE':state.gpsCondition}</strong>`;
+    const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsClass}" aria-label="GPS Location ${state.mode==='demo'?'off':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span>${gpsStateLabel}</span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
     const feedBody=feed||'<div class="comms-empty panel">No transmissions received.</div>';
     return `${settings}<section class="comms-feed"><div class="comms-section-title"><span>Message Feed</span></div><div class="comms-feed-viewport"><div class="comms-feed-scroll">${feedBody}</div></div></section>`;
   }
@@ -1549,7 +1543,7 @@
   function openMission(id){
     const cp=CHECKPOINTS.find(c=>c.id===id); if(!cp||!cp.playable) return;
     const idx=checkpointIndex(id);
-    const allowed=state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange);
+    const allowed=state.mode==='demo'?(idx===state.routeIndex&&!state.completed.includes(id)):(state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange));
     if(!allowed){toast('Mission is not available yet.');return;}
     // Retain an in-progress turn if the passenger temporarily exited a mission.
     // Starting a different checkpoint begins again with Player 1.
@@ -1659,14 +1653,11 @@
     state={...state,completed:done,available,missionOpen:null,missionPlayerTurn:1,missionPlayerTurnId:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
     if(state.mode==='demo'){
       clearDemo();
-      demoHoldUntil=0;
+      makeNoGpsCheckpointReady();
     }
-    // As soon as a mission is completed, expose the next checkpoint from the
-    // guest's current circuit position. Demo Mode also gets its route distance
-    // immediately so the status strip begins counting down without a SEARCHING gap.
-    primeCurrentCircuitTarget();
+    // GPS journeys continue to track location; No GPS has the next pit stop ready instantly.
+    if(state.mode!=='demo') primeCurrentCircuitTarget();
     save();checkpointCompletionMessage(id);render();
-    if(state.mode==='demo'&&returnNav==='radar') rearmDemoRoute(0);
     if(state.mode==='live'&&lastGps) setTimeout(()=>processGps(lastGps,true),50);
   }
   function unlockMission(id){
@@ -2232,15 +2223,15 @@
     updateCommsBadge();
     const cp=current(); const cfg=activeConfig(cp);
     const gpsValue=document.querySelector('.status-cell:first-child .status-value');
-    if(gpsValue){const condition=state.mode==='demo'?'DEMO':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
+    if(gpsValue){const condition=state.mode==='demo'?'OFF':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
     const sleighValue=document.querySelector('.status-cell:nth-child(2) .status-value'); if(sleighValue)sleighValue.textContent=`${recovery()}%`;
     const checkpointValue=document.querySelector('.status-cell:last-child .status-value');
-    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
+    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
-    const circuitMode=state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
-    if(finalCircuitOverview){
+    const circuitMode=state.mode==='demo'||state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
+    if(finalCircuitOverview||state.mode==='demo'){
       if(target) target.classList.add('hidden');
       // Final mission state is a static full-circuit overview. GPS/Demo movement
       // no longer translates the artwork, but the radar sweep remains active.
@@ -2264,193 +2255,42 @@
     }
   }
 
+  // Internally retain `demo` as the stored mode identifier so existing progress
+  // survives upgrades. The visitor-facing experience is No GPS, not a demo.
+  function makeNoGpsCheckpointReady(){
+    if(state.mode!=='demo') return;
+    const expectedIndex=normaliseProgressRouteIndex(state.routeIndex,state.completed);
+    state.routeIndex=expectedIndex;
+    state.gpsEnabled=false;
+    state.gpsCondition='OFF';
+    state.targetVisible=!!current();
+    state.targetInRange=!!current();
+    state.distance=null;
+    state.demoRouteDistance=null;
+    demoTrackPosition=null;
+    demoTrackDistance=null;
+    state.available=[]; // no out-of-order replays in the no-GPS journey
+    save();
+  }
   function startDemoExperience(){
     clearDemo();
     stopGpsWatch();
     lastGps=null;
-    demoHoldUntil=Date.now()+900;
-    demoTrackPosition=null;
-    demoTrackDistance=null;
-    state={...state,onboarded:true,bootDone:true,mode:'demo',gpsEnabled:false,nav:'radar',completed:[],available:[],routeIndex:1,targetVisible:false,targetInRange:false,distance:null,gpsCondition:'DEMO',demoRouteDistance:null};
-    save();
+    resetGeofenceRuntime();
+    state={...state,onboarded:true,bootDone:true,mode:'demo',gpsEnabled:false,nav:'radar',completed:[],available:[],routeIndex:ROUTE_START_INDEX,targetVisible:true,targetInRange:true,distance:null,gpsCondition:'OFF',demoRouteDistance:null};
+    makeNoGpsCheckpointReady();
     ensureOpeningMessage();
     render();
-    ping(480,.07,.025);
-    maybeStartDemoTarget(650);
   }
-  function clearDemo(){clearTimeout(demoTimer);clearInterval(demoInterval);demoTimer=null;demoInterval=null;}
-  function rearmDemoRoute(delay=350){
-    if(state.mode!=='demo') return;
-    const expectedIndex=normaliseProgressRouteIndex(state.routeIndex,state.completed);
-    if(expectedIndex!==state.routeIndex){state.routeIndex=expectedIndex;save();}
-    const arm=()=>{
-      if(state.mode!=='demo'||state.nav!=='radar'||state.missionOpen||state.routeIndex!==expectedIndex||state.targetInRange) return;
-      if(demoTimer===null&&demoInterval===null) forceDemoTarget(0);
-    };
-    setTimeout(arm,Math.max(0,Number(delay)||0));
-    // Fallback in case a navigation/render transition interrupted the first timer.
-    setTimeout(arm,2600);
+  function clearDemo(){
+    clearTimeout(demoTimer);clearInterval(demoInterval);
+    demoTimer=null;demoInterval=null;
   }
-
-  function setDemoCircuitPosition(routeDistance){
-    if(routeDistance===null||routeDistance===undefined||!Number.isFinite(Number(routeDistance))) return null;
-    const routePoint=routePointAtDistance(Number(routeDistance));
-    demoTrackDistance=routePoint.distance;
-    demoTrackPosition={lat:routePoint.lat,lng:routePoint.lng,accuracy:5,timestamp:Date.now()};
-    state.demoRouteDistance=routePoint.distance;
-    return routePoint;
-  }
-
-  function restoreDemoCircuitPosition(){
-    if(state.mode!=='demo'||!state.completed.includes('entry')) return null;
-    if(demoTrackPosition&&Number.isFinite(demoTrackPosition.lat)&&Number.isFinite(demoTrackPosition.lng)) return demoTrackPosition;
-
-    const persisted=state.demoRouteDistance;
-    if(persisted!==null&&persisted!==undefined&&Number.isFinite(Number(persisted))){
-      const routePoint=setDemoCircuitPosition(Number(persisted));
-      return routePoint?demoTrackPosition:null;
-    }
-
-    // Older/demo sessions can reach the post-MC01 radar without a persisted
-    // route distance. Seed from the checkpoint the guest is actually at, or
-    // otherwise from the most recently completed route checkpoint.
-    let seedCp=null;
-    const activeCp=current();
-    if(state.targetInRange&&activeCp) seedCp=activeCp;
-    if(!seedCp){
-      for(let i=Math.min(CHECKPOINTS.length-1,Math.max(ROUTE_START_INDEX,state.routeIndex-1));i>=ROUTE_START_INDEX;i--){
-        const candidate=CHECKPOINTS[i];
-        if(candidate&&state.completed.includes(candidate.id)){seedCp=candidate;break;}
-      }
-    }
-    const seedCfg=activeConfig(seedCp);
-    const projected=seedCfg?projectGeoToRoute(seedCfg.lat,seedCfg.lng):null;
-    if(!projected) return null;
-    const routePoint=setDemoCircuitPosition(projected.distance);
-    save();
-    return routePoint?demoTrackPosition:null;
-  }
-  function demoRouteSeedDistance(cp){
-    if(Number.isFinite(demoTrackDistance)) return normaliseRouteDistance(demoTrackDistance);
-    const restored=restoreDemoCircuitPosition();
-    if(restored&&Number.isFinite(demoTrackDistance)) return normaliseRouteDistance(demoTrackDistance);
-    const targetIndex=checkpointIndex(cp?.id);
-    for(let i=targetIndex-1;i>=ROUTE_START_INDEX;i--){
-      const previous=CHECKPOINTS[i];
-      if(!previous||!state.completed.includes(previous.id)) continue;
-      const previousCfg=activeConfig(previous);
-      if(!previousCfg) continue;
-      const projected=projectGeoToRoute(previousCfg.lat,previousCfg.lng);
-      if(projected) return projected.distance;
-    }
-    return null;
-  }
-
-  function beginDemoCircuitApproach(cp,cfg){
-    const targetProjection=projectGeoToRoute(cfg.lat,cfg.lng);
-    if(!targetProjection) return false;
-    const activationRadius=Number(cfg.activationRadius)||30;
-    const startDistance=demoRouteSeedDistance(cp);
-    if(!Number.isFinite(startDistance)) return false;
-
-    // Travel continuously forward around the calibrated lap. Demo compresses time
-    // but never teleports, reverses, or cuts across the circuit between missions.
-    const routeTravel=forwardRouteDistance(startDistance,targetProjection.distance);
-    const tickMs=100;
-    const speedMetresPerSecond=180;
-    let travelled=0;
-
-    const updatePosition=(routeDistance,remainingRouteDistance)=>{
-      const routePoint=setDemoCircuitPosition(routeDistance);
-      const d=distanceMetres(routePoint.lat,routePoint.lng,cfg.lat,cfg.lng);
-      state.distance=Math.max(0,Number.isFinite(remainingRouteDistance)?remainingRouteDistance:d);
-      state.bearing=bearingDegrees(routePoint.lat,routePoint.lng,cfg.lat,cfg.lng);
-      // Post-MC01 Demo navigation always exposes the next checkpoint from the
-      // moment the previous mission is cleared, rather than waiting to enter
-      // the normal live detection radius.
-      state.targetVisible=true;
-      state.targetInRange=false;
-      save();updateRadarLive();
-      return d;
-    };
-
-    const finishAtTarget=()=>{
-      const routePoint=setDemoCircuitPosition(targetProjection.distance);
-      const d=distanceMetres(routePoint.lat,routePoint.lng,cfg.lat,cfg.lng);
-      state.targetVisible=true;state.targetInRange=true;state.distance=d;
-      state.bearing=bearingDegrees(routePoint.lat,routePoint.lng,cfg.lat,cfg.lng);
-      unlockMission(cp.id);save();updateRadarLive();ping(700,.08,.04);haptic(30);
-    };
-
-    let d=updatePosition(startDistance,routeTravel);
-    if(routeTravel<1){finishAtTarget();return true;}
-
-    demoInterval=setInterval(()=>{
-      if(!canRunDemoTarget()){clearInterval(demoInterval);demoInterval=null;return;}
-      const activeCp=current();const activeCfg=activeConfig(activeCp);
-      if(!activeCp||!activeCfg||activeCp.id!==cp.id){clearInterval(demoInterval);demoInterval=null;return;}
-      travelled=Math.min(routeTravel,travelled+speedMetresPerSecond*(tickMs/1000));
-      d=updatePosition(startDistance+travelled,routeTravel-travelled);
-      if(travelled>=routeTravel){
-        clearInterval(demoInterval);demoInterval=null;finishAtTarget();
-      }
-    },tickMs);
-    return true;
-  }
-
-  function beginDemoApproach(){
-    if(!canRunDemoTarget()) return;
-    const cp=current();
-    const cfg=activeConfig(cp);
-    if(!cp||!cfg) return;
-    const activationRadius=Number(cfg.activationRadius)||30;
-    if(state.completed.includes('entry')&&cp.id!=='entry'&&beginDemoCircuitApproach(cp,cfg)) return;
-    let d=state.targetVisible&&Number.isFinite(state.distance)
-      ? Math.max(activationRadius,state.distance)
-      : 180;
-    state.targetVisible=true;
-    state.targetInRange=false;
-    state.distance=d;
-    state.bearing=Number.isFinite(state.bearing)?state.bearing:35;
-    save();updateRadarLive();
-    if(d<=activationRadius){
-      state.targetInRange=true;state.distance=activationRadius;unlockMission(cp.id);save();updateRadarLive();ping(700,.08,.04);haptic(30);return;
-    }
-    demoInterval=setInterval(()=>{
-      if(!canRunDemoTarget()){clearInterval(demoInterval);demoInterval=null;return;}
-      const activeCp=current();
-      const activeCfg=activeConfig(activeCp);
-      if(!activeCp||!activeCfg){clearInterval(demoInterval);demoInterval=null;return;}
-      const activeRadius=Number(activeCfg.activationRadius)||30;
-      d-=16;
-      state.distance=Math.max(activeRadius,d);
-      state.bearing=(state.bearing+2)%360;
-      if(d<=activeRadius){
-        clearInterval(demoInterval);demoInterval=null;
-        state.targetInRange=true;state.distance=activeRadius;unlockMission(activeCp.id);save();updateRadarLive();ping(700,.08,.04);haptic(30);
-      }else{save();updateRadarLive();}
-    },650);
-  }
-  function forceDemoTarget(delay=250){
-    if(state.mode!=='demo'||state.nav!=='radar'||state.missionOpen||!current()) return;
-    clearDemo();
-    demoTimer=setTimeout(()=>{demoTimer=null;beginDemoApproach();},Math.max(0,Number(delay)||0));
-  }
-  function canRunDemoTarget(){
-    return state.mode==='demo'&&state.nav==='radar'&&(state.elfPromptSeen||state.elfUnlocked)&&!state.missionOpen&&!!current()&&!state.targetInRange;
-  }
-  function maybeStartDemoTarget(delay=500){
-    if(!canRunDemoTarget()||demoTimer!==null||demoInterval!==null) return;
-    const wait=Math.max(0,Number(delay)||0,demoHoldUntil-Date.now());
-    demoTimer=setTimeout(()=>{
-      demoTimer=null;
-      // If the guest opened another panel during the wait, stop here. The
-      // next Radar render will call maybeStartDemoTarget() again.
-      if(!canRunDemoTarget()) return;
-      beginDemoApproach();
-    },wait);
-  }
-
+  // Legacy entry points intentionally do not start any simulated movement.
+  function rearmDemoRoute(){makeNoGpsCheckpointReady();}
+  function forceDemoTarget(){makeNoGpsCheckpointReady();}
+  function maybeStartDemoTarget(){makeNoGpsCheckpointReady();}
+  function restoreDemoCircuitPosition(){return null;}
   const ADMIN_FIELD_STORAGE='silverstone-mc-field-test-v2';
   let adminGpsHistory=[];
   let adminRefreshTimer=null;
@@ -5802,6 +5642,6 @@
     if(state.onboarded) ensureOpeningMessage();
     render();
     if(state.onboarded&&state.mode==='live'&&state.gpsEnabled!==false) startGpsWatch();
-    if(state.onboarded&&state.mode==='demo'&&state.nav==='radar'&&!state.missionOpen){setTimeout(maybeStartDemoTarget,350);rearmDemoRoute(850);}
+    if(state.onboarded&&state.mode==='demo'){clearDemo();makeNoGpsCheckpointReady();render();}
   }
 })();

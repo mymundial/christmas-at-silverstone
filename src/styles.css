@@ -18984,3 +18984,28 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
   height:13px;
   background:linear-gradient(to bottom,transparent,var(--brand-midnight));
 }
+
+/* No GPS visitor flow — keep alternate onboarding controls directly below primary CTAs. */
+.gps-failed-page .gps-status-main > .gps-status-demo-link{
+  margin:clamp(10px,1.7dvh,16px) auto 0!important;
+  flex:0 0 auto!important;
+}
+.elf-setup-page .elf-onboard-secondary{
+  margin:clamp(10px,1.7dvh,16px) auto 0!important;
+}
+.status-value.gps-off{color:#ff0036!important;}
+.no-gps-checkpoint-hint{
+  margin:5px 0 0!important;
+  color:#bdddf8!important;
+  font-size:clamp(9px,2vw,11px)!important;
+  font-weight:800!important;
+  letter-spacing:.10em!important;
+  line-height:1.25!important;
+  text-transform:uppercase!important;
+}
+/* No GPS: reveal the arrival instruction beneath the current checkpoint name.
+   The existing radar button remains the only primary activation control. */
+.nav-view[data-view="radar"] #radarMessage .no-gps-checkpoint-hint{
+  display:block!important;
+  white-space:normal!important;
+}

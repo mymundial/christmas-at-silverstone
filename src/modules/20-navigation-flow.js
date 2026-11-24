@@ -75,7 +75,7 @@
   function openMission(id){
     const cp=CHECKPOINTS.find(c=>c.id===id); if(!cp||!cp.playable) return;
     const idx=checkpointIndex(id);
-    const allowed=state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange);
+    const allowed=state.mode==='demo'?(idx===state.routeIndex&&!state.completed.includes(id)):(state.completed.includes(id)||state.available.includes(id)||idx<state.routeIndex||(idx===state.routeIndex&&state.targetInRange));
     if(!allowed){toast('Mission is not available yet.');return;}
     // Retain an in-progress turn if the passenger temporarily exited a mission.
     // Starting a different checkpoint begins again with Player 1.
@@ -185,14 +185,11 @@
     state={...state,completed:done,available,missionOpen:null,missionPlayerTurn:1,missionPlayerTurnId:null,routeIndex,targetVisible:false,targetInRange:false,distance:null,lastMessage:'SEARCHING FOR NEXT RECOVERY SIGNAL',nav:returnNav};
     if(state.mode==='demo'){
       clearDemo();
-      demoHoldUntil=0;
+      makeNoGpsCheckpointReady();
     }
-    // As soon as a mission is completed, expose the next checkpoint from the
-    // guest's current circuit position. Demo Mode also gets its route distance
-    // immediately so the status strip begins counting down without a SEARCHING gap.
-    primeCurrentCircuitTarget();
+    // GPS journeys continue to track location; No GPS has the next pit stop ready instantly.
+    if(state.mode!=='demo') primeCurrentCircuitTarget();
     save();checkpointCompletionMessage(id);render();
-    if(state.mode==='demo'&&returnNav==='radar') rearmDemoRoute(0);
     if(state.mode==='live'&&lastGps) setTimeout(()=>processGps(lastGps,true),50);
   }
   function unlockMission(id){

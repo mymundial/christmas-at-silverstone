@@ -214,15 +214,15 @@
     updateCommsBadge();
     const cp=current(); const cfg=activeConfig(cp);
     const gpsValue=document.querySelector('.status-cell:first-child .status-value');
-    if(gpsValue){const condition=state.mode==='demo'?'DEMO':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
+    if(gpsValue){const condition=state.mode==='demo'?'OFF':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
     const sleighValue=document.querySelector('.status-cell:nth-child(2) .status-value'); if(sleighValue)sleighValue.textContent=`${recovery()}%`;
     const checkpointValue=document.querySelector('.status-cell:last-child .status-value');
-    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
+    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;
-    const circuitMode=state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
-    if(finalCircuitOverview){
+    const circuitMode=state.mode==='demo'||state.completed.includes('entry')||finalCircuitOverview||localVirtualCircuitMode;
+    if(finalCircuitOverview||state.mode==='demo'){
       if(target) target.classList.add('hidden');
       // Final mission state is a static full-circuit overview. GPS/Demo movement
       // no longer translates the artwork, but the radar sweep remains active.
