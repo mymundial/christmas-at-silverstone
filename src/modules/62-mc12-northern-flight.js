@@ -53,15 +53,7 @@
 
   function primeNorthernFinalAudio(){
     if(!state.audio)return;
-    [getNorthernMagicAudio(),getNorthernSantaAudio()].forEach(audio=>{
-      try{
-        audio.load();audio.pause();audio.currentTime=0;audio.muted=true;
-        const play=audio.play();
-        if(play&&typeof play.then==='function'){
-          play.then(()=>{try{audio.pause();audio.currentTime=0;}catch{}}).catch(()=>{});
-        }else{audio.pause();audio.currentTime=0;}
-      }catch{}
-    });
+    [getNorthernMagicAudio(),getNorthernSantaAudio()].forEach(audio=>{try{audio.load();}catch{}});
   }
 
   function showNorthernTransmission(){
@@ -147,7 +139,7 @@
     const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
     northernLater(()=>{
       if(turn<passengers){
-        showNorthernMissionComplete();
+        showCompletion('Santa-1 Airborne','Santa-1 is airborne. Recovery complete. The Northern Flight is underway.');
       }else{
         showNorthernTransmission();
       }

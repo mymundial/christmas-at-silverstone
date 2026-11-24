@@ -19220,3 +19220,32 @@ button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:no
 .mission-lando .lando-score-grid{margin:6px 0!important;flex:0 0 auto!important;}
 .mission-lando .lando-score-grid .lando-result{height:44px!important;min-height:44px!important;padding:4px 2px!important;gap:3px!important;}
 .mission-shell.mission-lando .mission-content>.lando-panel button.lando-react-btn{min-height:44px!important;margin:0!important;padding:6px!important;flex:0 0 auto!important;}
+
+/* Mobile QA round 2: only agreed layout corrections. */
+@supports(height:100dvh){:root{--viewport-h:100dvh;}}
+:root{--nav-safe:env(safe-area-inset-bottom,0px);}
+.phone .nav button{justify-content:end!important;padding-bottom:4px!important;}
+.mission-diagnostics .mission-content:has(.mission-player-turn) .parc-scan-card .parc-card-title{font-size:clamp(9px,1.6dvh,12px)!important;line-height:1!important;}
+.mission-shell.mission-commsrelay .mission-content:has(.mission-player-turn){display:flex!important;flex:1 1 0!important;min-height:0!important;overflow:hidden!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn){display:flex!important;flex-direction:column!important;flex:1 1 0!important;min-height:0!important;height:auto!important;overflow:hidden!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-network{flex:1 1 0!important;min-height:0!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;row-gap:5px!important;container-type:size;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-network .relay-cell{--relay-fit:clamp(32px,calc((100cqh - 76px)/3),76px);grid-template-rows:var(--relay-fit) auto!important;gap:4px!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-network :is(.relay-radio-icon,.relay-receiver-icon,.relay-node){width:var(--relay-fit)!important;height:var(--relay-fit)!important;min-width:0!important;min-height:0!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-node .relay-core{width:55%!important;height:55%!important;font-size:clamp(15px,5cqh,28px)!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-node .relay-pulse{width:60%!important;height:60%!important;}
+.mission-spirit .spirit-panel--charging .spirit-apparatus:is(*,[data-stage]){flex:1 1 0!important;min-height:0!important;grid-template-rows:minmax(0,1fr)!important;}
+.mission-spirit .spirit-panel--charging .spirit-tank-stack{flex:1 1 0!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;}
+.mission-spirit .spirit-panel--charging .spirit-tank-cell:is(.is-active,.is-full,.is-pumping,.is-locking),.mission-spirit .spirit-panel--charging .spirit-tank-cell{height:100%!important;min-height:0!important;max-height:100%!important;contain:size layout;transform:none!important;animation:none!important;}
+.mission-spirit .spirit-panel--charging .spirit-tank-power:is(.is-charging,.is-full),.mission-spirit .spirit-panel--charging .spirit-tank-power{position:absolute!important;inset:0!important;min-height:0!important;transform:none!important;animation:none!important;}
+.mission-shell.mission-jingle .mission-content:has(.mission-player-turn){display:flex!important;flex:1 1 0!important;min-height:0!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn){display:flex!important;flex-direction:column!important;flex:1 1 0!important;min-height:0!important;height:auto!important;gap:0!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-arena{flex:1 1 0!important;min-height:0!important;height:auto!important;margin-top:0!important;container-type:size;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-paddle{width:32%!important;min-width:0!important;height:clamp(12px,8cqh,22px)!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-receiver{height:clamp(18px,13cqh,34px)!important;min-width:0!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown){width:clamp(28px,18cqh,46px)!important;height:clamp(28px,18cqh,46px)!important;background-size:contain!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:not(.is-ready):not(.is-countdown){width:clamp(12px,7cqh,20px)!important;height:clamp(12px,7cqh,20px)!important;}
+.mission-shell .mission-content:has(>.mission-player-changeover.panel){display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;}
+.mission-shell .mission-content>.mission-player-changeover.panel{flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;}
+.mission-lando .lando-score-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important;}
+.mission-lando .lando-score-grid .lando-result:is(*,.active,.complete,.best){height:44px!important;min-height:44px!important;max-height:44px!important;width:100%!important;min-width:0!important;box-sizing:border-box!important;margin:0!important;padding:4px 2px!important;gap:3px!important;}
+.phone .nav .nav-badge{display:none!important;}

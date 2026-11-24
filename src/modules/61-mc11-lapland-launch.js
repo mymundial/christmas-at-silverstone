@@ -86,7 +86,7 @@
   function fadeLaplandMusic(target,duration=350,onDone){
     if(!laplandMusic){onDone?.();return;}
     const level=Math.max(0,Math.min(1,target));
-    const gain=ensureLaplandMusicGraph();
+    const gain=laplandMusicGain;
     if(gain&&audioCtx){
       const now=audioCtx.currentTime;
       try{
@@ -115,7 +115,7 @@
     const music=getLaplandMusic();
     music.loop=true;
     if(music.ended) music.currentTime=0;
-    const gain=ensureLaplandMusicGraph();
+    const gain=laplandMusicGain;
     if(gain&&audioCtx){
       music.volume=1;
       const now=audioCtx.currentTime;
@@ -312,21 +312,21 @@
         if(state.missionOpen!=='lapland' || verificationStage.hidden || awakened.has(key)) return;
         if(state.audio){
           ensureAudio();
-          if(getLaplandMusic().paused) startLaplandMusic();
+          startLaplandMusic();
         }
         awakened.add(key);
         card.disabled=true;
         setRowState(key,'checking');
         panel.classList.add('has-attention');
         panel.classList.remove('is-complete','is-transmission','is-party','is-celebrating');
-        ping(430+(onlineSystems*18),.04,.012);
+        ping(430+(onlineSystems*18),.09,.065);
         haptic(10);
         laplandLater(()=>{
           setRowState(key,'online');
           onlineSystems++;
           setCharge(onlineSystems/10);
           setOnlineProgress(onlineSystems,onlineSystems===10);
-          ping(540+(onlineSystems*20),.05,.016);
+          ping(540+(onlineSystems*20),.09,.055);
           if(onlineSystems===10){
             setCharge(1);
             setLaunchComplete();

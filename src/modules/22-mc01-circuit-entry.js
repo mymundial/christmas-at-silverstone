@@ -161,7 +161,7 @@
       activated++;
       setProgress(activated*100/markerCount);
       pulseCircuit();
-      ping(560+activated*18,.065,.025);
+      ping(560+activated*18,.10,.075);
       haptic(18);
       if(activated>=markerCount)startFinalSequence();
     });

@@ -258,8 +258,7 @@
   function updateCommsBadge(){
     const ico=document.querySelector('[data-nav="comms"] .ico'); if(!ico) return;
     ico.querySelector('.nav-badge')?.remove();
-    const unread=unreadCount(); if(!unread) return;
-    const badge=document.createElement('span');badge.className='nav-badge';badge.textContent=unread>9?'9+':String(unread);ico.appendChild(badge);
+
   }
   function checkpointCompletionMessage(id){
     const script=COMPLETION_MESSAGES[id]; if(!script) return;
@@ -820,7 +819,7 @@
   }
   function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','COMMS')}</nav>`; }
   function navButton(id,label){
-    const unread=id==='comms'?unreadCount():0;
+    const unread=0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
   }
   function topBar(){
@@ -2006,7 +2005,7 @@
       activated++;
       setProgress(activated*100/markerCount);
       pulseCircuit();
-      ping(560+activated*18,.065,.025);
+      ping(560+activated*18,.10,.075);
       haptic(18);
       if(activated>=markerCount)startFinalSequence();
     });
@@ -4626,7 +4625,7 @@
     };
   }
   function bindLando(){
-    let round=1,armed=false,goTime=0,timers=[],running=false;
+    let round=1,armed=false,goTime=0,timers=[],running=false,goFrame=0;
     const btn=document.getElementById('reactionBtn');
     const roundEl=document.getElementById('landoRound');
     const lamps=[...document.querySelectorAll('.lando-lamp')];
@@ -4637,7 +4636,7 @@
     redLightAudio.forEach(audio=>{audio.preload='auto';audio.volume=.72;});
     goAudio.preload='auto';goAudio.volume=.82;
     let countdownAudioPrimed=false;
-    const clear=()=>{timers.forEach(clearTimeout);timers=[]};
+    const clear=()=>{timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(goFrame);goFrame=0;};
     function stopCountdownAudio(reset=true){
       [...redLightAudio,goAudio].forEach(audio=>{try{audio.pause();if(reset)audio.currentTime=0;}catch{}});
     }
@@ -4696,10 +4695,10 @@
       const wait=builtAt+650+Math.random()*1050;
       timers.push(setTimeout(()=>{
         lamps.forEach(l=>l.classList.remove('red'));
-        armed=true; running=true; goTime=performance.now();
+        goFrame=requestAnimationFrame(()=>{goFrame=requestAnimationFrame(()=>{if(!running||document.hidden)return; armed=true; goTime=performance.now();
         btn.classList.remove('is-standby');
         btn.textContent='REACT';
-        playCountdownFx(goAudio,.82); haptic(18);
+        playCountdownFx(goAudio,.82); haptic(18);});});
       },wait));
     }
     function capture(){
@@ -4730,7 +4729,7 @@
     }
 
     function onFastReactionPress(e){
-      if(!armed||e.pointerType==='mouse') return;
+      if(!armed) return;
       e.preventDefault();
       capture();
     }
@@ -4747,8 +4746,10 @@
         timers.push(setTimeout(()=>{btn.textContent='START TEST';},700));
       }
     };
+    const onVisibility=()=>{if(document.hidden&&running){clear();running=false;armed=false;resetLights();stopCountdownAudio(true);btn.classList.remove('is-standby');btn.textContent='START TEST';btn.disabled=false;}};
+    document.addEventListener('visibilitychange',onVisibility);
     const previousCleanup=cleanupMission;
-    cleanupMission=()=>{btn.removeEventListener('pointerdown',onFastReactionPress);previousCleanup?.();};
+    cleanupMission=()=>{document.removeEventListener('visibilitychange',onVisibility);btn.removeEventListener('pointerdown',onFastReactionPress);previousCleanup?.();};
   }
   function bindAurora(){
     const panel=document.querySelector('.aurora-panel');
@@ -5145,7 +5146,7 @@
   function fadeLaplandMusic(target,duration=350,onDone){
     if(!laplandMusic){onDone?.();return;}
     const level=Math.max(0,Math.min(1,target));
-    const gain=ensureLaplandMusicGraph();
+    const gain=laplandMusicGain;
     if(gain&&audioCtx){
       const now=audioCtx.currentTime;
       try{
@@ -5174,7 +5175,7 @@
     const music=getLaplandMusic();
     music.loop=true;
     if(music.ended) music.currentTime=0;
-    const gain=ensureLaplandMusicGraph();
+    const gain=laplandMusicGain;
     if(gain&&audioCtx){
       music.volume=1;
       const now=audioCtx.currentTime;
@@ -5371,21 +5372,21 @@
         if(state.missionOpen!=='lapland' || verificationStage.hidden || awakened.has(key)) return;
         if(state.audio){
           ensureAudio();
-          if(getLaplandMusic().paused) startLaplandMusic();
+          startLaplandMusic();
         }
         awakened.add(key);
         card.disabled=true;
         setRowState(key,'checking');
         panel.classList.add('has-attention');
         panel.classList.remove('is-complete','is-transmission','is-party','is-celebrating');
-        ping(430+(onlineSystems*18),.04,.012);
+        ping(430+(onlineSystems*18),.09,.065);
         haptic(10);
         laplandLater(()=>{
           setRowState(key,'online');
           onlineSystems++;
           setCharge(onlineSystems/10);
           setOnlineProgress(onlineSystems,onlineSystems===10);
-          ping(540+(onlineSystems*20),.05,.016);
+          ping(540+(onlineSystems*20),.09,.055);
           if(onlineSystems===10){
             setCharge(1);
             setLaunchComplete();
@@ -5465,15 +5466,7 @@
 
   function primeNorthernFinalAudio(){
     if(!state.audio)return;
-    [getNorthernMagicAudio(),getNorthernSantaAudio()].forEach(audio=>{
-      try{
-        audio.load();audio.pause();audio.currentTime=0;audio.muted=true;
-        const play=audio.play();
-        if(play&&typeof play.then==='function'){
-          play.then(()=>{try{audio.pause();audio.currentTime=0;}catch{}}).catch(()=>{});
-        }else{audio.pause();audio.currentTime=0;}
-      }catch{}
-    });
+    [getNorthernMagicAudio(),getNorthernSantaAudio()].forEach(audio=>{try{audio.load();}catch{}});
   }
 
   function showNorthernTransmission(){
@@ -5559,7 +5552,7 @@
     const turn=state.missionPlayerTurnId===state.missionOpen?Math.max(1,Number(state.missionPlayerTurn)||1):1;
     northernLater(()=>{
       if(turn<passengers){
-        showNorthernMissionComplete();
+        showCompletion('Santa-1 Airborne','Santa-1 is airborne. Recovery complete. The Northern Flight is underway.');
       }else{
         showNorthernTransmission();
       }

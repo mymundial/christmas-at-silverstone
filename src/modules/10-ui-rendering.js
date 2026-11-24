@@ -98,7 +98,7 @@
   }
   function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','COMMS')}</nav>`; }
   function navButton(id,label){
-    const unread=id==='comms'?unreadCount():0;
+    const unread=0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
   }
   function topBar(){

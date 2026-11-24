@@ -1,5 +1,5 @@
   function bindLando(){
-    let round=1,armed=false,goTime=0,timers=[],running=false;
+    let round=1,armed=false,goTime=0,timers=[],running=false,goFrame=0;
     const btn=document.getElementById('reactionBtn');
     const roundEl=document.getElementById('landoRound');
     const lamps=[...document.querySelectorAll('.lando-lamp')];
@@ -10,7 +10,7 @@
     redLightAudio.forEach(audio=>{audio.preload='auto';audio.volume=.72;});
     goAudio.preload='auto';goAudio.volume=.82;
     let countdownAudioPrimed=false;
-    const clear=()=>{timers.forEach(clearTimeout);timers=[]};
+    const clear=()=>{timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(goFrame);goFrame=0;};
     function stopCountdownAudio(reset=true){
       [...redLightAudio,goAudio].forEach(audio=>{try{audio.pause();if(reset)audio.currentTime=0;}catch{}});
     }
@@ -69,10 +69,10 @@
       const wait=builtAt+650+Math.random()*1050;
       timers.push(setTimeout(()=>{
         lamps.forEach(l=>l.classList.remove('red'));
-        armed=true; running=true; goTime=performance.now();
+        goFrame=requestAnimationFrame(()=>{goFrame=requestAnimationFrame(()=>{if(!running||document.hidden)return; armed=true; goTime=performance.now();
         btn.classList.remove('is-standby');
         btn.textContent='REACT';
-        playCountdownFx(goAudio,.82); haptic(18);
+        playCountdownFx(goAudio,.82); haptic(18);});});
       },wait));
     }
     function capture(){
@@ -103,7 +103,7 @@
     }
 
     function onFastReactionPress(e){
-      if(!armed||e.pointerType==='mouse') return;
+      if(!armed) return;
       e.preventDefault();
       capture();
     }
@@ -120,6 +120,8 @@
         timers.push(setTimeout(()=>{btn.textContent='START TEST';},700));
       }
     };
+    const onVisibility=()=>{if(document.hidden&&running){clear();running=false;armed=false;resetLights();stopCountdownAudio(true);btn.classList.remove('is-standby');btn.textContent='START TEST';btn.disabled=false;}};
+    document.addEventListener('visibilitychange',onVisibility);
     const previousCleanup=cleanupMission;
-    cleanupMission=()=>{btn.removeEventListener('pointerdown',onFastReactionPress);previousCleanup?.();};
+    cleanupMission=()=>{document.removeEventListener('visibilitychange',onVisibility);btn.removeEventListener('pointerdown',onFastReactionPress);previousCleanup?.();};
   }

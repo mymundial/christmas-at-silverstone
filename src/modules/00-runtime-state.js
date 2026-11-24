@@ -258,8 +258,7 @@
   function updateCommsBadge(){
     const ico=document.querySelector('[data-nav="comms"] .ico'); if(!ico) return;
     ico.querySelector('.nav-badge')?.remove();
-    const unread=unreadCount(); if(!unread) return;
-    const badge=document.createElement('span');badge.className='nav-badge';badge.textContent=unread>9?'9+':String(unread);ico.appendChild(badge);
+
   }
   function checkpointCompletionMessage(id){
     const script=COMPLETION_MESSAGES[id]; if(!script) return;
