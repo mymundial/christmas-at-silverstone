@@ -96,7 +96,7 @@
     };
     return icons[id]||'';
   }
-  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Comms')}</nav>`; }
+  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','COMMS')}</nav>`; }
   function navButton(id,label){
     const unread=id==='comms'?unreadCount():0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
@@ -305,7 +305,12 @@
       const status=missionStatus(cp);
       const playable=status==='AVAILABLE'||status==='IN RANGE';
       const interaction=playable?` data-open-mission="${cp.id}" role="button" tabindex="0" aria-label="Open ${cp.name}"`:'';
-      return `<div class="mission-row panel ${status==='COMPLETE'?'done':''} ${status==='AVAILABLE'?'available':''} ${playable?'interactive':''}"${interaction}><div class="mission-index">${cp.mc.replace('MC-','')}</div><div class="mission-row-copy"><div class="kicker">${cp.location}</div><h3>${cp.name}</h3></div><div class="row-action"><div class="row-status">${status}</div></div></div>`;
+      const isCareBearsPartner=cp.id==='power'||cp.id==='spirit';
+      const partnerCopy=isCareBearsPartner?'<div class="mission-partner-line">IN PARTNERSHIP WITH CARE BEARS</div>':'';
+      const missionIndex=isCareBearsPartner
+        ? '<img class="care-bears-index-heart" src="./assets/care-bears-heart-red.webp" alt="Care Bears">'
+        : cp.mc.replace('MC-','');
+      return `<div class="mission-row panel ${status==='COMPLETE'?'done':''} ${status==='AVAILABLE'?'available':''} ${playable?'interactive':''} ${isCareBearsPartner?'partner-row':''}"${interaction}><div class="mission-index ${isCareBearsPartner?'care-bears-index':''}">${missionIndex}</div><div class="mission-row-copy"><div class="kicker">${cp.location}</div>${partnerCopy}<h3>${cp.name}</h3></div><div class="row-action"><div class="row-status">${status}</div></div></div>`;
     }).join('');
     return `<section class="missions-log"><div class="missions-feed-viewport"><div class="missions-feed-scroll"><div class="list missions-list">${rows}</div></div></div></section>`;
   }
@@ -394,10 +399,10 @@
       return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy"><span>Uh-oh, Santa's sleigh has run out of battery!</span><span>Connect to the circuit and power it back up.</span></p></div>`;
     }
     if(cp.type==='artifacts'){
-      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy">Sparkles of Christmas magic are zooming down the pit lane. Catch them to power up the sleigh!</p></div>`;
+      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy">Sparkles of Christmas magic are zooming down the pit lane. Catch them to power up the sleigh!</p></div>`;
     }
     if(cp.type==='spirit'){
-      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit,</span><span>and it’s running low! Fill it back up.</span></p></div>`;
+      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit,</span><span>and it’s running low! Fill it back up.</span></p></div>`;
     }
     if(cp.type==='power'&&cp.id==='escapade'){
       return `<div class="mission-head raceway-head raceway-head--line"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>REINDEER</span><span>RACING LINE</span></h1><p class="support-copy">How fast can you go following the racing line?</p></div>`;
@@ -412,7 +417,7 @@
       return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
     }
     if(cp.type==='northern'){
-      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy">The sleigh is on the grid and ready to fly.<br>Give Santa the green flag!</p></div>`;
+      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy"><span>The sleigh is on the grid and ready to fly.</span><span>Give Santa the green flag!</span></p></div>`;
     }
     if(cp.type==='lapland'){
       return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
@@ -570,19 +575,18 @@
   }
   function spiritBody(){
     const tankDefs=[
-      {side:'left',index:0,key:'purple',rgb:'198,92,255',color:'#c65cff',name:'Purple energy'},
-      {side:'left',index:1,key:'green',rgb:'92,245,96',color:'#5cf560',name:'Green energy'},
-      {side:'left',index:2,key:'red',rgb:'255,92,116',color:'#ff5c74',name:'Red energy'},
-      {side:'left',index:3,key:'blue',rgb:'76,219,255',color:'#4cdbff',name:'Light blue energy'},
-      {side:'right',index:0,key:'yellow',rgb:'255,224,84',color:'#ffe054',name:'Yellow energy'},
-      {side:'right',index:1,key:'pink',rgb:'255,110,186',color:'#ff6eba',name:'Pink energy'},
-      {side:'right',index:2,key:'white',rgb:'247,250,255',color:'#f7faff',name:'White energy'},
-      {side:'right',index:3,key:'orange',rgb:'255,122,28',color:'#ff7a1c',name:'Orange energy'}
+      {side:'left',index:0,key:'purple',rgb:'198,92,255',color:'#c65cff',name:'Purple energy',snowflake:1},
+      {side:'left',index:1,key:'green',rgb:'92,245,96',color:'#5cf560',name:'Green energy',snowflake:2},
+      {side:'left',index:2,key:'red',rgb:'255,92,116',color:'#ff5c74',name:'Red energy',snowflake:3},
+      {side:'left',index:3,key:'blue',rgb:'76,219,255',color:'#4cdbff',name:'Light blue energy',snowflake:4},
+      {side:'right',index:0,key:'yellow',rgb:'255,224,84',color:'#ffe054',name:'Yellow energy',snowflake:4},
+      {side:'right',index:1,key:'pink',rgb:'255,110,186',color:'#ff6eba',name:'Pink energy',snowflake:3},
+      {side:'right',index:2,key:'white',rgb:'247,250,255',color:'#f7faff',name:'White energy',snowflake:2},
+      {side:'right',index:3,key:'orange',rgb:'255,122,28',color:'#ff7a1c',name:'Orange energy',snowflake:1}
     ];
-    const bhpIcon=`<svg class="spirit-bhp-icon" viewBox="66 0 78 126" focusable="false" aria-hidden="true"><path d="M83.34,125.93,98.42,75.57h-32L127.44,0,112.37,50.35h32ZM79,69.55H106.5L97.88,98.34l33.88-42H104.29l8.62-28.78Z"></path></svg>`;
     const tankCells=side=>tankDefs.filter(tank=>tank.side===side).map(tank=>`<div class="spirit-tank-cell spirit-tank-${tank.key}" data-spirit-tank="${tank.side}-${tank.index}" data-spirit-color="${tank.key}" data-spirit-rgb="${tank.rgb}" data-spirit-hex="${tank.color}" style="--tank-rgb:${tank.rgb};--tank-color:${tank.color};" aria-label="${tank.name} storage tank">
       <span class="spirit-tank-energy"></span>
-      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true">${bhpIcon}</span><span class="spirit-cell-state" aria-hidden="true">TAP TO FILL!</span></button>
+      <button type="button" class="spirit-tank-power" data-spirit-charge="${tank.side}-${tank.index}" aria-label="Charge ${tank.name} tank"><span class="spirit-power-bolt" aria-hidden="true"><img src="./assets/care-bears-snowflake-${tank.snowflake}.webp" alt="" draggable="false"></span><span class="spirit-cell-state" aria-hidden="true">TAP TO FILL!</span></button>
     </div>`).join('');
     const stageDots=Array.from({length:8},(_,i)=>`<i data-spirit-stage-dot="${i}"></i>`).join('');
     return `<div class="mission-instrument panel spirit-panel spirit-panel--charging" id="spiritRig" data-stage="0">

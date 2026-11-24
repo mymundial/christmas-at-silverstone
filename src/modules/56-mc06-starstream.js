@@ -21,6 +21,7 @@
       {id:'white',name:'White',rgb:'247,250,255'}
     ];
 
+    const SNOWFLAKE_ASSETS=['./assets/care-bears-snowflake-1.webp','./assets/care-bears-snowflake-2.webp','./assets/care-bears-snowflake-3.webp','./assets/care-bears-snowflake-4.webp'];
     const TARGET_CAPTURES=8;
     let cleared=0;
     let finished=false;
@@ -30,6 +31,7 @@
     let signatureBag=[];
     let liveItems=new Set();
     let capturedSignatures=[];
+    let snowflakeIndex=0;
     const energyHitAudio=[
       './assets/power-pulse-energy-hit-1.mp3',
       './assets/power-pulse-energy-hit-2.mp3',
@@ -290,6 +292,7 @@
       if(liveItems.size>=cfg.maxConcurrent) return;
       const signature=nextSignature();
       const pos=randomPos();
+      const snowflakeSrc=SNOWFLAKE_ASSETS[snowflakeIndex++%SNOWFLAKE_ASSETS.length];
       const el=document.createElement('button');
       el.type='button';
       el.className=`starstream-signature emotion-signature energy-${signature.id} is-entering`;
@@ -299,7 +302,7 @@
       el.setAttribute('aria-label','Catch Christmas sparkle');
       el.innerHTML=`
         <span class="signature-core power-pulse-energy-core" aria-hidden="true">
-          <img class="powerup-snowflake-art" src="./assets/silverstone-snowflake-white.webp" alt="" draggable="false">
+          <img class="powerup-snowflake-art" src="${snowflakeSrc}" alt="" draggable="false">
         </span>
         <span class="signature-scan" aria-hidden="true"></span>`;
       layer.appendChild(el);
