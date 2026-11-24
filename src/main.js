@@ -1090,7 +1090,7 @@
     return message.sender||'MISSION CONTROL';
   }
   function renderComms(){
-    const feed=[...state.messages].sort((a,b)=>b.timestamp-a.timestamp).map(m=>`<article class="comms-message panel ${m.read?'':'unread'}"><div class="comms-message-head"><div class="kicker">${messageActivationLabel(m)}</div><time datetime="${new Date(m.timestamp).toISOString()}">${formatMessageTime(m.timestamp)}</time></div><h3>${m.title}</h3><p>${m.body}</p></article>`).join('');
+    const feed=[...state.messages].sort((a,b)=>b.timestamp-a.timestamp).map(m=>`<article class="comms-message panel ${m.read?'':'unread'}"><div class="comms-message-head"><div class="kicker">${messageActivationLabel(m)}</div><time datetime="${new Date(m.timestamp).toISOString()}">${formatMessageTime(m.timestamp)}</time></div>${['power','spirit','MC-04','MC-05'].includes(m.checkpointId)||['complete:power','complete:spirit'].includes(m.key)?'<div class="comms-partner-line">IN PARTNERSHIP WITH CARE BEARS</div>':''}<h3>${m.title}</h3><p>${m.body}</p></article>`).join('');
     const gpsOn=state.mode==='live'&&state.gpsEnabled!==false;
     const streamReady=Boolean(ELF_STREAM_URL);
     const radioButton=state.elfUnlocked

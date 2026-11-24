@@ -19162,3 +19162,16 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
 
 /* Care Bears tracker: partnership line above the activation title. */
 #radarMessage .radar-partner-line{margin:2px 0 2px!important;}
+
+/* Care Bears: partnership credit on the two sponsored Comms messages only. */
+.comms-message .comms-partner-line{
+  display:block!important;
+  margin:2px 0 0!important;
+  font-family:var(--font-display)!important;
+  font-size:8px!important;
+  line-height:1.15!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+  color:rgba(255,150,168,.9)!important;
+  text-align:left!important;
+}
