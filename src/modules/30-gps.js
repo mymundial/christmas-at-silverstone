@@ -217,7 +217,7 @@
     if(gpsValue){const condition=state.mode==='demo'?'OFF':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
     const sleighValue=document.querySelector('.status-cell:nth-child(2) .status-value'); if(sleighValue)sleighValue.textContent=`${recovery()}%`;
     const checkpointValue=document.querySelector('.status-cell:last-child .status-value');
-    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
+    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SCAN...';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;

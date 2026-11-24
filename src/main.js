@@ -801,15 +801,18 @@
   }
   function brand(){return `<div class="brand brand-christmas"><img class="brand-lockup brand-lockup--master" src="./assets/brand/christmas-at-silverstone-master-light.svg" alt="Christmas at Silverstone"></div>`}
   function settingAudioIcon(){
-    return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
+    return `<svg class="mission-setting-svg audio-setting-svg" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9 10.2 12.2H7.5v7.6h2.7L14 23z"/><path d="M18 12.1a5.1 5.1 0 0 1 0 7.8"/><path d="M20.9 9.4a8.75 8.75 0 0 1 0 13.2"/></svg>`;
+  }
+  function navPitStopsIcon(){
+    return `<svg class="nav-solid-icon" viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M103.37,5.15A46.07,46.07,0,0,0,87.87,94.6l15.5,26.25L118.88,94.6A46.07,46.07,0,0,0,103.37,5.15ZM116.14,89.7l-1,.32-11.79,20L91.58,90l-1-.32a40.53,40.53,0,1,1,25.54,0Zm19.08-34L124.31,33.06l-1.45-3-3.1,1.14a17.88,17.88,0,0,1-3.71,1,15.25,15.25,0,0,1-9.36-1.85,23.12,23.12,0,0,0-23.27.15,4.18,4.18,0,1,0-5.27,4.76L103.54,88l5.1-2.45L96.48,60.4a17.22,17.22,0,0,1,18.76-1l.15.09a20.74,20.74,0,0,0,8.8,2.67,20.38,20.38,0,0,0,9.09-1.45c.92-.37,3.47-1.57,3.47-1.57S135.65,56.61,135.22,55.72Zm-8,.74a15.17,15.17,0,0,1-9.35-1.85,23,23,0,0,0-11.46-3.07,23.5,23.5,0,0,0-2.64.15A23.12,23.12,0,0,0,94,55.12L84.9,36.19A20.16,20.16,0,0,1,106,35.57a17.44,17.44,0,0,0,13.84,1.62L129,56.11A13.61,13.61,0,0,1,127.23,56.46Z"/></svg>`;
   }
   function navSleighIcon(){
-    return `<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M4 15.5h17.4c3.2 0 5.5-1.3 6.9-4"/><path d="M3 17c1.5 3 4 4.5 7.5 4.5H25"/><path d="M9 15.5c.7-4.8 3.7-7.8 8.7-7.8 3.5 0 6.1 1.2 9 4"/><path d="M14.5 9.2h4.7"/><path d="M17.2 7.6 15.4 4.7"/></svg>`;
+    return `<svg class="nav-solid-icon" viewBox="0 0 210 126" aria-hidden="true"><path fill="currentColor" d="M147.5,73.07a14.72,14.72,0,0,0-10.68-.19c-2-4.94-7.42-8-14.49-8H87.67c-7.08,0-12.51,3.08-14.5,8a14.72,14.72,0,0,0-10.68.19C59.32,74.4,54,78.12,54,88V98.66h3.69v18.46H70.84V103.89a13.35,13.35,0,0,1,2.45,4.88l.6,2.18H136.1l.6-2.18a13.37,13.37,0,0,1,2.46-4.88v13.24H152.3V98.67H156V88C156,78.12,150.68,74.4,147.5,73.07ZM138,82.77a5.37,5.37,0,1,1-5.37-5.37A5.38,5.38,0,0,1,138,82.77ZM77.39,77.4A5.37,5.37,0,1,1,72,82.77,5.38,5.38,0,0,1,77.39,77.4ZM131.7,105H78.29a18.64,18.64,0,0,0-1.77-3.41h57A19.28,19.28,0,0,0,131.7,105ZM97.08,96.71V85.92c0-4.17,1.7-6.28,5.06-6.28h5.71c3.36,0,5.06,2.11,5.06,6.28V96.71Zm53-3.88a23.78,23.78,0,0,0-12,4v-.15H118.49V85.92c0-7.21-4.17-11.86-10.64-11.86h-5.71c-6.46,0-10.64,4.65-10.64,11.86V96.71H72v.15a23.75,23.75,0,0,0-12-4V88c0-4.85,1.68-8.12,4.86-9.46A8.33,8.33,0,0,1,68,77.9a10.5,10.5,0,0,0-1.19,4.87A10.6,10.6,0,1,0,80.68,72.7a12,12,0,0,1,7-1.89h34.66a12,12,0,0,1,7,1.89,10.6,10.6,0,1,0,13.9,10.07A10.51,10.51,0,0,0,142,77.9a8.42,8.42,0,0,1,3.19.65c3.17,1.34,4.85,4.61,4.85,9.46ZM27.16,11.07V120.66h6V17.08h6V120.64h6V17.08H164.74V120.64h6V17.08h6V120.66h6V11.07ZM49.7,34H160.2V28H49.7Zm92.86,36.45a7.5,7.5,0,1,0-7.5-7.5A7.51,7.51,0,0,0,142.56,70.48Zm0-10.81A3.31,3.31,0,1,1,139.24,63,3.31,3.31,0,0,1,142.56,59.67Zm-9.76,3V55.85c0-7.48-5-10.83-10-10.83H87.14c-5,0-10,3.35-10,10.83v6.83a21,21,0,0,1,6-1.92V55.85c0-4,2.18-4.88,4-4.88h35.71c1.83,0,4,.85,4,4.88v4.91A20.88,20.88,0,0,1,132.8,62.68ZM74.93,63a7.5,7.5,0,1,0-7.49,7.5A7.51,7.51,0,0,0,74.93,63ZM64.12,63a3.32,3.32,0,1,1,3.32,3.31A3.32,3.32,0,0,1,64.12,63Z"/></svg>`;
   }
   function navIcon(id){
     const icons={
       radar:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M5 10.5a15.6 15.6 0 0 1 22 0"/><path d="M8.7 14.2a10.4 10.4 0 0 1 14.6 0"/><path d="M12.5 18a5 5 0 0 1 7 0"/><circle cx="16" cy="21" r="1.25" fill="#ffffff" stroke="none"/></svg>`,
-      missions:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M9 3v18"/><path d="M10 4.5h12l-2.7 4 2.7 4H10"/><path d="M9 20.5h15"/></svg>`,
+      missions:navPitStopsIcon(),
       comms:`<svg class="nav-line-icon" viewBox="0 0 32 24" aria-hidden="true" stroke="#ffffff" fill="none"><path d="M6 13v-2a10 10 0 0 1 20 0v2"/><path d="M6 12.5h3.5v7H7.8c-1 0-1.8-.8-1.8-1.8z"/><path d="M26 12.5h-3.5v7h1.7c1 0 1.8-.8 1.8-1.8z"/><path d="M22.5 19.5c-1 1.3-2.5 2-4.5 2h-2"/></svg>`,
       sleigh:navSleighIcon()
     };
@@ -827,7 +830,7 @@
   function statusStrip(){
     const cp=current();
     const activationDistance=distanceToActivation(cp,state.distance);
-    const distanceValue=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SEARCHING';
+    const distanceValue=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(activationDistance)?`${Math.round(activationDistance)} M`:'SCAN...';
     const condition=state.mode==='demo'?'OFF':state.gpsEnabled===false?'OFF':state.gpsCondition;
     return `<section class="telemetry-block"><div class="telemetry-heading">MISSION TELEMETRY</div><div class="status-strip panel">
       <div class="status-cell"><div class="status-label">GPS Accuracy</div><div class="status-value gps-${condition.toLowerCase()}">${condition}</div></div>
@@ -838,7 +841,7 @@
 
   function radarMessage(cp){
     if(cp&&cp.playable&&(state.targetInRange||state.mode==='demo')){
-      return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.name}</h3>${state.mode==='demo'?'<p class="no-gps-checkpoint-hint">TAP WHEN YOU SEE THE CHECKPOINT</p>':''}</div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
+      return `<div class="mission-card message-card panel target-message compact-target" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>${cp.id==='spirit'?'CHRISTMAS SPIRIT<br>CHARGING STATION':cp.name}</h3>${state.mode==='demo'?'<p class="no-gps-checkpoint-hint">TAP WHEN YOU SEE THE CHECKPOINT</p>':''}</div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
     }
     if(!cp){
       return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
@@ -1091,7 +1094,6 @@
       ? `<button class="mission-setting-toggle radio-setting ${state.elfAudioOn?'on':'off'}" id="elfAudioToggle" data-elf-audio aria-pressed="${state.elfAudioOn?'true':'false'}" aria-label="ELF FM ${state.elfAudioOn?'on':'off'}" ${streamReady?'':'aria-disabled="true"'}><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`
       : `<button class="mission-setting-toggle radio-setting off" data-tune-elf aria-pressed="false" aria-label="Tune ELF FM"><span class="mission-setting-icon"><img src="./assets/radio-setting-icon.svg" alt=""></span><span class="mission-setting-copy"><span>ELF FM</span></span></button>`;
     const gpsClass=state.mode==='demo'?'off':gpsOn?'on':'off';
-    const gpsStateLabel=state.mode==='demo'?'<strong>OFF</strong>':`<strong>${gpsOn?'ACTIVE':state.gpsCondition}</strong>`;
     const settings=`<section class="mission-settings panel"><div class="mission-settings-head"><div class="kicker">Mission Settings</div></div><div class="mission-settings-grid"><div class="mission-setting-toggle mission-setting-status ${gpsClass}" aria-label="GPS Location ${state.mode==='demo'?'off':gpsOn?'active':state.gpsCondition.toLowerCase()}"><span class="mission-setting-icon"><img src="./assets/radar-setup-icon.svg" alt=""></span><span class="mission-setting-copy"><span>GPS Location</span>${gpsStateLabel}</span></div><button class="mission-setting-toggle ${state.audio?'on':'off'}" data-mission-audio-setting aria-pressed="${state.audio?'true':'false'}" aria-label="Mission Audio ${state.audio?'on':'off'}"><span class="mission-setting-icon">${settingAudioIcon()}</span><span class="mission-setting-copy"><span>Mission Audio</span></span></button>${radioButton}</div></section>`;
     const feedBody=feed||'<div class="comms-empty panel">No transmissions received.</div>';
     return `${settings}<section class="comms-feed"><div class="comms-section-title"><span>Message Feed</span></div><div class="comms-feed-viewport"><div class="comms-feed-scroll">${feedBody}</div></div></section>`;
@@ -1132,7 +1134,7 @@
       return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
     }
     if(cp.type==='northern'){
-      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy">The sleigh is on the grid and ready to fly. Give Santa the green flag!</p></div>`;
+      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy"><span>The sleigh is on the grid and ready to fly.</span><span>Give Santa the green flag!</span></p></div>`;
     }
     if(cp.type==='lapland'){
       return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
@@ -2226,7 +2228,7 @@
     if(gpsValue){const condition=state.mode==='demo'?'OFF':state.gpsCondition;gpsValue.textContent=condition;gpsValue.className=`status-value gps-${condition.toLowerCase()}`;}
     const sleighValue=document.querySelector('.status-cell:nth-child(2) .status-value'); if(sleighValue)sleighValue.textContent=`${recovery()}%`;
     const checkpointValue=document.querySelector('.status-cell:last-child .status-value');
-    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SEARCHING';}
+    if(checkpointValue){const d=distanceToActivation(cp,state.distance);checkpointValue.textContent=!cp?'–':state.mode==='demo'?'READY':state.targetVisible&&Number.isFinite(d)?`${Math.round(d)} M`:'SCAN...';}
     const target=document.querySelector('.target-dot');
     const finalCircuitOverview=state.completed.includes('northern');
     const localVirtualCircuitMode=state.mode==='live'&&localTestEnabled&&localTestRouteStatus().ready;

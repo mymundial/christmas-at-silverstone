@@ -6253,6 +6253,70 @@ body.admin-page,.admin-page .app-shell{height:auto;min-height:100%;overflow:visi
 /* ELF FM uses the same illuminated-state language as the other settings; no action/status sublabel. */
 .mission-setting-toggle.radio-setting .mission-setting-copy{gap:0;}
 
+/* Mission settings final state language: inactive = visible red icon with muted box,
+   active = white icon with red outlines. */
+.mission-setting-toggle,
+.mission-setting-status{
+  border:1px solid rgba(88,73,117,.82)!important;
+  background:rgba(14,6,43,.94)!important;
+  box-shadow:none!important;
+}
+.mission-setting-icon{
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(88,73,117,.82)!important;
+  background:rgba(20,9,54,.96)!important;
+  box-shadow:none!important;
+}
+.mission-setting-icon img,
+.mission-setting-icon svg{
+  display:block;
+  max-width:28px;
+  max-height:28px;
+  transition:opacity .16s ease,filter .16s ease,transform .16s ease,color .16s ease;
+}
+.mission-setting-toggle.off .mission-setting-icon img,
+.mission-setting-status.off .mission-setting-icon img,
+.mission-setting-toggle.radio-setting.off .mission-setting-icon img{
+  opacity:1!important;
+  filter:brightness(0) saturate(100%) invert(14%) sepia(96%) saturate(7225%) hue-rotate(340deg) brightness(103%) contrast(119%)!important;
+}
+.mission-setting-toggle.off .mission-setting-icon svg,
+.mission-setting-status.off .mission-setting-icon svg{
+  opacity:1!important;
+  color:#ff0036!important;
+}
+.mission-setting-toggle.on,
+.mission-setting-status.on{
+  border-color:#ff0036!important;
+  background:rgba(12,5,38,.98)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+.mission-setting-toggle.on .mission-setting-icon,
+.mission-setting-status.on .mission-setting-icon{
+  border-color:#ff0036!important;
+  background:rgba(20,9,54,.98)!important;
+  box-shadow:none!important;
+}
+.mission-setting-toggle.on .mission-setting-icon img,
+.mission-setting-status.on .mission-setting-icon img{
+  opacity:1!important;
+  filter:brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(149deg) brightness(103%) contrast(101%)!important;
+  transform:scale(1.04);
+}
+.mission-setting-toggle.on .mission-setting-icon svg,
+.mission-setting-status.on .mission-setting-icon svg{
+  opacity:1!important;
+  color:#fff!important;
+  transform:scale(1.04);
+}
+.mission-setting-copy strong{display:none!important;}
+@keyframes commsRadioActivePulse{
+  0%,100%{box-shadow:none;}
+  50%{box-shadow:0 0 0 1px rgba(255,0,54,.28),0 0 14px rgba(255,0,54,.16);}
+}
+
 /* Pass 7.36.9 — Missions top-bar scroll boundary */
 .screen>.missions-log,
 .nav-view>.missions-log{
@@ -11551,6 +11615,14 @@ button,[role="button"]{touch-action:manipulation;}
 }
 .nav button.active .ico svg,
 .nav button.active .nav-line-icon{filter:none!important;}
+.nav .nav-solid-icon{
+  display:block;
+  width:27px;
+  height:20px;
+  fill:currentColor!important;
+  stroke:none!important;
+  opacity:1!important;
+}
 .nav-sleigh-icon-wrap,.nav-sleigh-icon,.nav-mask,.nav-mask-sleigh{display:none!important;}
 .nav-badge{
   top:-7px;
@@ -16175,7 +16247,7 @@ section.onboard.setup-page.demo-scan-page .demo-scan-card p,
 
 /* North Pole Position: waiting values are red; confirmed values use the existing white success styling. */
 .mission-northern .northern-condition:not(.ready) strong{color:#ff0036!important;transition:color .3s ease!important;}
-.mission-northern .northern-condition.ready strong{color:#fff!important;transition:color .3s ease!important;}
+.mission-northern .northern-condition.ready strong{color:var(--green)!important;transition:color .3s ease!important;}
 
 /* PIT STOP 12 — final airborne + transmission brand correction.
    Apply the same transmission styling language used in Lapland Launch and
