@@ -19175,3 +19175,17 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
   color:rgba(255,150,168,.9)!important;
   text-align:left!important;
 }
+
+/* Comms scroll boundary: reserve the fixed navigation and safe-area height.
+   The feed alone scrolls; the settings and heading retain their positions. */
+.phone:has(.nav-view[data-view="comms"]) .screen{
+  height:calc(100% - var(--nav-h) - var(--nav-safe))!important;
+  padding-bottom:0!important;
+}
+.nav-view[data-view="comms"]>.comms-feed{overflow:hidden!important;}
+.nav-view[data-view="comms"] .comms-feed-scroll{
+  box-sizing:border-box!important;
+  height:100%!important;
+  overflow-y:auto!important;
+  padding:10px 1px 18px!important;
+}
