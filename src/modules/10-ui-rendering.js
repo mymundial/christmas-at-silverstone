@@ -96,7 +96,7 @@
     };
     return icons[id]||'';
   }
-  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Team<br>Radio')}</nav>`; }
+  function navBar(){ return `<nav class="nav" aria-label="Christmas at Silverstone">${navButton('radar','Tracker')}${navButton('missions','Pit Stops')}${navButton('sleigh','Sleigh')}${navButton('comms','Comms')}</nav>`; }
   function navButton(id,label){
     const unread=id==='comms'?unreadCount():0;
     return `<button data-nav="${id}" class="${state.nav===id?'active':''}"><span class="ico">${navIcon(id)}${unread?`<span class="nav-badge">${unread>9?'9+':unread}</span>`:''}</span><span>${label}</span></button>`;
@@ -412,7 +412,7 @@
       return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
     }
     if(cp.type==='northern'){
-      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy"><span>The sleigh is on the grid and ready to fly.</span><span>Give Santa the green flag!</span></p></div>`;
+      return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy">The sleigh is on the grid and ready to fly.<br>Give Santa the green flag!</p></div>`;
     }
     if(cp.type==='lapland'){
       return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
