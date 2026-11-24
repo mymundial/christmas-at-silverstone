@@ -110,7 +110,7 @@
       return;
     }
     mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
-    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2><button class="btn primary wide mission-complete-cta" id="returnRadar"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>Mission Complete</h2><button class="btn primary wide mission-complete-cta" id="returnRadar"><span>CONTINUE</span></button></div>`;
     const continueBtn=document.getElementById('returnRadar');
     let continueCommitted=false;
     const commitContinue=event=>{
@@ -133,7 +133,7 @@
     const mc=document.getElementById('missionContent'); if(!mc) return;
     const returnNav=state.missionReturnNav==='comms'?'comms':'radar';
     mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
-    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>SIGNAL LOCKED</h2><button class="btn primary wide mission-complete-cta" id="returnElf"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+    mc.innerHTML=`<div class="completion panel mission-complete-dialog"><div class="check" aria-hidden="true"><span class="checkmark-icon checkmark-icon--large"></span></div><h2>SIGNAL LOCKED</h2><button class="btn primary wide mission-complete-cta" id="returnElf"><span>CONTINUE</span></button></div>`;
     document.getElementById('returnElf').onclick=()=>{
       state={...state,elfUnlocked:true,elfPromptSeen:true,missionOpen:null,missionReturnNav:returnNav,nav:returnNav};
       save();render();
@@ -158,7 +158,7 @@
       const mc=document.getElementById('missionContent');
       if(!mc)return;
       mc.closest('.mission-shell')?.classList.add('mission-overlay-active');
-      mc.innerHTML=`<div class="mission-player-changeover panel" role="dialog" aria-modal="true" aria-labelledby="playerChangeTitle"><div class="mission-player-changeover-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></div><h2 id="playerChangeTitle"><span>YOUR TURN</span><span>PLAYER ${turn+1}</span></h2><button type="button" class="btn primary wide mission-player-changeover-cta" id="playerChangeContinue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+      mc.innerHTML=`<div class="mission-player-changeover panel" role="dialog" aria-modal="true" aria-labelledby="playerChangeTitle"><div class="mission-player-changeover-elf" aria-hidden="true"><img src="./assets/pit-crew-santa-helmet-guide.png" alt=""></div><h2 id="playerChangeTitle"><span>YOUR TURN</span><span>PLAYER ${turn+1}</span></h2><button type="button" class="btn primary wide mission-player-changeover-cta" id="playerChangeContinue"><span>CONTINUE</span></button></div>`;
       const next=document.getElementById('playerChangeContinue');
       next?.addEventListener('click',()=>{
         if(state.missionOpen!==id||state.missionPlayerTurnId!==id)return;

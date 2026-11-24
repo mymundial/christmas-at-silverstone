@@ -110,6 +110,7 @@
   }
   function startLaplandMusic(){
     if(!state.audio) return;
+    ensureAudio();
     beginMissionAudioRadioOverride('lapland');
     const music=getLaplandMusic();
     music.loop=true;
@@ -309,6 +310,10 @@
       setRowState(key,'standby');
       card.addEventListener('click',()=>{
         if(state.missionOpen!=='lapland' || verificationStage.hidden || awakened.has(key)) return;
+        if(state.audio){
+          ensureAudio();
+          if(getLaplandMusic().paused) startLaplandMusic();
+        }
         awakened.add(key);
         card.disabled=true;
         setRowState(key,'checking');

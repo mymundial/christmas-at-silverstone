@@ -119,7 +119,7 @@
 
   function radarMessage(cp){
     if(cp&&cp.playable&&(state.targetInRange||state.mode==='demo')){
-      return `<div class="mission-card message-card panel target-message compact-target${(cp.id==='power'||cp.id==='spirit')?' partner-target':''}" id="radarMessage"><div><div class="kicker">${cp.location}</div>${(cp.id==='power'||cp.id==='spirit')?'<div class="radar-partner-line">IN PARTNERSHIP WITH CARE BEARS</div>':''}<h3>${cp.id==='spirit'?'CHRISTMAS SPIRIT<br>CHARGING STATION':cp.name}</h3>${state.mode==='demo'?'<p class="no-gps-checkpoint-hint">TAP WHEN YOU SEE THE CHECKPOINT</p>':''}</div><button class="btn small primary" data-start-mission="${cp.id}">${cp.type==='activation'?'Start Activation':cp.type==='radio'?'Tune Signal':cp.type==='diagnostics'?'Start Diagnostics':'Start Mission'}</button></div>`;
+      return `<div class="mission-card message-card panel target-message compact-target${(cp.id==='power'||cp.id==='spirit')?' partner-target':''}" id="radarMessage"><div><div class="kicker">${cp.location}</div>${(cp.id==='power'||cp.id==='spirit')?'<div class="radar-partner-line">IN PARTNERSHIP WITH CARE BEARS</div>':''}<h3>${cp.id==='spirit'?'CHRISTMAS SPIRIT<br>CHARGING STATION':cp.name}</h3>${state.mode==='demo'?'<p class="no-gps-checkpoint-hint">TAP WHEN YOU SEE THE CHECKPOINT</p>':''}</div><button class="btn small primary" data-start-mission="${cp.id}">START</button></div>`;
     }
     if(!cp){
       return `<div class="mission-card message-card panel complete-message compact-message final-radar-message" id="radarMessage"><div><div class="kicker">Mission Complete</div><h3>MEET SANTA AT HIS GROTTO</h3></div></div>`;
@@ -180,8 +180,8 @@
         ? `<span>Accurate to about ${accuracy===null?'—':`<strong>${accuracy} m</strong>`}.</span><span>We’ll tell you when a pit stop is close.</span>`
         : 'We couldn’t establish your location.<br>Check your signal and location settings,<br>then try again.';
       const controls=failed?`<button type="button" class="gps-status-demo-link" data-gps-status="demo"><span>CONTINUE WITHOUT GPS</span></button>`:'';
-      const retryControl=failed?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="retry"><span>TRY AGAIN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
-      const continueControl=connected?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="continue"><span>CONTINUE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>`:'';
+      const retryControl=failed?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="retry"><span>TRY AGAIN</span></button>`:'';
+      const continueControl=connected?`<button type="button" class="btn primary wide gps-status-main-btn gps-retry-btn" data-gps-status="continue"><span>CONTINUE</span></button>`:'';
       const findingSpinner=finding?'<div class="gps-finding-spinner" aria-hidden="true"></div>':'';
       const findingTitle=finding?'<h1 class="gps-finding-title"><span>FINDING</span><span>YOU…</span></h1>':'';
       const resultVisual=!finding&&failed?'<div class="gps-error-symbol" aria-hidden="true">!</div>':connected?'<div class="gps-error-symbol gps-success-symbol" aria-hidden="true"><span class="checkmark-icon"></span></div>':'';
@@ -222,7 +222,7 @@
       <div class="briefing-welcome-intro"><h1><span class="line-1">UH OH!</span><span class="line-2">SANTA'S SLEIGH</span><span class="line-3">HAS BROKEN DOWN!</span></h1></div>
       <div class="briefing-welcome-art"><img src="./assets/mission-briefing-santa.webp" alt="Santa waving with his sack of presents"></div>
       <p class="briefing-welcome-description"><span>It’s stuck at Silverstone,</span><span>and Christmas is just around the corner.</span><span>Join Santa’s pit crew,</span><span>take on 12 pit stop challenges and</span><span>help get him back to the North Pole in time!</span></p>
-      <button type="button" class="btn primary wide briefing-welcome-cta" data-onboard="location"><span>JOIN THE PIT CREW</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+      <button type="button" class="btn primary wide briefing-welcome-cta" data-onboard="location"><span>JOIN THE PIT CREW</span></button>
     </div></section>`;
     return `<section class="onboard with-masthead setup-page radar-setup-page location-permission-page">${setupHeader}<div class="location-permission-content">
       <p class="location-permission-kicker">STEP 2 OF 4 · LOCATION</p>
@@ -234,7 +234,7 @@
         <div class="location-permission-benefit"><span class="location-permission-icon"><img src="./assets/north-pole-flag-brand.webp" alt="" aria-hidden="true"></span><span>Challenges unlock as you drive past</span></div>
       </div>
       <div class="location-permission-actions">
-        <button type="button" class="btn primary wide location-permission-cta" data-location="request"><span>ENABLE LOCATION</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="btn primary wide location-permission-cta" data-location="request"><span>ENABLE LOCATION</span></button>
       </div>
     </div></section>`;
   }
@@ -254,7 +254,7 @@
           </div>
         </div>
         <div class="pitcrew-driver-warning"><div><strong>PASSENGERS ONLY</strong><p>Drivers, keep your eyes on the road and enjoy the lights. Leave the phone to your Pit Crew.</p></div></div>
-        <button type="button" class="btn primary wide pitcrew-onboard-cta" data-pitcrew-confirm><span>LET’S GO!</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="btn primary wide pitcrew-onboard-cta" data-pitcrew-confirm><span>LET’S GO!</span></button>
       </div>
     </section>`;
   }
@@ -269,7 +269,7 @@
           <div class="elf-onboard-portrait"><img src="./assets/elf-fm-elf-two.webp" alt="Second elf in a red racing suit"></div>
         </div>
         <p class="elf-onboard-description"><span>Tune in to <strong>87.7</strong> to listen to <strong>ELF FM</strong>.</span><span>The radio stays off until you turn it on!</span></p>
-        <button type="button" class="btn primary wide elf-onboard-primary" data-elf-onboard="tune"><span>TURN ON ELF FM</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="btn primary wide elf-onboard-primary" data-elf-onboard="tune"><span>TURN ON ELF FM</span></button>
         <button type="button" class="elf-onboard-secondary" data-elf-onboard="continue">CONTINUE WITHOUT RADIO</button>
       </div>
     </section>`;
@@ -388,7 +388,7 @@
       return `<div class="mission-head luffield-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>BOX, BOX,</span><span>HO, HO, HO!</span></h1><p class="support-copy luffield-subtitle"><span class="luffield-subtitle-first">Santa can’t hear us over the engine noise!</span><span class="luffield-subtitle-next">Connect the radio by tapping the links as the signal hits it,</span><span class="luffield-subtitle-next2">so we can call him into the pits.</span></p></div>`;
     }
     if(cp.type==='diagnostics'&&cp.id==='velocity'){
-      return `<div class="mission-head diagnostics-head diagnostics-head--santa"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SANTA’S</span><span>PARC FERMÉ</span></h1><p class="support-copy"><span>All racing cars get checked in parc fermé, and</span><span>Santa’s sleigh is no different! Scan every part.</span></p></div>`;
+      return `<div class="mission-head diagnostics-head diagnostics-head--santa"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SANTA’S</span><span>PARC FERMÉ</span></h1><p class="support-copy"><span>All racing cars get checked in parc fermé, and Santa’s sleigh is no different!</span><span>Scan every part.</span></p></div>`;
     }
     if(cp.type==='diagnostics'){
       return `<div class="mission-head diagnostics-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="diagnostics-brand"><img src="./assets/audi-rings-2026.webp" alt="Audi"></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
@@ -397,10 +397,10 @@
       return `<div class="mission-head mc01-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy"><span>Uh-oh, Santa's sleigh has run out of battery!</span><span>Connect to the circuit and power it back up.</span></p></div>`;
     }
     if(cp.type==='artifacts'){
-      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy">Sparkles of Christmas magic are zooming down the pit lane. Catch them to power up the sleigh!</p></div>`;
+      return `<div class="mission-head artifact-head powerup-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>PIT LANE</span><span>POWER-UP</span></h1><p class="support-copy"><span>Sparkles of Christmas magic are zooming down the pit lane.</span><span>Catch them to power up the sleigh!</span></p></div>`;
     }
     if(cp.type==='spirit'){
-      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit,</span><span>and it’s running low! Fill it back up.</span></p></div>`;
+      return `<div class="mission-head spirit-head spirit-head--charging"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><div class="care-bears-partner-line">IN PARTNERSHIP WITH CARE BEARS</div><h1><span>CHRISTMAS SPIRIT</span><span>CHARGING STATION</span></h1><p class="support-copy spirit-subtitle"><span>The sleigh runs on Christmas spirit, and it’s running low!</span><span>Fill it back up.</span></p></div>`;
     }
     if(cp.type==='power'&&cp.id==='escapade'){
       return `<div class="mission-head raceway-head raceway-head--line"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>REINDEER</span><span>RACING LINE</span></h1><p class="support-copy">How fast can you go following the racing line?</p></div>`;
@@ -412,13 +412,13 @@
       return `<div class="mission-head sleigh-speed-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>SLEIGH SPEED</span><span>STRAIGHT</span></h1><p class="support-copy"><span>This is the fastest part of the track!</span><span>Score to give Santa a speed boost!</span></p></div>`;
     }
     if(cp.type==='lando'){
-      return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy">Santa needs speedy reactions to land on all those rooftops. Are yours as quick as his?</p></div>`;
+      return `<div class="mission-head landing-lights-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LANDO’S</span><span>LANDING LIGHTS</span></h1><p class="support-copy"><span>Santa needs speedy reactions to land on all those rooftops.</span><span>Are yours as quick as his?</span></p></div>`;
     }
     if(cp.type==='northern'){
       return `<div class="mission-head north-pole-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>NORTH POLE</span><span>POSITION</span></h1><p class="support-copy"><span>The sleigh is on the grid and ready to fly.</span><span>Give Santa the green flag!</span></p></div>`;
     }
     if(cp.type==='lapland'){
-      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy">Final checks, Pit Crew! Wake up every part you’ve fixed before the sleigh leaves the garage.</p></div>`;
+      return `<div class="mission-head lapland-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1><span>LIGHTS OUT &amp;</span><span>SLEIGH AWAY</span></h1><p class="support-copy"><span>Final checks, Pit Crew!</span><span>Wake up every part you’ve fixed before the sleigh leaves the garage.</span></p></div>`;
     }
     return `<div class="mission-head"><div class="meta"><div class="kicker">${label}</div><button class="linkbtn" data-exit-mission>Exit Mission</button></div><h1>${cp.name}</h1><p class="support-copy">${missionInstruction(cp.type)}</p></div>`;
   }
@@ -501,7 +501,7 @@
       <div class="mc01-transfer mc01-transfer-bottom" aria-label="Circuit Link energy transfer progress">
         <div class="mc01-transfer-meta"><span>Energy Transfer</span><strong id="mc01TransferValue">0%</strong></div>
         <div class="mc01-transfer-track"><i id="mc01TransferFill"></i></div>
-        <button type="button" class="btn primary wide mc01-charge-cta" id="mc01ChargeButton"><span>TAP TO CHARGE</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button>
+        <button type="button" class="btn primary wide mc01-charge-cta" id="mc01ChargeButton"><span>TAP TO CHARGE</span></button>
       </div>
     </div>`;
   }
@@ -515,10 +515,10 @@
       {name:'TRACTION',key:'traction',icon:'./assets/parc-ferme-traction.webp',viz:`<div class="mc02-icon mc02-icon-traction"><span class="mc02-layer mc02-traction-car"></span><span class="mc02-layer mc02-traction-skids"></span><span class="mc02-layer mc02-traction-shine"></span></div>`},
       {name:'RESPONSE',key:'response',icon:'./assets/parc-ferme-response.webp',viz:`<div class="mc02-icon mc02-icon-response"><span class="mc02-layer mc02-response-cones"></span><span class="mc02-layer mc02-response-arrow"></span><span class="mc02-layer mc02-response-shine"></span></div>`}
     ];
-    return `<div class="mission-instrument panel diagnostics-panel"><section class="diag-progress-card"><div class="diag-progress-copy"><div class="diag-progress-label">PARTS CHECKED</div><div class="diag-progress-value" id="diagProgressValue">0/6</div></div><div class="diag-progress-track" aria-label="Parts checked progress">${Array.from({length:6},(_,i)=>`<i data-diag-progress="${i}"></i>`).join('')}</div></section><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor parc-scan-card sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><strong class="parc-card-title">${x.name}</strong><span class="sensor-viz-shell"><img class="parc-icon-art" src="${x.icon}" alt="" aria-hidden="true"></span><span class="state">Tap to scan</span></button>`).join('')}</div><button class="btn primary wide parc-complete-cta" id="diagComplete" disabled><span>COMPLETE SCAN</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`;
+    return `<div class="mission-instrument panel diagnostics-panel"><section class="diag-progress-card"><div class="diag-progress-copy"><div class="diag-progress-label">PARTS CHECKED</div><div class="diag-progress-value" id="diagProgressValue">0/6</div></div><div class="diag-progress-track" aria-label="Parts checked progress">${Array.from({length:6},(_,i)=>`<i data-diag-progress="${i}"></i>`).join('')}</div></section><div class="sensor-grid diagnostics-grid">${sensors.map((x,i)=>`<button class="sensor parc-scan-card sensor-${x.key}" data-sensor="${i}" data-diagnostic="${x.key}"><strong class="parc-card-title">${x.name}</strong><span class="sensor-viz-shell"><img class="parc-icon-art" src="${x.icon}" alt="" aria-hidden="true"></span><span class="state">Tap to scan</span></button>`).join('')}</div><button class="btn primary wide parc-complete-cta" id="diagComplete" disabled><span>COMPLETE SCAN</span></button></div>`;
   }
 
-  function radioBody(){return `<div class="mission-instrument panel"><div class="wave transmission-wave" id="radioWave">${'<b></b>'.repeat(24)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled><span>LOCK SIGNAL</span><img class="onboarding-cta-guide-arrow" src="./assets/arrow-right-guide.svg" alt="" aria-hidden="true"></button></div>`}
+  function radioBody(){return `<div class="mission-instrument panel"><div class="wave transmission-wave" id="radioWave">${'<b></b>'.repeat(24)}</div><div class="frequency"><span id="freqVal">86.4</span> <small>FM</small></div><div class="range-wrap"><input id="freqRange" class="range" type="range" min="86" max="89" value="86.4" step="0.1"><div class="freq-marks"><span>86.0</span><span>87.0</span><span>88.0</span><span>89.0</span></div></div><div class="signal-state" id="signalState">Searching for signal</div><button class="btn primary wide" id="lockSignal" disabled><span>LOCK SIGNAL</span></button></div>`}
   function commsRelayBody(){
     return `<div class="mission-instrument panel comms-relay-panel">
       <div class="relay-progress-head"><span>RADIO LINKS</span><strong id="relayLockedCount">0/4</strong></div>

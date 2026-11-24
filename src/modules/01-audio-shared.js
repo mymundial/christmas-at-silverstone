@@ -178,15 +178,15 @@
   function ping(freq=660,dur=.08,vol=.035){
     const ctx=ensureAudio(); if(!ctx) return;
     const o=ctx.createOscillator(), g=ctx.createGain();
-    o.type='sine';o.frequency.value=freq;g.gain.value=vol;o.connect(g).connect(ctx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+dur);o.stop(ctx.currentTime+dur);
+    o.type='sine';o.frequency.value=freq;g.gain.value=vol*.3;o.connect(g).connect(ctx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+dur);o.stop(ctx.currentTime+dur);
   }
   function startStatic(level=.08){
     stopStatic(); const ctx=ensureAudio(); if(!ctx) return;
     const buffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate); const data=buffer.getChannelData(0);
     for(let i=0;i<data.length;i++) data[i]=Math.random()*2-1;
-    noiseNode=ctx.createBufferSource(); noiseGain=ctx.createGain(); noiseGain.gain.value=level;
+    noiseNode=ctx.createBufferSource(); noiseGain=ctx.createGain(); noiseGain.gain.value=level*.3;
     const filter=ctx.createBiquadFilter(); filter.type='bandpass';filter.frequency.value=1900;filter.Q.value=.65;
     noiseNode.buffer=buffer;noiseNode.loop=true;noiseNode.connect(filter).connect(noiseGain).connect(ctx.destination);noiseNode.start();
   }
-  function setStatic(level){ if(noiseGain && audioCtx) noiseGain.gain.setTargetAtTime(level,audioCtx.currentTime,.05); }
+  function setStatic(level){ if(noiseGain && audioCtx) noiseGain.gain.setTargetAtTime(level*.3,audioCtx.currentTime,.05); }
   function stopStatic(){ try{noiseNode?.stop()}catch{} noiseNode=null;noiseGain=null; }

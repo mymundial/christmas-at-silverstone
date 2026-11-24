@@ -19189,3 +19189,34 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
   overflow-y:auto!important;
   padding:10px 1px 18px!important;
 }
+
+/* Mobile QA: scoped navigation, checkpoint, CTA, subtitle and game fit corrections. */
+:root{--nav-h:52px;--nav-safe:max(env(safe-area-inset-bottom,0px),8px);}
+.phone .nav button{min-height:0!important;padding:3px 2px!important;gap:3px!important;}
+.phone .nav .ico{height:20px!important;flex:0 0 20px!important;}
+.phone .nav .ico svg{max-height:20px!important;}
+.phone .nav button>span:last-child{min-height:0!important;line-height:9px!important;}
+.nav-view[data-view="radar"] #radarMessage.target-message{display:grid!important;grid-template-columns:minmax(0,1fr) 66px!important;gap:8px!important;align-items:center!important;height:auto!important;min-height:70px!important;flex:0 0 auto!important;}
+.nav-view[data-view="radar"] #radarMessage.target-message>div{min-width:0!important;}
+.nav-view[data-view="radar"] #radarMessage.target-message h3{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.02!important;overflow-wrap:normal!important;}
+.nav-view[data-view="radar"] #radarMessage.target-message .btn.small{width:66px!important;min-width:0!important;max-width:66px!important;min-height:44px!important;padding:0 5px!important;flex:none!important;}
+button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:none!important;}
+.phone button.btn:has(>span):is(.mission-complete-cta,.mission-player-changeover-cta,.briefing-welcome-cta,.location-permission-cta,.gps-status-main-btn,.elf-onboard-primary,.pitcrew-onboard-cta,.mc01-charge-cta,.parc-complete-cta,#lockSignal){padding-left:12px!important;padding-right:12px!important;justify-content:center!important;}
+.mission-shell .mission-head .support-copy>span{display:block!important;white-space:normal!important;}
+/* Keep spirit grid tracks and button content independent of changing caption/state. */
+.mission-spirit .spirit-panel--charging .spirit-apparatus{grid-template-rows:minmax(0,1fr)!important;flex:1 1 0!important;min-height:0!important;}
+.mission-spirit .spirit-panel--charging .spirit-bank,.mission-spirit .spirit-panel--charging .spirit-tank-stack{min-height:0!important;min-width:0!important;}
+.mission-spirit .spirit-panel--charging .spirit-tank-cell{box-sizing:border-box!important;min-width:0!important;min-height:0!important;transform:none!important;animation:none!important;}
+.mission-spirit .spirit-panel--charging .spirit-tank-power{position:absolute!important;inset:0!important;box-sizing:border-box!important;min-width:0!important;min-height:0!important;transform:none!important;animation:none!important;}
+.mission-spirit .spirit-panel--charging .spirit-power-bolt,.mission-spirit .spirit-panel--charging .spirit-tank-power.is-charging .spirit-power-bolt,.mission-spirit .spirit-panel--charging .spirit-tank-power.is-full .spirit-power-bolt{width:clamp(24px,4.5dvh,33px)!important;height:clamp(24px,4.5dvh,33px)!important;flex:0 0 auto!important;transform:none!important;}
+.mission-spirit .spirit-panel--charging .spirit-cell-state{white-space:nowrap!important;flex:0 0 auto!important;}
+/* Keep the landing lights artwork and lamp overlay in the same aspect ratio. */
+.mission-shell.mission-lando{display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important;box-sizing:border-box!important;overflow:hidden!important;}
+.mission-shell.mission-lando .mission-content:has(> .lando-panel){display:flex!important;flex:1 1 0!important;min-height:0!important;overflow:hidden!important;padding-bottom:8px!important;}
+.mission-shell.mission-lando .mission-content>.lando-panel{display:flex!important;flex-direction:column!important;flex:1 1 0!important;min-height:0!important;height:auto!important;box-sizing:border-box!important;gap:0!important;padding:10px!important;container-type:size;}
+.mission-lando .lando-round-head{margin:0 0 6px!important;flex:0 0 auto!important;}
+.mission-lando .lando-progress-track{margin-bottom:6px!important;flex:0 0 auto!important;}
+.mission-lando .lando-gantry-art{width:min(100%,calc(max(60px,100cqh - 160px) * 885 / 540))!important;min-height:0!important;height:auto!important;flex:0 0 auto!important;aspect-ratio:885/540!important;margin:0 auto!important;}
+.mission-lando .lando-score-grid{margin:6px 0!important;flex:0 0 auto!important;}
+.mission-lando .lando-score-grid .lando-result{height:44px!important;min-height:44px!important;padding:4px 2px!important;gap:3px!important;}
+.mission-shell.mission-lando .mission-content>.lando-panel button.lando-react-btn{min-height:44px!important;margin:0!important;padding:6px!important;flex:0 0 auto!important;}
