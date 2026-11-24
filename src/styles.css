@@ -19109,30 +19109,21 @@ section.onboard.setup-page.pitcrew-onboard-page{background:#120531!important;hei
   width:100%!important;
   max-width:none!important;
 }
-.mission-row.partner-row .mission-row-copy{display:flex;flex-direction:column;justify-content:center;}
 .mission-row.partner-row .mission-partner-line{
   display:block!important;
-  margin:2px 0 4px!important;
+  margin:3px 0 0!important;
   font-family:var(--font-display)!important;
-  font-size:9px!important;
+  font-size:8px!important;
   line-height:1.15!important;
-  letter-spacing:.18em!important;
+  letter-spacing:.12em!important;
   text-transform:uppercase!important;
   color:rgba(255,150,168,.9)!important;
 }
-.nav-view[data-view="missions"] .mission-row.partner-row{min-height:84px!important;}
-.nav-view[data-view="missions"] .mission-row.partner-row h3{line-height:.92!important;}
-.nav-view[data-view="missions"] .mission-index.care-bears-index{
-  padding:0!important;
-  overflow:visible!important;
-  border-color:transparent!important;
-  background:transparent!important;
-}
-.nav-view[data-view="missions"] .mission-row.available .mission-index.care-bears-index,
-.nav-view[data-view="missions"] .mission-row.interactive .mission-index.care-bears-index,
-.nav-view[data-view="missions"] .mission-row.done .mission-index.care-bears-index{
-  border-color:transparent!important;
-  background:transparent!important;
+.nav-view[data-view="missions"] .mission-row.partner-row .row-action{
+  display:grid!important;
+  grid-template-columns:clamp(26px,7vw,36px) auto!important;
+  align-items:center!important;
+  gap:6px!important;
 }
 .care-bears-index-heart{
   display:block!important;

@@ -1029,10 +1029,8 @@
       const interaction=playable?` data-open-mission="${cp.id}" role="button" tabindex="0" aria-label="Open ${cp.name}"`:'';
       const isCareBearsPartner=cp.id==='power'||cp.id==='spirit';
       const partnerCopy=isCareBearsPartner?'<div class="mission-partner-line">IN PARTNERSHIP WITH CARE BEARS</div>':'';
-      const missionIndex=isCareBearsPartner
-        ? '<img class="care-bears-index-heart" src="./assets/care-bears-heart-red.webp" alt="Care Bears">'
-        : cp.mc.replace('MC-','');
-      return `<div class="mission-row panel ${status==='COMPLETE'?'done':''} ${status==='AVAILABLE'?'available':''} ${playable?'interactive':''} ${isCareBearsPartner?'partner-row':''}"${interaction}><div class="mission-index ${isCareBearsPartner?'care-bears-index':''}">${missionIndex}</div><div class="mission-row-copy"><div class="kicker">${cp.location}</div>${partnerCopy}<h3>${cp.name}</h3></div><div class="row-action"><div class="row-status">${status}</div></div></div>`;
+      const partnerHeart=isCareBearsPartner?'<img class="care-bears-index-heart" src="./assets/care-bears-heart-red.webp" alt="Care Bears">':'';
+      return `<div class="mission-row panel ${status==='COMPLETE'?'done':''} ${status==='AVAILABLE'?'available':''} ${playable?'interactive':''} ${isCareBearsPartner?'partner-row':''}"${interaction}><div class="mission-index">${cp.mc.replace('MC-','')}</div><div class="mission-row-copy"><div class="kicker">${cp.location}</div><h3>${cp.name}</h3>${partnerCopy}</div><div class="row-action">${partnerHeart}<div class="row-status">${status}</div></div></div>`;
     }).join('');
     return `<section class="missions-log"><div class="missions-feed-viewport"><div class="missions-feed-scroll"><div class="list missions-list">${rows}</div></div></div></section>`;
   }
