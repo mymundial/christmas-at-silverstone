@@ -19266,3 +19266,17 @@ button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:no
 .mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown){width:clamp(24px,13cqh,34px)!important;height:clamp(24px,13cqh,34px)!important;}
 .mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck.is-ready{background-size:42% 42%,100% 100%!important;}
 .mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown)>i{inset:3px!important;}
+
+/* Landing Lights solo only: distribute spare panel height to the four
+   equal score cards, keeping the gantry and reaction button unchanged. */
+.mission-shell.mission-lando .lando-panel:not(:has(>.mission-player-turn)) > .lando-score-grid{
+  flex:1 1 44px!important;
+  min-height:44px!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  align-items:stretch!important;
+}
+.mission-shell.mission-lando .lando-panel:not(:has(>.mission-player-turn)) > .lando-score-grid > .lando-result{
+  height:auto!important;
+  min-height:44px!important;
+  max-height:none!important;
+}
