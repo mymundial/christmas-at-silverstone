@@ -19267,16 +19267,31 @@ button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:no
 .mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck.is-ready{background-size:42% 42%,100% 100%!important;}
 .mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown)>i{inset:3px!important;}
 
-/* Landing Lights solo only: distribute spare panel height to the four
-   equal score cards, keeping the gantry and reaction button unchanged. */
+/* Landing Lights solo only: compact equal results and a content-height panel.
+   Keep the viewport fit calculation on the available mission content rather
+   than on the shrink-wrapped panel, avoiding a circular size dependency. */
+.mission-shell.mission-lando .mission-content:has(> .lando-panel:not(:has(>.mission-player-turn))){
+  container-type:size;
+  justify-content:flex-start!important;
+}
+.mission-shell.mission-lando .mission-content>.lando-panel:not(:has(>.mission-player-turn)){
+  flex:0 0 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  container-type:normal;
+}
+.mission-shell.mission-lando .lando-panel:not(:has(>.mission-player-turn)) > .lando-gantry-art{
+  width:min(100%,calc(max(60px,100cqh - 200px) * 885 / 540))!important;
+}
 .mission-shell.mission-lando .lando-panel:not(:has(>.mission-player-turn)) > .lando-score-grid{
-  flex:1 1 44px!important;
-  min-height:44px!important;
-  grid-template-rows:minmax(0,1fr)!important;
+  flex:0 0 auto!important;
+  min-height:0!important;
+  grid-template-rows:clamp(44px,15cqh,62px)!important;
   align-items:stretch!important;
 }
 .mission-shell.mission-lando .lando-panel:not(:has(>.mission-player-turn)) > .lando-score-grid > .lando-result{
-  height:auto!important;
-  min-height:44px!important;
+  height:100%!important;
+  min-height:0!important;
   max-height:none!important;
 }
