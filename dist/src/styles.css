@@ -19249,3 +19249,20 @@ button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:no
 .mission-lando .lando-score-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important;}
 .mission-lando .lando-score-grid .lando-result:is(*,.active,.complete,.best){height:44px!important;min-height:44px!important;max-height:44px!important;width:100%!important;min-width:0!important;box-sizing:border-box!important;margin:0!important;padding:4px 2px!important;gap:3px!important;}
 .phone .nav .nav-badge{display:none!important;}
+
+/* Circuit drive QA: remove only solid-red interface CTA outlines. Retain
+   border geometry, focus treatment and white gameplay outlines. */
+.phone.phone .screen .mission-shell.mission-shell .mission-content > .mission-instrument button.btn.primary,
+.phone.phone .screen .mission-shell.mission-shell .mission-content .mission-complete-cta.btn.primary,
+.phone.phone .screen .mission-shell.mission-shell .mission-content .mission-player-changeover-cta.btn.primary,
+.phone.phone .screen .mission-shell.mission-shell .mission-content button:is(.mc01-charge-cta,.parc-complete-cta,.power-accelerator,.lando-react-btn,.aurora-align-btn,.lapland-test-btn,.northern-authorise-btn),
+.phone.phone .screen button.btn.primary:is(.briefing-welcome-cta,.location-permission-cta,.gps-retry-btn,.gps-status-main-btn,.elf-onboard-primary,.pitcrew-onboard-cta),
+.phone.phone .screen .mission-radio .mission-instrument #lockSignal.btn.primary,
+.phone.phone .screen .mission-diagnostics .diagnostics-panel #diagComplete.parc-complete-cta.btn.primary{border-color:transparent!important;}
+/* Multiplayer endpoints scale relative to the fitted relay circles. */
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-network .relay-radio-icon b{font-size:clamp(10px,calc(var(--relay-fit)*.29),21px)!important;}
+.mission-commsrelay .comms-relay-panel:has(.mission-player-turn) .relay-network .relay-receiver-icon b{font-size:clamp(8px,calc(var(--relay-fit)*.19),14px)!important;}
+/* Scale the ready/countdown ring only, not the live puck or solo play. */
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown){width:clamp(24px,13cqh,34px)!important;height:clamp(24px,13cqh,34px)!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck.is-ready{background-size:42% 42%,100% 100%!important;}
+.mission-jingle .jingle-panel:has(.mission-player-turn) .jingle-puck:is(.is-ready,.is-countdown)>i{inset:3px!important;}

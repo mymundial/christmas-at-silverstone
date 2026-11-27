@@ -115,7 +115,7 @@
     const music=getLaplandMusic();
     music.loop=true;
     if(music.ended) music.currentTime=0;
-    const gain=laplandMusicGain;
+    const gain=ensureLaplandMusicGraph();
     if(gain&&audioCtx){
       music.volume=1;
       const now=audioCtx.currentTime;
@@ -275,7 +275,10 @@
       panel.classList.remove('is-celebrating','is-party');
       panel.classList.add('is-transmission');
       head?.classList.remove('is-celebrating');
-      if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.018,360);
+      if(laplandMusic&&!laplandMusic.paused){
+        if(laplandMusicGain&&audioCtx?.state==='running') fadeLaplandMusic(.018,360);
+        else laplandMusic.pause(); // iOS does not reliably honour element volume.
+      }
       stopTransmission=playLaplandClearance(showParty);
     };
     const revealParty=()=>{
@@ -288,6 +291,10 @@
       panel.classList.add('is-party','is-celebrating');
       head?.classList.add('is-celebrating');
       startDisco();
+      if(state.audio&&laplandMusic?.paused){
+        // Fallback if Web Audio was unavailable: resume only after speech.
+        try{const play=laplandMusic.play();play?.catch(()=>{});}catch{}
+      }
       fadeLaplandMusic(.9,780);
       ping(1040,.14,.045);
       laplandLater(()=>ping(1320,.18,.045),210);

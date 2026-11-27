@@ -848,15 +848,15 @@
     const activationGap=distanceToActivation(cp,state.distance);
     const acquired=state.targetVisible&&Number.isFinite(activationGap)&&activationGap<=60;
     if(cp.type==='activation'){
-      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
-      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
+      if(acquired) return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>Target Acquired</h3></div></div>`;
+      if(state.targetVisible) return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>Checkpoint Ahead</h3></div></div>`;
       return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Locating Checkpoint</h3></div></div>`;
     }
     if(acquired){
-      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Target Acquired</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message target-acquired-message" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>Target Acquired</h3></div></div>`;
     }
     if(state.targetVisible){
-      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Approach</div><h3>Checkpoint Ahead</h3></div></div>`;
+      return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">${cp.location}</div><h3>Checkpoint Ahead</h3></div></div>`;
     }
     return `<div class="mission-card message-card panel compact-message" id="radarMessage"><div><div class="kicker">Target Search</div><h3>Radar Searching</h3></div></div>`;
   }
@@ -2095,10 +2095,15 @@
     };
 
     if(cp.type==='activation'){
-      state.targetVisible=detectable;state.targetInRange=false;
+      // Circuit Link is a required entry step: latch its START availability,
+      // but never open the activation from a GPS callback.
       const activationConfirmed=registerActivationFix();
+      const wasAvailable=state.available.includes(cp.id);
+      if(activationConfirmed||nextPassConfirmed) unlockMission(cp.id);
+      const ready=state.available.includes(cp.id);
+      state.targetVisible=detectable||ready;state.targetInRange=ready;
+      if(ready&&!wasAvailable){ping(700,.08,.04);haptic(30);}
       save();updateRadarLive();
-      if(activationConfirmed||nextPassConfirmed) triggerCircuitEntry();
       return;
     }
 
@@ -5175,7 +5180,7 @@
     const music=getLaplandMusic();
     music.loop=true;
     if(music.ended) music.currentTime=0;
-    const gain=laplandMusicGain;
+    const gain=ensureLaplandMusicGraph();
     if(gain&&audioCtx){
       music.volume=1;
       const now=audioCtx.currentTime;
@@ -5335,7 +5340,10 @@
       panel.classList.remove('is-celebrating','is-party');
       panel.classList.add('is-transmission');
       head?.classList.remove('is-celebrating');
-      if(laplandMusic&&!laplandMusic.paused) fadeLaplandMusic(.018,360);
+      if(laplandMusic&&!laplandMusic.paused){
+        if(laplandMusicGain&&audioCtx?.state==='running') fadeLaplandMusic(.018,360);
+        else laplandMusic.pause(); // iOS does not reliably honour element volume.
+      }
       stopTransmission=playLaplandClearance(showParty);
     };
     const revealParty=()=>{
@@ -5348,6 +5356,10 @@
       panel.classList.add('is-party','is-celebrating');
       head?.classList.add('is-celebrating');
       startDisco();
+      if(state.audio&&laplandMusic?.paused){
+        // Fallback if Web Audio was unavailable: resume only after speech.
+        try{const play=laplandMusic.play();play?.catch(()=>{});}catch{}
+      }
       fadeLaplandMusic(.9,780);
       ping(1040,.14,.045);
       laplandLater(()=>ping(1320,.18,.045),210);

@@ -83,10 +83,15 @@
     };
 
     if(cp.type==='activation'){
-      state.targetVisible=detectable;state.targetInRange=false;
+      // Circuit Link is a required entry step: latch its START availability,
+      // but never open the activation from a GPS callback.
       const activationConfirmed=registerActivationFix();
+      const wasAvailable=state.available.includes(cp.id);
+      if(activationConfirmed||nextPassConfirmed) unlockMission(cp.id);
+      const ready=state.available.includes(cp.id);
+      state.targetVisible=detectable||ready;state.targetInRange=ready;
+      if(ready&&!wasAvailable){ping(700,.08,.04);haptic(30);}
       save();updateRadarLive();
-      if(activationConfirmed||nextPassConfirmed) triggerCircuitEntry();
       return;
     }
 
