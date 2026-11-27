@@ -19282,7 +19282,8 @@ button .onboarding-cta-guide-arrow,button .onboarding-cta-comet-arrow{display:no
   width:100%!important;
   min-width:0!important;
   max-width:100%!important;
-  height:auto!important;
+  height:max-content!important;
+  block-size:max-content!important;
   min-height:0!important;
   max-height:100%!important;
   box-sizing:border-box!important;
