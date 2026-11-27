@@ -5340,11 +5340,17 @@
       panel.classList.remove('is-celebrating','is-party');
       panel.classList.add('is-transmission');
       head?.classList.remove('is-celebrating');
-      if(laplandMusic&&!laplandMusic.paused){
-        if(laplandMusicGain&&audioCtx?.state==='running') fadeLaplandMusic(.018,360);
-        else laplandMusic.pause(); // iOS does not reliably honour element volume.
-      }
-      stopTransmission=playLaplandClearance(showParty);
+      // Safari can report a running graph while audible media ignores gain.
+      // Fade when possible, but always pause the element before radio starts.
+      const beginClearance=()=>{
+        if(state.missionOpen!=='lapland'||transmissionStage.hidden)return;
+        if(laplandMusic) laplandMusic.pause();
+        stopTransmission=playLaplandClearance(showParty);
+      };
+      if(laplandMusic&&!laplandMusic.paused&&laplandMusicGain&&audioCtx?.state==='running'){
+        fadeLaplandMusic(0,360);
+        laplandLater(beginClearance,380);
+      }else beginClearance();
     };
     const revealParty=()=>{
       if(state.missionOpen!=='lapland') return;
@@ -5356,11 +5362,22 @@
       panel.classList.add('is-party','is-celebrating');
       head?.classList.add('is-celebrating');
       startDisco();
-      if(state.audio&&laplandMusic?.paused){
-        // Fallback if Web Audio was unavailable: resume only after speech.
+      if(state.audio&&laplandMusic){
+        // The clearance has ended (or been explicitly stopped above).
+        // Resume at the saved position, fading up where gain is supported.
+        if(laplandMusicGain&&audioCtx?.state==='running'){
+          const now=audioCtx.currentTime;
+          laplandMusicGain.gain.cancelScheduledValues(now);
+          laplandMusicGain.gain.setValueAtTime(0,now);
+        }else if(!laplandMusicGain){
+          laplandMusic.volume=.9;
+        }else if(audioCtx){
+          laplandMusicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+          laplandMusicGain.gain.setValueAtTime(.9,audioCtx.currentTime);
+        }
         try{const play=laplandMusic.play();play?.catch(()=>{});}catch{}
+        fadeLaplandMusic(.9,780);
       }
-      fadeLaplandMusic(.9,780);
       ping(1040,.14,.045);
       laplandLater(()=>ping(1320,.18,.045),210);
       haptic([25,28,75]);
